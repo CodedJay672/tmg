@@ -39,7 +39,7 @@
   }
 
   .content-wrapper {
-    @apply w-full min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-4rem)];
+    @apply w-full min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-4rem)] pt-4 pb-10 lg:pb-2 px-1 lg:px-10;
   }
 
   .small-icons {
