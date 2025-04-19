@@ -8,7 +8,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { Button } from "./ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 const Carousel = ({ slides }: { slides: string[] }) => {
@@ -38,13 +37,14 @@ const Carousel = ({ slides }: { slides: string[] }) => {
           </SwiperSlide>
         ))}
       </Swiper>
+
       <div
         ref={prevRef}
         className="absolute top-0 left-0 z-10 group h-full flex-center hover:bg-dark-200/20 hover:shadow-2xs transition-all"
       >
         <ChevronLeftIcon
           size={44}
-          className="text-dark-100/50 group-hover:text-dark-100/75 transition-all"
+          className="text-dark-100/10 group-hover:text-dark-100/75 transition-all"
         />
       </div>
       <div
@@ -53,7 +53,7 @@ const Carousel = ({ slides }: { slides: string[] }) => {
       >
         <ChevronRightIcon
           size={40}
-          className="text-dark-100/50 group-hover:text-dark-100/75 transition-all"
+          className="text-dark-100/10 group-hover:text-dark-100/75 transition-all"
         />
       </div>
     </div>

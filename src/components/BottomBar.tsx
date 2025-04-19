@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import MobileLink from "./shared/MobileLink";
+import { getLoggedInUser } from "@/lib/server/appwrite";
 
 const BottomBarLinks: BottomBarProps[] = [
   {
@@ -20,18 +21,17 @@ const BottomBarLinks: BottomBarProps[] = [
     path: "/cart",
     icon: <ShoppingCartIcon size={24} />,
   },
-  {
-    path: "/user",
-    icon: <User2Icon size={24} />,
-  },
 ];
 
-const BottomBar = () => {
+const BottomBar = async () => {
+  const user = await getLoggedInUser();
+
   return (
     <section className="w-full flex justify-between items-center lg:hidden bg-dark-100 p-4 sticky bottom-0 left-0">
       {BottomBarLinks.map((link, idx) => (
         <MobileLink key={idx} path={link.path} icon={link.icon} />
       ))}
+      <MobileLink path={`/user/${user?.$id}`} icon={<User2Icon size={24} />} />
     </section>
   );
 };
