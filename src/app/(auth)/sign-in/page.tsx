@@ -14,7 +14,7 @@ const SignIn = () => {
 
       <div className="w-full flex-center flex-col gap-2 my-6">
         <h1 className="text-2xl font-bold">Logo</h1>
-        <p className="text-base font-medium">Create you account.</p>
+        <p className="text-base font-medium">Login to you account.</p>
       </div>
 
       <AuthForm type="SIGN_IN" />

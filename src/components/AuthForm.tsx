@@ -127,11 +127,11 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
       </div>
 
       {type === "SIGN_UP" && (
-        <small className="w-full text-center text-xs -mt-6">
+        <p className="w-full text-center text-xs ">
           By creating an account, you <b>agree</b> to{" "}
           <span className="text-secondary">Terms of Use</span> and{" "}
           <span className="text-secondary">Privacy Policy</span>
-        </small>
+        </p>
       )}
 
       <SubmitButton label={type === "SIGN_IN" ? "Sign in" : "Create account"} />
@@ -144,7 +144,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
           </Link>
         </p>
       ) : (
-        <p>
+        <p className="w-full text-center">
           Aready created an account?{" "}
           <Link href="/sign-in" className="text-bold text-primary">
             Login
