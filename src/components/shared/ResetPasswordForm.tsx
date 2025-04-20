@@ -15,6 +15,7 @@ const ResetPasswordForm = ({
 }) => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,8 +28,21 @@ const ResetPasswordForm = ({
       const formData = new FormData(event.currentTarget);
 
       const password = formData.get("password") as string;
+      const confirmPassword = formData.get("confirm") as string;
 
-      const response = await resetPassword(userId, secret, password);
+      const response = await resetPassword(
+        userId,
+        secret,
+        password,
+        confirmPassword
+      );
+
+      if (!response.status) {
+        if (response.data) setErrors(response.data as any);
+        return toast.error(response.message);
+      }
+
+      return toast.success(response.message);
     } catch (error: any) {
       console.log(error);
       toast.error(error.message);

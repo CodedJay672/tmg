@@ -5,7 +5,10 @@ import { createAdminClient, createSessionClient } from "../server/appwrite";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { config } from "../server/config";
-import { AuthSchema } from "@/constants/validations/schema";
+import {
+  AuthSchema,
+  resetPasswordSchema,
+} from "@/constants/validations/schema";
 
 export const SignIn = async (email: string, password: string) => {
   try {
@@ -75,7 +78,8 @@ export const signUp = async (values: {
     if (!parsedData.success) {
       return {
         status: false,
-        message: "Data validation Failed",
+        message: "The forrm contains some errors.",
+        data: parsedData.error.flatten().fieldErrors,
       };
     }
 
@@ -164,7 +168,7 @@ export const passwordRecovery = async (email: string) => {
 
     const response = account.createRecovery(
       email,
-      config.baseUrl || "http://localhost:3000/reset-password"
+      config.baseUrl ?? "http://localhost:3000/reset-password"
     );
 
     if (!response) {
@@ -191,10 +195,25 @@ export const passwordRecovery = async (email: string) => {
 export const resetPassword = async (
   userId: string,
   secret: string,
-  password: string
+  password: string,
+  confirmPassword: string
 ) => {
   try {
     const { account } = await createAdminClient();
+
+    // verify the user data
+    const parsedData = resetPasswordSchema.safeParse({
+      password,
+      confirmPassword,
+    });
+
+    if (!parsedData.success) {
+      return {
+        status: false,
+        message: "Something is wrong with your entry.",
+        data: parsedData.error.flatten().fieldErrors,
+      };
+    }
 
     const response = account.updateRecovery(userId, secret, password);
 

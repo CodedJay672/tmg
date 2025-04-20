@@ -16,6 +16,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,6 +46,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
         });
 
         if (!response.status) {
+          if (response.data) setErrors(response.data);
           return toast.error(response.message);
         }
 
@@ -75,6 +77,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
             name="firstname"
             value={firstname}
             onChange={setFirstname}
+            error={errors?.["firstname"]}
           />
           <CustomInput
             label="lastname"
@@ -82,6 +85,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
             name="lastname"
             value={lastname}
             onChange={setLastname}
+            error={errors?.["lastname"]}
           />
         </div>
       )}
@@ -92,6 +96,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
         name="email"
         value={email}
         onChange={setEmail}
+        error={errors?.["email"]}
       />
 
       <div
@@ -105,7 +110,9 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
           name="password"
           value={password}
           onChange={setPassword}
+          error={errors?.["password"]}
         />
+
         {type === "SIGN_IN" && (
           <Link
             href="/recover-password"
@@ -122,6 +129,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
             name="confirmPassword"
             value={confirmPassword}
             onChange={setConfirmPassword}
+            error={errors?.["confirmPassword"]}
           />
         )}
       </div>

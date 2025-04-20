@@ -20,3 +20,12 @@ export const AuthSchema = (type: string) =>
             message: "Password must be at least 8 characters.",
           }),
   });
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8, {
+    message: "Password must be at least 8 character.",
+  }),
+  confirmPassword: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+});
