@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useContext, useEffect } from "react";
-import SignOut from "./shared/SignOut";
+import React, { useContext } from "react";
 import {
   HeartIcon,
   ShoppingBasketIcon,
@@ -49,17 +48,6 @@ const SidebarLinks = ({ user }: { user: any }) => {
       >
         <HeartIcon size={16} /> Watchlist
       </Link>
-
-      {user ? (
-        <SignOut />
-      ) : (
-        <Link
-          href="/sign-up"
-          className="bg-primary text-foreground py-2 px-4 rounded-lg"
-        >
-          Sign in
-        </Link>
-      )}
     </aside>
   );
 };

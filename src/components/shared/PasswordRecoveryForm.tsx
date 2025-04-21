@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEventHandler, useState } from "react";
+import React, { useState } from "react";
 import CustomInput from "./CustomInput";
 import SubmitButton from "./SubmitButton";
 import { toast } from "sonner";

@@ -5,6 +5,8 @@ import MyWatchlist from "./shared/MyWatchlist";
 import Link from "next/link";
 import { getLoggedInUser } from "@/lib/server/appwrite";
 import { redirect } from "next/navigation";
+import DropdownSwitch from "./shared/DropdownSwitch";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Topbar = async () => {
   const user = await getLoggedInUser();
@@ -28,11 +30,13 @@ const Topbar = async () => {
         <MyWatchlist />
 
         {user ? (
-          <div className="bg-secondary">
-            <div className="bg-primary rounded-full flex-center">
-              <h2 className="uppercase font-medium">{user?.name[0]}</h2>
+          <div className="bg-secondary flex-center p-1 rounded-full pr-3 relative">
+            <div className="size-7 bg-primary rounded-full flex-center">
+              <h2 className="text-sm uppercase font-medium">{user?.name[0]}</h2>
             </div>
-            <span>{user?.name}</span>
+            <span className="text-sm ml-1">{user?.name}</span>
+            <DropdownSwitch />
+            <ProfileDropdown user={user} />
           </div>
         ) : (
           <Link
