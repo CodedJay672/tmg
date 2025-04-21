@@ -1,8 +1,14 @@
 import AuthForm from "@/components/AuthForm";
+import { getLoggedInUser } from "@/lib/server/appwrite";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
-const SignUp = () => {
+const SignUp = async () => {
+  const user = await getLoggedInUser();
+
+  if (user) redirect("/");
+
   return (
     <section className="w-full max-w-lg bg-foreground border border-gray-300 rounded-lg py-6 px-3 space-y-4">
       <Link

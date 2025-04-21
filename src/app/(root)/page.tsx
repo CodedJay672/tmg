@@ -1,7 +1,13 @@
 import Carousel from "@/components/Carousel";
 import { slides } from "@/constants";
+import { getLoggedInUser } from "@/lib/server/appwrite";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getLoggedInUser();
+
+  if (!user) redirect("/sign-in");
+
   return (
     <section className="content-wrapper">
       <Carousel slides={slides} />
