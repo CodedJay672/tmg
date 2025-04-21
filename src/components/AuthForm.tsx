@@ -3,11 +3,12 @@
 import React, { useState } from "react";
 import CustomInput from "./shared/CustomInput";
 import SubmitButton from "./shared/SubmitButton";
-import { GlobeIcon } from "lucide-react";
 import { SignIn, signUp } from "@/lib/actions/auth.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { Button } from "./ui/button";
 
 const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
   const [firstname, setFirstname] = useState("");
@@ -166,10 +167,16 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
         <div className="w-full border border-secondary/50" />
       </div>
 
-      <div className="w-max mx-auto flex-center gap-1 border border-secondary rounded-md py-2 px-4 cursor-pointer hover:bg-secondary/10 transition-all">
-        <GlobeIcon size={20} />
-        Sign in with Google
-      </div>
+      <Button
+        variant="outline"
+        // onClick={logginWithGoogle}
+        className="w-full mx-auto flex-center gap-2 border border-secondary rounded-md p-4 cursor-pointer bg-foreground hover:bg-secondary transition-all"
+      >
+        <Image src="/icons/google.svg" alt="google" width={24} height={24} />
+        <h3 className="text-base font-medium">
+          {type === "SIGN_IN" ? "Sign in" : "Sign up"} with Google
+        </h3>
+      </Button>
     </form>
   );
 };

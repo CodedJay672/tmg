@@ -1,6 +1,6 @@
 "use server";
 
-import { ID } from "node-appwrite";
+import { ID, OAuthProvider } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../server/appwrite";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -9,6 +9,7 @@ import {
   AuthSchema,
   resetPasswordSchema,
 } from "@/constants/validations/schema";
+import { revalidatePath } from "next/cache";
 
 export const SignIn = async (email: string, password: string) => {
   try {
@@ -40,6 +41,9 @@ export const SignIn = async (email: string, password: string) => {
       sameSite: "strict",
       secure: true,
     });
+
+    // refresh the user cache
+    revalidatePath("/");
 
     return {
       status: true,
@@ -116,13 +120,30 @@ export const signUp = async (values: {
   }
 };
 
+// const googleAuth = async () => {
+//   try {
+//     const { account } = await createSessionClient();
+
+//     const response = await account.createOAuth2Token(
+//       OAuthProvider.Google,
+//       "https://localhost:3000"
+//     );
+//   } catch (error: any) {
+//     console.log(error);
+//     return {
+//       status: false,
+//       message: error.message,
+//     };
+//   }
+// };
+
 export async function signOut(): Promise<void> {
   const { account } = await createSessionClient();
 
   (await cookies()).delete("my-custom-session");
   await account?.deleteSession("current");
 
-  redirect("/signup");
+  redirect("/sign-in");
 }
 
 const saveToDB = async (name: string, email: string, accountId: string) => {

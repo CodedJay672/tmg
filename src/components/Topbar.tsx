@@ -16,7 +16,7 @@ const Topbar = async () => {
   }
 
   return (
-    <header className="w-full px-6 lg:px-10 py-4 bg-primary lg:bg-dark-100 flex justify-between items-center  sticky top-0 left-0 z-50">
+    <header className="w-full px-6 lg:pr-10 lg:pl-16 py-4 bg-primary lg:bg-dark-100 flex justify-between items-center  sticky top-0 left-0 z-50">
       <Link
         href="/"
         className="text-3xl font-bold text-foreground lg:text-background"

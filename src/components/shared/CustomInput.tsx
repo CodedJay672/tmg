@@ -8,6 +8,7 @@ interface InputProps {
   type: string;
   name: string;
   value: string;
+  disabled?: boolean;
   onChange: (t: string) => void;
   error?: string[];
 }
@@ -18,17 +19,15 @@ const CustomInput = ({
   name,
   value,
   onChange,
+  disabled,
   error,
 }: InputProps) => {
   return (
     <label
       htmlFor={name}
-      className={cn(
-        "w-full text-xs font-light capitalize space-y-2 text-primary transition-all",
-        {
-          "text-red-500 font-medium": error,
-        }
-      )}
+      className={cn("w-full text-base capitalize space-y-2 transition-all", {
+        "text-red-500 font-medium": error,
+      })}
     >
       {label}
       <input
@@ -36,10 +35,11 @@ const CustomInput = ({
         name={name}
         id={name}
         value={value}
+        disabled={disabled}
         required
         onChange={(e) => onChange(e.target.value)}
         className={cn(
-          "w-full border border-secondary rounded-md p-2 lg:py-3 mt-2 outline-none transition-all",
+          "w-full border border-secondary rounded-md p-2 lg:py-3 mt-2 outline-none transition-all bg-gray-50 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400",
           { "border-2 border-red-500": error }
         )}
       />

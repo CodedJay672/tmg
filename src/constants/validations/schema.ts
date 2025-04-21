@@ -29,3 +29,14 @@ export const resetPasswordSchema = z.object({
     message: "Password must be at least 8 characters.",
   }),
 });
+
+export const userDetails = z.object({
+  fullname: z.string().optional(),
+  email: z.string().optional(),
+  location: z.string().optional(),
+  address: z.string().optional(),
+  phone: z.string().optional(),
+  imgUrl: z.string().optional(),
+});
+
+export type TUserDetails = z.infer<typeof userDetails>;

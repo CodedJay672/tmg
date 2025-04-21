@@ -1,6 +1,7 @@
 "use server";
 
-import { Client, Account, Databases } from "node-appwrite";
+import { cache } from "react";
+import { Client, Account, Databases, Storage } from "node-appwrite";
 import { cookies } from "next/headers";
 import { config } from "./config";
 
@@ -37,11 +38,14 @@ export async function createAdminClient() {
     get database() {
       return new Databases(client);
     },
+    get storage() {
+      return new Storage(client);
+    },
   };
 }
 
-export const getLoggedInUser = async () => {
+export const getLoggedInUser = cache(async () => {
   const { account } = await createSessionClient();
 
   return await account.get();
-};
+});

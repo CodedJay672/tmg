@@ -3,7 +3,7 @@
 import { ShoppingBasketIcon, User2Icon } from "lucide-react";
 import Link from "next/link";
 import { Models } from "node-appwrite";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import SignOut from "./shared/SignOut";
 import GlobalContext from "@/context/GlobalContext";
 import { cn } from "@/lib/utils";
@@ -13,33 +13,48 @@ const ProfileDropdown = ({
 }: {
   user: Models.User<Models.Preferences>;
 }) => {
-  const { showDropdown } = useContext(GlobalContext);
+  const { showDropdown, toggleDropdown } = useContext(GlobalContext);
+  const dropdownRef = useRef<HTMLElement | null>(null);
+
+  const closeDropdown = (e: React.MouseEvent<HTMLElement>) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(e.target as Node)
+    ) {
+      toggleDropdown();
+    }
+    return;
+  };
 
   return (
     <article
       className={cn(
         "w-64 h-0 absolute top-10 right-0 hidden lg:block bg-foreground py-6 px-3 rounded-lg shadow-md z-90 transition-all transform-gpu scale-0 duration-300",
         {
-          "h-64 scale-100": showDropdown,
+          "h-68 scale-100": showDropdown,
         }
       )}
+      ref={dropdownRef}
+      onClick={closeDropdown}
     >
       <h3 className="text-base font-bold">{user?.name}</h3>
       <p className="text-sm text-gray-400">{user?.email}</p>
 
       <hr className="w-full my-4 text-gray-300" />
 
-      <div className="space-y-1">
+      <div className="space-y-2">
         <Link
           href={`/user/${user?.$id}`}
-          className="text-base font-light flex items-center gap-1"
+          onClick={toggleDropdown}
+          className="text-base font-light flex items-center gap-3"
         >
           <User2Icon size={16} />
           Profile
         </Link>
         <Link
           href={`#`}
-          className="text-base font-light flex items-center gap-1"
+          onClick={toggleDropdown}
+          className="text-base font-light flex items-center gap-3"
         >
           <ShoppingBasketIcon size={16} />
           Orders

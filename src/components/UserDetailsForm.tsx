@@ -1,0 +1,194 @@
+"use client";
+
+import GlobalContext from "@/context/GlobalContext";
+import { Models } from "node-appwrite";
+import React, { useContext, useRef, useState } from "react";
+import CustomInput from "./shared/CustomInput";
+import Image from "next/image";
+import SubmitButton from "./shared/SubmitButton";
+import { Button } from "./ui/button";
+import FileUploader from "./shared/FileUploader";
+import { CameraIcon } from "lucide-react";
+import { toast } from "sonner";
+import { updateUserInfo } from "@/lib/actions/user.actions";
+
+const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
+  const { handleEditDetails, editDetails } = useContext(GlobalContext);
+  const fileUploadRef = useRef<HTMLInputElement | null>(null);
+
+  const [firstname, setFirstname] = useState(
+    user?.fullname.split(" ")[0] || ""
+  );
+  const [lastname, setLastname] = useState(user?.fullname.split(" ")[1] || "");
+  const [email, setEmail] = useState(user?.email || "");
+  const [location, setLocation] = useState(user?.location || "");
+  const [address, setAddress] = useState(user?.address || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [imgUrl, setImgUrl] = useState(user?.imgUrl || "");
+  const [userFile, setUserFile] = useState<File[]>([]);
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+
+  const uploadFile = () => {
+    if (!fileUploadRef.current) return;
+
+    fileUploadRef.current.click();
+    return;
+  };
+
+  // submit the updated form data
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const fullname = `${firstname} ${lastname}`;
+
+      const res = await updateUserInfo(
+        userFile[0],
+        {
+          fullname,
+          email,
+          location,
+          address,
+          phone,
+          imgUrl,
+        },
+        user?.$id
+      );
+
+      if (!res.status) {
+        if (res.data) setErrors(res.data);
+        return toast.error(res.message);
+      }
+
+      return toast.success(res.message);
+    } catch (error: any) {
+      if (error.data) setErrors(error.data);
+      return toast.error(error.message);
+    } finally {
+      handleEditDetails();
+    }
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      className="w-full max-w-2xl space-y-4 p-4 lg:p-6"
+    >
+      <div className="w-full flex justify-between">
+        <div className="size-24 flex-center rounded-full bg-secondary relative">
+          {imgUrl ? (
+            <Image
+              src={imgUrl}
+              alt={user?.fullname}
+              fill
+              className="object-cover rounded-full overflow-hidden"
+            />
+          ) : (
+            <h3 className="text-5xl font-bold text-primary">
+              {user?.fullname[0]}
+            </h3>
+          )}
+
+          {editDetails && (
+            <>
+              <div
+                onClick={uploadFile}
+                className="size-8 rounded-full absolute bottom-0 right-0 bg-dark-300 flex-center cursor-pointer"
+              >
+                <CameraIcon size={16} color="white" />
+              </div>
+              <div className="hidden">
+                <FileUploader
+                  setImgUrl={setImgUrl}
+                  onChange={setUserFile}
+                  ref={fileUploadRef}
+                />
+              </div>
+            </>
+          )}
+        </div>
+        <p
+          className="text-sm text-secondary text-right cursor-pointer"
+          onClick={handleEditDetails}
+        >
+          Edit profile
+        </p>
+      </div>
+
+      <div className="flex-between gap-1 lg:gap-3">
+        <CustomInput
+          label="Firstname"
+          type="text"
+          name="firstname"
+          value={firstname}
+          disabled={!editDetails}
+          onChange={setFirstname}
+        />
+        <CustomInput
+          label="lastname"
+          type="text"
+          name="lastname"
+          value={lastname}
+          disabled={!editDetails}
+          onChange={setLastname}
+        />
+      </div>
+
+      <CustomInput
+        label="email"
+        type="email"
+        name="email"
+        value={email}
+        disabled={!editDetails}
+        onChange={setEmail}
+      />
+
+      <div className="w-full mt-10">
+        <h3 className="text-lg">Location details</h3>
+      </div>
+
+      <div className="flex-between gap-1 lg:gap-3">
+        <CustomInput
+          label="Location"
+          type="text"
+          name="location"
+          value={location}
+          disabled={!editDetails}
+          onChange={setLocation}
+        />
+        <CustomInput
+          label="Phone"
+          type="text"
+          name="phone"
+          value={phone}
+          disabled={!editDetails}
+          onChange={setPhone}
+        />
+      </div>
+
+      <CustomInput
+        label="address"
+        type="text"
+        name="address"
+        value={address}
+        disabled={!editDetails}
+        onChange={setAddress}
+      />
+
+      {editDetails && (
+        <div className="w-72 lg:52 mt-6 place-self-end flex items-center gap-1 lg:gap-3">
+          <SubmitButton label="Submit" />
+          <Button
+            type="button"
+            onClick={handleEditDetails}
+            className="rounded-lg mt-2 bg-red-500 text-foreground hover:bg-red-500 transition-all"
+          >
+            Cancel
+          </Button>
+        </div>
+      )}
+    </form>
+  );
+};
+
+export default UserDetailsForm;

@@ -12,7 +12,7 @@ const ProfileMenuSwitch = () => {
     <Button
       variant="ghost"
       onClick={toggleProfileMenu}
-      className="flex jutify-center items-lg:hidden w-max "
+      className="flex justify-center items-center lg:hidden w-max"
       asChild
     >
       <MoreVerticalIcon size={44} />

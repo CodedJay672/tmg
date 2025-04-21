@@ -7,6 +7,8 @@ import {
 import React from "react";
 import MobileLink from "./shared/MobileLink";
 import { getLoggedInUser } from "@/lib/server/appwrite";
+import { getUser } from "@/lib/actions/user.actions";
+import { notFound } from "next/navigation";
 
 const BottomBarLinks: BottomBarProps[] = [
   {
@@ -27,7 +29,7 @@ const BottomBar = async () => {
   const user = await getLoggedInUser();
 
   return (
-    <section className="w-full flex justify-between items-center lg:hidden bg-dark-100 p-4 sticky bottom-0 left-0">
+    <section className="w-full flex justify-between items-center lg:hidden bg-dark-100 p-4 sticky bottom-0 left-0 z-90">
       {BottomBarLinks.map((link, idx) => (
         <MobileLink key={idx} path={link.path} icon={link.icon} />
       ))}

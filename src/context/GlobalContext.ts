@@ -7,6 +7,8 @@ const GlobalContext = createContext({
   toggleProfileMenu: () => {},
   showDropdown: false,
   toggleDropdown: () => {},
+  editDetails: false,
+  handleEditDetails: () => {},
 });
 
 export default GlobalContext;
