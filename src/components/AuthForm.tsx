@@ -143,7 +143,11 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
         </p>
       )}
 
-      <SubmitButton label={type === "SIGN_IN" ? "Sign in" : "Create account"} />
+      <div className="w-full">
+        <SubmitButton
+          label={type === "SIGN_IN" ? "Sign in" : "Create account"}
+        />
+      </div>
 
       {type === "SIGN_IN" ? (
         <p className="text-sm text-center w-full">

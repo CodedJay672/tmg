@@ -14,7 +14,7 @@ const SubmitButton = ({ label }: { label: string }) => {
       type="submit"
       variant="default"
       disabled={pending}
-      className={cn("flex-1 bg-primary text-foreground font-medium mt-2", {
+      className={cn("w-full bg-primary text-foreground font-medium mt-2", {
         "bg-secondary text-gray-200": pending,
       })}
     >

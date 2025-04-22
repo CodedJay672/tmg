@@ -72,7 +72,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl space-y-4 p-4 lg:p-6"
+      className="w-full max-w-2xl space-y-4 p-4 lg:p-6 flex flex-col"
     >
       <div className="w-full flex justify-between">
         <div className="size-24 flex-center rounded-full bg-secondary relative">
@@ -176,12 +176,12 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
       />
 
       {editDetails && (
-        <div className="w-72 lg:52 mt-6 place-self-end flex items-center gap-1 lg:gap-3">
+        <div className="w-full lg:w-96 mt-6 grid grid-cols-2 gap-1 lg:gap-3 place-self-end place-content-center">
           <SubmitButton label="Submit" />
           <Button
             type="button"
             onClick={handleEditDetails}
-            className="rounded-lg mt-2 bg-red-500 text-foreground hover:bg-red-500 transition-all"
+            className="w-full rounded-lg mt-2 bg-red-500 text-foreground hover:bg-red-500 transition-all"
           >
             Cancel
           </Button>
