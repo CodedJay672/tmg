@@ -8,9 +8,10 @@ import Image from "next/image";
 import SubmitButton from "./shared/SubmitButton";
 import { Button } from "./ui/button";
 import FileUploader from "./shared/FileUploader";
-import { CameraIcon } from "lucide-react";
+import { CameraIcon, PencilIcon } from "lucide-react";
 import { toast } from "sonner";
 import { updateUserInfo } from "@/lib/actions/user.actions";
+import { cn } from "@/lib/utils";
 
 const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
   const { handleEditDetails, editDetails } = useContext(GlobalContext);
@@ -107,12 +108,17 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
             </>
           )}
         </div>
-        <p
-          className="text-sm text-secondary text-right cursor-pointer"
+        <div
           onClick={handleEditDetails}
+          className={cn(
+            "size-10 text-dark-200 rounded-full border border-dark-200 flex-center cursor-pointer transition-all",
+            {
+              "bg-secondary text-dark-300": editDetails,
+            }
+          )}
         >
-          Edit profile
-        </p>
+          <PencilIcon size={16} />
+        </div>
       </div>
 
       <div className="flex-between gap-1 lg:gap-3">

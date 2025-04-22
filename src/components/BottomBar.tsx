@@ -7,8 +7,6 @@ import {
 import React from "react";
 import MobileLink from "./shared/MobileLink";
 import { getLoggedInUser } from "@/lib/server/appwrite";
-import { getUser } from "@/lib/actions/user.actions";
-import { notFound } from "next/navigation";
 
 const BottomBarLinks: BottomBarProps[] = [
   {
