@@ -1,3 +1,4 @@
+import GoHome from "@/components/shared/GoHome";
 import ProfileMenuSwitch from "@/components/shared/ProfileMenuSwitch";
 import SidebarLinks from "@/components/SidebarLinks";
 import UserDetailsForm from "@/components/UserDetailsForm";
@@ -22,9 +23,7 @@ const ProfileDetails = async ({
   return (
     <section className="content-wrapper w-full">
       <div className="w-full py-3 lg:py-10 px-6 hidden lg:flex items-center gap-1">
-        <Link href="/" className="text-gray-400">
-          Home
-        </Link>
+        <GoHome text="Home" />
         <ChevronLeftIcon size={16} />
         <span className="font-bold">Personal details</span>
       </div>
