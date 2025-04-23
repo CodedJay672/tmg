@@ -8,6 +8,8 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [editDetails, setEditDetails] = useState(false);
+  const [category, setCategory] = useState("all");
+
   const { y } = useWindowScroll();
 
   //perform some options onscroll
@@ -27,6 +29,10 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
     setEditDetails((prev) => !prev);
   };
 
+  const changeCategory = (text: string) => {
+    setCategory(text.toLowerCase());
+  };
+
   return (
     <GlobalContext.Provider
       value={{
@@ -36,6 +42,8 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
         toggleDropdown,
         editDetails,
         handleEditDetails,
+        category,
+        changeCategory,
       }}
     >
       {children}
