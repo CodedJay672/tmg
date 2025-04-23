@@ -18,7 +18,7 @@ const AdminNavLinks = () => {
           className="text-3xl font-bold text-foreground lg:text-background flex gap-1"
         >
           <div className="size-10  bg-secondary rounded-full" />
-          TGM
+          TMG
         </Link>
       </div>
 

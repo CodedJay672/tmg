@@ -75,7 +75,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
       onSubmit={handleSubmit}
       className="w-full max-w-2xl space-y-4 p-4 lg:p-6 flex flex-col"
     >
-      <div className="w-full flex justify-between">
+      <fieldset className="w-full flex justify-between">
         <div className="size-24 flex-center rounded-full bg-secondary relative">
           {imgUrl ? (
             <Image
@@ -119,9 +119,9 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         >
           <PencilIcon size={16} />
         </div>
-      </div>
+      </fieldset>
 
-      <div className="flex-between gap-1 lg:gap-3">
+      <fieldset className="flex-between gap-1 lg:gap-3">
         <CustomInput
           label="Firstname"
           type="text"
@@ -138,7 +138,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           disabled={!editDetails}
           onChange={setLastname}
         />
-      </div>
+      </fieldset>
 
       <CustomInput
         label="email"
@@ -149,11 +149,9 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         onChange={setEmail}
       />
 
-      <div className="w-full mt-10">
-        <h3 className="text-lg">Location details</h3>
-      </div>
+      <fieldset className="flex-between gap-1 lg:gap-3 mt-6 mb-2">
+        <legend className="text-lg font-medium mb-3">Location details</legend>
 
-      <div className="flex-between gap-1 lg:gap-3">
         <CustomInput
           label="Location"
           type="text"
@@ -170,7 +168,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           disabled={!editDetails}
           onChange={setPhone}
         />
-      </div>
+      </fieldset>
 
       <CustomInput
         label="address"
@@ -182,7 +180,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
       />
 
       {editDetails && (
-        <div className="w-full lg:w-96 mt-6 grid grid-cols-2 gap-1 lg:gap-3 place-self-end place-content-center">
+        <fieldset className="w-full lg:w-96 mt-6 grid grid-cols-2 gap-1 lg:gap-3 place-self-end place-content-center">
           <SubmitButton label="Submit" />
           <Button
             type="button"
@@ -191,7 +189,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           >
             Cancel
           </Button>
-        </div>
+        </fieldset>
       )}
     </form>
   );
