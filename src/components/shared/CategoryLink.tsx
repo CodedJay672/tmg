@@ -56,7 +56,7 @@ const CategoryLink = ({ img, title }: { img: string; title: string }) => {
           className={cn(
             "lg:hidden w-full text-sm text-dark-200 font-medium transition-all p-0",
             {
-              "text-primary font-medium rounded-full px-2 py-1":
+              "text-primary font-medium rounded-full px-1":
                 category === title.toLowerCase(),
             }
           )}
