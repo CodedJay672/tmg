@@ -38,7 +38,7 @@ const CategoryLink = ({ img, title }: { img: string; title: string }) => {
       />
       <figcaption
         className={cn(
-          "place-self-center lg:mt-6 rounded-full transition-all p-0",
+          "place-self-center lg:mt-3 rounded-full transition-all p-0",
           {
             "lg:bg-secondary lg:px-2 lg:py-1": isActive(path),
           }
@@ -54,9 +54,9 @@ const CategoryLink = ({ img, title }: { img: string; title: string }) => {
           variant="ghost"
           onClick={() => changeCategory(title)}
           className={cn(
-            "lg:hidden w-full text-sm text-dark-200 font-medium transition-all p-0",
+            "lg:hidden w-full text-sm text-dark-200 font-medium transition-all px-1",
             {
-              "text-primary font-medium rounded-full px-1":
+              "text-primary font-medium rounded-full":
                 category === title.toLowerCase(),
             }
           )}
