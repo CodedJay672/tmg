@@ -78,4 +78,8 @@
   .small-icons {
     @apply border border-dark-200 rounded-full cursor-pointer hover:bg-dark-200/50 transition-all;
   }
+
+  .dashboard-container {
+    @apply w-full max-w-screen-lg min-h-screen p-4 lg:p-6;
+  }
 }
