@@ -1,8 +1,7 @@
 "use client";
 
 import { Upload } from "lucide-react";
-import Image from "next/image";
-import React, { RefObject, useCallback, useState } from "react";
+import React, { RefObject, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 const FileUploader = ({

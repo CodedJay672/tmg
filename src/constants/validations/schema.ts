@@ -39,4 +39,12 @@ export const userDetails = z.object({
   imgUrl: z.string().optional(),
 });
 
+export const productSchema = z.object({
+  name: z.string(),
+  price: z.coerce.number(),
+  category: z.enum(["mechanical", "steel", "electrical"]),
+  file: z.instanceof(File),
+});
+
+export type TProductDetails = z.infer<typeof productSchema>;
 export type TUserDetails = z.infer<typeof userDetails>;

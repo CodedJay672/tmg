@@ -6,6 +6,7 @@ export const config = {
     privatekey: process.env.APPWRITE_API_KEY!,
     databaseId: process.env.APPWRITE_DATABASE_ID!,
     usersCollection: process.env.APPWRITE_USERS_COLLECTION_ID!,
+    productCollection: process.env.APPWRITE_PRODUCTS_COLLECTION_ID!,
     storageId: process.env.APPWRITE_STORAGE_ID!,
   },
 };

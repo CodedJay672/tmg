@@ -1,9 +1,15 @@
+import React from "react";
 import SearchBar from "@/components/SearchBar";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
 
-const ProductsPage = () => {
+const ProductsPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ query: string }>;
+}) => {
+  const { query } = await searchParams;
+
   return (
     <section className="dashboard-container">
       <div className="px-1 py-2 lg:py-3">
@@ -30,6 +36,17 @@ const ProductsPage = () => {
             </span>
           </Link>
         </div>
+      </div>
+
+      <div className="w-full mt-6 flex-center">
+        {query ? (
+          <p className="text-dark-200 text-left w-full">
+            Search results for:
+            <span className="text-primary font-medium text-lg">{query}</span>
+          </p>
+        ) : (
+          <p className="text-dark-200">No products yet.</p>
+        )}
       </div>
     </section>
   );
