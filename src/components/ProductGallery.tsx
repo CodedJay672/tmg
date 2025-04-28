@@ -5,8 +5,17 @@ import { useGetProducts } from "@/lib/queries/productQueries/products";
 import { Loader2Icon } from "lucide-react";
 import ProductCard from "./shared/ProductCard";
 
-const ProductGallery = ({ query }: { query: string }) => {
-  const { data: allProducts, isPending: loading } = useGetProducts(query);
+const ProductGallery = ({
+  query,
+  enabled,
+}: {
+  query: string;
+  enabled: boolean;
+}) => {
+  const { data: allProducts, isPending: loading } = useGetProducts(
+    enabled,
+    query
+  );
 
   return (
     <>
@@ -29,8 +38,11 @@ const ProductGallery = ({ query }: { query: string }) => {
 
       {!loading && allProducts?.status && (
         <>
-          <h2 className="text-lg lg:text-xl font-medium text-left w-full mt-10">
-            All products
+          <h2 className="text-lg lg:text-xl font-medium text-left w-full mt-4 lg:mt-10 capitalize">
+            {query ? `${query}` : "All products"}{" "}
+            <span className="text-primary text-xl font-bold">
+              ({allProducts.data?.total})
+            </span>
           </h2>
           <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mt-6">
             {allProducts?.data?.total &&

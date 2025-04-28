@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -11,6 +11,13 @@ import GlobalContext from "@/context/GlobalContext";
 const CategoryLink = ({ img, title }: { img: string; title: string }) => {
   const pathname = usePathname();
   const { category, changeCategory } = useContext(GlobalContext);
+
+  const changeTabLink = useCallback(
+    (title: string) => {
+      changeCategory(title);
+    },
+    [category]
+  );
 
   const path =
     title === "All"
@@ -32,8 +39,8 @@ const CategoryLink = ({ img, title }: { img: string; title: string }) => {
       <Image
         src={img}
         alt="all category"
-        width={200}
-        height={140}
+        width={170}
+        height={80}
         className="hidden lg:block object-cover"
       />
       <figcaption
@@ -52,7 +59,7 @@ const CategoryLink = ({ img, title }: { img: string; title: string }) => {
 
         <Button
           variant="ghost"
-          onClick={() => changeCategory(title)}
+          onClick={() => changeTabLink(title)}
           className={cn(
             "lg:hidden w-full text-sm text-dark-200 font-medium transition-all px-1",
             {

@@ -9,7 +9,7 @@ const GlobalContext = createContext({
   toggleDropdown: () => {},
   editDetails: false,
   handleEditDetails: () => {},
-  category: "all",
+  category: "",
   changeCategory: (t: string) => {},
 });
 

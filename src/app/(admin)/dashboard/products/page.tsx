@@ -48,7 +48,7 @@ const ProductsPage = async ({
             </span>
           </p>
         )}
-        <ProductGallery query={query} />
+        <ProductGallery query={query} enabled />
       </div>
     </section>
   );

@@ -1,3 +1,4 @@
+import ProductGallery from "@/components/ProductGallery";
 import SearchBar from "@/components/SearchBar";
 import GoHome from "@/components/shared/GoHome";
 import React from "react";
@@ -8,7 +9,6 @@ const SearchPage = async ({
   searchParams: Promise<{ query: string }>;
 }) => {
   const { query } = await searchParams;
-  const products: any[] = [];
 
   return (
     <section className="content-wrapper flex-center flex-col">
@@ -20,17 +20,17 @@ const SearchPage = async ({
         <SearchBar placeholder="Search products..." />
       </div>
 
-      <div className="w-full flex-1 flex-center">
-        {query && (
-          <p className="text-base">
-            Showing results for:{" "}
-            <span className="text-primary font-medium">{query}</span>
-          </p>
-        )}
+      {query && (
+        <p className="text-lg lg;text-xl w-full text-left">
+          Showing results for:{" "}
+          <span className="text-primary font-medium text-xl lg:text-2xl">
+            {query}
+          </span>
+        </p>
+      )}
 
-        {!query && !products.length && (
-          <p className="text-dark-200">Enter your search term...</p>
-        )}
+      <div className="w-full flex-1">
+        <ProductGallery query={query} enabled={false} />
       </div>
     </section>
   );

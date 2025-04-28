@@ -16,9 +16,10 @@ export const useUploadProduct = () => {
   });
 };
 
-export const useGetProducts = (query?: string) => {
+export const useGetProducts = (enabled: boolean, query?: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query],
     queryFn: () => getAllProducts(query),
+    enabled: enabled ? enabled : !!query,
   });
 };

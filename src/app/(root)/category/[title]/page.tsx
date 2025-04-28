@@ -1,5 +1,6 @@
 import React from "react";
 import Segments from "@/components/shared/Segments";
+import ProductGallery from "@/components/ProductGallery";
 
 const Category = async ({ params }: { params: Promise<{ title: string }> }) => {
   const { title } = await params;
@@ -10,8 +11,8 @@ const Category = async ({ params }: { params: Promise<{ title: string }> }) => {
         <Segments title={title} />
       </div>
 
-      <div className="w-full flex-1 flex-center">
-        <p className="text-sm text-dark-200">No products in this category.</p>
+      <div className="w-full flex-1">
+        <ProductGallery query={title} />
       </div>
     </section>
   );
