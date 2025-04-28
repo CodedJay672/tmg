@@ -1,7 +1,6 @@
 import AuthForm from "@/components/AuthForm";
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import Image from "next/image";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import React from "react";
 
 const SignIn = async () => {
@@ -19,7 +18,13 @@ const SignIn = async () => {
       </Link>
 
       <div className="w-full flex-center flex-col gap-2 my-6">
-        <h1 className="text-2xl font-bold">Logo</h1>
+        <Image
+          src="/assets/logo.png"
+          alt="tmg procurement"
+          width={140}
+          height={32}
+          className="rounded-full"
+        />
         <p className="text-base font-medium">Login to you account.</p>
       </div>
 

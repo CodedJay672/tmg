@@ -189,7 +189,7 @@ export const passwordRecovery = async (email: string) => {
 
     const response = account.createRecovery(
       email,
-      config.baseUrl ?? "http://localhost:3000/reset-password"
+      "http://localhost:3000/reset-password"
     );
 
     if (!response) {

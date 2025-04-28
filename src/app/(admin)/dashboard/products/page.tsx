@@ -2,6 +2,7 @@ import React from "react";
 import SearchBar from "@/components/SearchBar";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
+import ProductGallery from "@/components/ProductGallery";
 
 const ProductsPage = async ({
   searchParams,
@@ -21,7 +22,7 @@ const ProductsPage = async ({
         </span>
       </div>
 
-      <div className="w-full my-6 flex-between gap-3 lg:gap-6">
+      <div className="w-full mt-3 mb-2 flex-between gap-3 lg:gap-6">
         <div className="flex-1">
           <SearchBar placeholder="Search available products..." />
         </div>
@@ -38,15 +39,16 @@ const ProductsPage = async ({
         </div>
       </div>
 
-      <div className="w-full mt-6 flex-center">
-        {query ? (
-          <p className="text-dark-200 text-left w-full">
-            Search results for:
-            <span className="text-primary font-medium text-lg">{query}</span>
+      <div className="w-full flex-center flex-col">
+        {query && (
+          <p className="text-base lg:text-lg text-dark-200 text-left w-full truncate line-clamp-1">
+            Search results for:{" "}
+            <span className="text-primary font-medium text-lg lg:text-xl">
+              "{query}"
+            </span>
           </p>
-        ) : (
-          <p className="text-dark-200">No products yet.</p>
         )}
+        <ProductGallery query={query} />
       </div>
     </section>
   );

@@ -3,7 +3,7 @@
 import { productSchema, TProductDetails } from "@/constants/validations/schema";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { createFile, getFilePreview } from "./user.actions";
 import { revalidatePath } from "next/cache";
 
@@ -52,6 +52,44 @@ export const uploadProducts = async (values: TProductDetails) => {
     return {
       status: true,
       message: "Product uploaded successfully.",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
+export const getAllProducts = async (query?: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const response = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.productCollection,
+      query
+        ? [
+            Query.or([
+              Query.search("name", query.toLowerCase()),
+              Query.search("category", query.toLowerCase()),
+            ]),
+          ]
+        : []
+    );
+
+    if (!response.total) {
+      return {
+        status: false,
+        message: "No products found.",
+      };
+    }
+
+    return {
+      status: true,
+      message: "Products found.",
+      data: response,
     };
   } catch (error: any) {
     console.log(error);
