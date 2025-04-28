@@ -1,4 +1,4 @@
-export const slides = ["/assets/banner.png", "/assets/branded-banner.png"];
+export const slides = ["/assets/banner2.jpg", "/assets/banner1.jpg"];
 
 export const states_and_lgas = {
   locations: [

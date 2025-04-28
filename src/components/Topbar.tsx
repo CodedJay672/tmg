@@ -7,6 +7,8 @@ import { getLoggedInUser } from "@/lib/server/appwrite";
 import { redirect } from "next/navigation";
 import DropdownSwitch from "./shared/DropdownSwitch";
 import ProfileDropdown from "./ProfileDropdown";
+import Image from "next/image";
+import GlobalSearch from "./shared/GlobalSearch";
 
 const Topbar = async () => {
   const user = await getLoggedInUser();
@@ -16,21 +18,24 @@ const Topbar = async () => {
   }
 
   return (
-    <header className="w-full px-6 lg:pr-10 lg:pl-16 py-4 bg-primary lg:bg-dark-100 flex justify-between items-center  sticky top-0 left-0 z-50">
-      <Link
-        href="/"
-        className="text-3xl font-bold text-foreground lg:text-background"
-      >
-        Logo<span className="align-super text-[8px] -ml-0.5">TM</span>
+    <header className="w-full px-4 lg:px-16 bg-dark-100 flex justify-between items-center  sticky top-0 left-0 z-50">
+      <Link href="/" className="rounded-full">
+        <Image
+          src="/assets/logo.png"
+          alt="tmg procurement"
+          width={100}
+          height={32}
+          className="rounded-full"
+        />
       </Link>
 
-      <div className="hidden lg:flex justify-between items-center gap-2">
-        <SearchBar placeholder="Search over 300+ products..." />
+      <div className="hidden w-xl lg:flex justify-between items-center gap-2">
+        <GlobalSearch />
         <MyOrders />
         <MyWatchlist />
 
         {user ? (
-          <div className="bg-secondary flex-center p-1 rounded-full pr-3 relative">
+          <div className="w-83 bg-secondary flex-center p-1 rounded-full pr-3 relative">
             <div className="size-7 bg-primary rounded-full flex-center">
               <h2 className="text-sm uppercase font-medium">{user?.name[0]}</h2>
             </div>

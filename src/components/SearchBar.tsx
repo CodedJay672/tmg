@@ -1,35 +1,22 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { SearchIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
-import { useSearchParam } from "react-use";
 
-const SearchBar = ({ placeholder }: { placeholder: string }) => {
+const SearchBar = ({
+  placeholder,
+  action,
+}: {
+  placeholder: string;
+  action?: () => void;
+}) => {
   const router = useRouter();
   const param = useSearchParams();
   const pathname = usePathname();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-
-  // go to the search route when user clicks inside the search bar
-  useEffect(() => {
-    const handleFocus = () => {
-      router.push("/search");
-    };
-
-    const inputElement = inputRef.current;
-    if (inputElement) {
-      inputElement.addEventListener("focus", handleFocus);
-    }
-
-    return () => {
-      if (inputElement) {
-        inputElement.removeEventListener("focus", handleFocus);
-      }
-    };
-  }, [router]);
 
   const searchProducts = useDebouncedCallback((searchTerm: string) => {
     const queryString = new URLSearchParams(param);
@@ -47,13 +34,14 @@ const SearchBar = ({ placeholder }: { placeholder: string }) => {
   }, 300);
 
   return (
-    <div className="relative">
+    <div className="w-full relative">
       <input
         placeholder={placeholder}
         ref={inputRef}
-        defaultValue={param.toString()}
+        defaultValue={param.get("query")?.toString()}
         onChange={(e) => searchProducts(e.target.value)}
-        className="w-full lg:w-90 px-3 py-2 pl-8 rounded-md border border-secondary outline-none placeholder:text-dark-200 text-sm font-light"
+        onClick={action}
+        className="w-full px-3 py-2 pl-8 rounded-md border border-secondary outline-none placeholder:text-dark-200 text-sm font-light"
       />
       <SearchIcon
         size={20}

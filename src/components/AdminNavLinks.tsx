@@ -1,3 +1,4 @@
+import React from "react";
 import {
   FileAxis3DIcon,
   LayoutDashboardIcon,
@@ -6,7 +7,6 @@ import {
   Users2Icon,
 } from "lucide-react";
 import Link from "next/link";
-import React from "react";
 import AdminLink from "./shared/AdminLink";
 
 const AdminNavLinks = () => {

@@ -8,8 +8,9 @@ const CategoryTab = () => {
       <div className="w-full  flex items-center gap-1 lg:gap-6 my-3 lg:my-0 overflow-x-scroll no-scrollbar">
         <CategoryLink img="/assets/tools.jpg" title="All" />
         <CategoryLink img="/assets/rods.jpg" title="Trending" />
-        <CategoryLink img="/assets/rods.jpg" title="Iron-and-steel" />
-        <CategoryLink img="/assets/grinder.jpg" title="Machines-and-tools" />
+        <CategoryLink img="/assets/rods.jpg" title="Mechanical" />
+        <CategoryLink img="/assets/grinder.jpg" title="Steel" />
+        <CategoryLink img="/assets/tools.jpg" title="Electrical" />
       </div>
 
       <div className="w-full hidden lg:block mt-6">

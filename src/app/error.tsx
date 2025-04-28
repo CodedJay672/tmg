@@ -12,11 +12,12 @@ const Error = ({
 }) => {
   return (
     <section className="w-full h-screen flex-center flex-col">
-      <h1 className="text-2xl lg:text-4xl font-bold">Oops!</h1>
+      <h1 className="text-4xl lg:text-5xl font-bold">Oops!</h1>
       <p className="text-base font-light">Something went wrong</p>
 
-      <p className="text-lg font-medium">
-        {error?.digest}: {error?.message}
+      <p className="w-full max-w-lg text-base font-medium p-4">
+        {error?.digest}:{" "}
+        <span className="text-sm font-normal">{error?.message}</span>
       </p>
 
       <Button

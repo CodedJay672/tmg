@@ -3,7 +3,7 @@
 import React, { useContext } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn, formatTitle } from "@/lib/utils";
 import { Button } from "../ui/button";
 import GlobalContext from "@/context/GlobalContext";

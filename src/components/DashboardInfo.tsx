@@ -8,7 +8,7 @@ const DashboardInfo = ({
   data: ReactNode;
 }) => {
   return (
-    <article className="min-w-84 lg:min-w-72 max-w-screen-sm h-40 p-4 py-6 lg:p-6 lg:py-3 rounded-lg bg-dark-100 border border-dark-100 space-y-2 lg:space-y-1">
+    <article className="min-w-84 lg:min-w-72 max-w-screen-sm h-36 lg:h-32 p-4 py-6 lg:p-6 lg:py-3 rounded-lg bg-dark-100 border border-dark-100 space-y-2 lg:space-y-1">
       <h3 className="text-base text-dark-200">{heading}</h3>
       {typeof data === "string" ? (
         <p className="text-4xl lg:text-5xl text-dark-300 font-semibold">

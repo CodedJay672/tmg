@@ -1,5 +1,6 @@
 import DashboardInfo from "@/components/DashboardInfo";
 import InfoDoughnut from "@/components/shared/InfoDoughnut";
+import TransactionsChart from "@/components/TransactionsChart";
 import { getLoggedInUser } from "@/lib/server/appwrite";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -47,6 +48,10 @@ const Dashboard = async () => {
       </div>
 
       {/** monthly sales Chart */}
+
+      <div className="hidden lg:block w-full h-80 overflow-hidden">
+        <TransactionsChart />
+      </div>
 
       {/** Table for all transactions */}
     </section>

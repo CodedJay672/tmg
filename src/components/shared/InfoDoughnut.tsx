@@ -22,14 +22,14 @@ const InfoDoughnut = ({ title, info }: { title: string; info: number[] }) => {
         backgroundColor: ["rgb(255, 99, 132)", "rgb(255, 205, 86)", "#4caf50"],
         hoverOffset: 4,
         rotation: 180,
-        cutout: 30,
+        cutout: 20,
       },
     ],
   };
 
   return (
     <div className="flex gap-1">
-      <div className="size-24 overflow-hidden">
+      <div className="size-16">
         <Doughnut
           options={{
             plugins: {
@@ -44,8 +44,10 @@ const InfoDoughnut = ({ title, info }: { title: string; info: number[] }) => {
       <div className="flex-1 ml-2 lg:ml-4 flex-center flex-col">
         {info.map((item, idx) => (
           <div key={idx} className="w-full flex items-center gap-2">
-            <div className="p-1.5 rounded-full bg-primary" />
-            <span className="text-sm lg:text-base">{item} completed</span>
+            <div className="p-1 rounded-full bg-primary" />
+            <span className="text-xs text-dark-300 font-medium">
+              {item} <span className="font-normal">completed</span>
+            </span>
           </div>
         ))}
       </div>
