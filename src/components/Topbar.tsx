@@ -1,5 +1,4 @@
 import React from "react";
-import SearchBar from "./SearchBar";
 import MyOrders from "./shared/MyOrders";
 import MyWatchlist from "./shared/MyWatchlist";
 import Link from "next/link";
@@ -9,6 +8,8 @@ import DropdownSwitch from "./shared/DropdownSwitch";
 import ProfileDropdown from "./ProfileDropdown";
 import Image from "next/image";
 import GlobalSearch from "./shared/GlobalSearch";
+import LocationDropdown from "./LocationDropdown";
+import UserDropdownInfo from "./UserDropdownInfo";
 
 const Topbar = async () => {
   const user = await getLoggedInUser();
@@ -41,7 +42,9 @@ const Topbar = async () => {
             </div>
             <span className="text-sm ml-1">{user?.name}</span>
             <DropdownSwitch />
-            <ProfileDropdown user={user} />
+            <ProfileDropdown>
+              <UserDropdownInfo user={user} />
+            </ProfileDropdown>
           </div>
         ) : (
           <Link
@@ -53,8 +56,8 @@ const Topbar = async () => {
         )}
       </div>
 
-      <div className="w-max lg:hidden">
-        <p className="text-foreground text-sm">Location</p>
+      <div className="w-48 lg:hidden bg-secondary rounded-full p-1 flex items-center gap-2 relative">
+        <LocationDropdown user={user} />
       </div>
     </header>
   );

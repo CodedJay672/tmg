@@ -15,7 +15,7 @@ const Error = ({
       <h1 className="text-4xl lg:text-5xl font-bold">Oops!</h1>
       <p className="text-base font-light">Something went wrong</p>
 
-      <p className="w-full max-w-lg text-base font-medium p-4">
+      <p className="w-full max-w-lg text-base text-center font-medium p-4">
         {error?.digest}:{" "}
         <span className="text-sm font-normal">{error?.message}</span>
       </p>

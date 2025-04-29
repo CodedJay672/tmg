@@ -43,8 +43,8 @@ export const getUser = cache(
 );
 
 export const updateUserInfo = async (
-  file: File,
-  { fullname, email, location, address, phone, imgUrl }: TUserDetails,
+  { fullname, email, location, address, phone, imgUrl }: Partial<TUserDetails>,
+  file?: File,
   id?: string
 ) => {
   try {
@@ -116,8 +116,9 @@ export const updateUserInfo = async (
       };
     }
 
-    // revalidate path
+    // revalidate paths
     revalidatePath(`/user/${id}`);
+    revalidatePath(`/`);
 
     return {
       status: true,

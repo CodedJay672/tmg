@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext } from "react";
+import React, { createContext } from "react";
 
 const GlobalContext = createContext({
   showProfileMenu: false,

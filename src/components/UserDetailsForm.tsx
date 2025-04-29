@@ -44,7 +44,6 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
       const fullname = `${firstname} ${lastname}`;
 
       const res = await updateUserInfo(
-        userFile[0],
         {
           fullname,
           email,
@@ -53,6 +52,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           phone,
           imgUrl,
         },
+        userFile?.[0],
         user?.$id
       );
 
