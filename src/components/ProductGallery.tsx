@@ -44,15 +44,10 @@ const ProductGallery = ({
               ({allProducts.data?.total})
             </span>
           </h2>
-          <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mt-6">
+          <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mt-6">
             {allProducts?.data?.total &&
               allProducts.data.documents.map((item) => (
-                <ProductCard
-                  key={item.$id}
-                  imgUrl={item.imgUrl}
-                  name={item.name}
-                  price={item.price}
-                />
+                <ProductCard key={item.$id} item={item} />
               ))}
           </div>
         </>

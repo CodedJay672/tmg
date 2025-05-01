@@ -32,7 +32,7 @@ const Topbar = async () => {
 
       <div className="hidden w-xl lg:flex justify-between items-center gap-2">
         <GlobalSearch />
-        <MyOrders />
+        <MyOrders userId={user?.$id} />
         <MyWatchlist />
 
         {user ? (

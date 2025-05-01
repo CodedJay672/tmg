@@ -93,7 +93,7 @@ const LocationDropdown = ({
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-1">
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-1">
           <CustomInput
             label="Location"
             type="text"

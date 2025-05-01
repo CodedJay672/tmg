@@ -9,7 +9,6 @@ const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [editDetails, setEditDetails] = useState(false);
   const [category, setCategory] = useState("all");
-  const [openLocation, setOpenLocation] = useState(false);
 
   const { y } = useWindowScroll();
 

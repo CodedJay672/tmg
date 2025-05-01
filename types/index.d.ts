@@ -9,3 +9,12 @@ interface ProductUploadProps {
   imgUrl: string;
   category: string;
 }
+
+type TCart = {
+  id: string;
+  name: string;
+  category: string;
+  imgUrl: string;
+  price: number;
+  qty: number;
+};
