@@ -25,10 +25,14 @@ export const useStore = create<TCartState>()(
     persist(
       (set) => ({
         cart: [],
+
+        // add products to cart
         addToCart: (product: TProduct) =>
           set((state) => {
             return { cart: [{ ...product, qty: 1 }, ...state.cart] };
           }),
+
+        //clear the cart
         clearCart: (id?: string) =>
           set((state) => {
             if (!id) return { cart: [] };
@@ -36,6 +40,8 @@ export const useStore = create<TCartState>()(
             const filteredData = state.cart.filter((item) => item.id !== id);
             return { cart: [...filteredData] };
           }),
+
+        //update product quantity
         changeQty: (type: string, product: TCart) =>
           set((state) => {
             const newCart = state.cart.map((item) => {
@@ -50,7 +56,11 @@ export const useStore = create<TCartState>()(
             });
             return { cart: [...newCart] };
           }),
+
+        // hide/show popover sheet
         showPopover: false,
+
+        //toggle the popover sheet
         togglePopover: () =>
           set((state) => ({ showPopover: !state.showPopover })),
       }),
