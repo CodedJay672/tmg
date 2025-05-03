@@ -3,9 +3,10 @@
 import React, { useContext, useRef } from "react";
 import GlobalContext from "@/context/GlobalContext";
 import { cn } from "@/lib/utils";
+import { useStore } from "@/store/appStore";
 
 const ProfileDropdown = ({ children }: { children: React.ReactNode }) => {
-  const { showDropdown, toggleDropdown } = useContext(GlobalContext);
+  const { showDropdown, toggleDropdown } = useStore();
   const dropdownRef = useRef<HTMLElement | null>(null);
 
   const closeDropdown = (e: React.MouseEvent<HTMLElement>) => {

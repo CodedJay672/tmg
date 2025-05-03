@@ -18,6 +18,8 @@ interface TCartState {
   addToCart: (product: TProduct) => void;
   changeQty: (type: string, product: TCart) => void;
   clearCart: (id?: string) => void;
+  showDropdown: boolean;
+  toggleDropdown: () => void;
 }
 
 export const useStore = create<TCartState>()(
@@ -63,6 +65,13 @@ export const useStore = create<TCartState>()(
         //toggle the popover sheet
         togglePopover: () =>
           set((state) => ({ showPopover: !state.showPopover })),
+
+        //showDropdown
+        showDropdown: false,
+
+        //toggle dropdown
+        toggleDropdown: () =>
+          set((state) => ({ showDropdown: !state.showDropdown })),
       }),
       {
         name: "cart-storage",

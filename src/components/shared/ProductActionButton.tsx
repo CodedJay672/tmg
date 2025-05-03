@@ -1,19 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { deleteProduct } from "@/lib/actions/products.actions";
-import { toast } from "sonner";
 import { useDeleteProduct } from "@/lib/queries/productQueries/products";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, MoreVerticalIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const ProductActionButton = ({ productId }: { productId: string }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
   const { mutateAsync: handleDeleteProduct, isPending: loading } =
     useDeleteProduct();
 
+  const toggleMenu = () => {
+    setShowDropdown((prev) => !prev);
+  };
+
   return (
-    <div className="flex-center p-6 gap-2">
+    <div className="flex-center p-6 gap-2 relative">
       <Button
         type="button"
         variant="link"
@@ -33,6 +37,44 @@ const ProductActionButton = ({ productId }: { productId: string }) => {
           <>Delete</>
         )}
       </Button>
+
+      <div
+        onClick={toggleMenu}
+        className="w-full lg:hidden hover:bg-dark-100 p-2 transition-all rounded-md cursor-pointer"
+      >
+        <MoreVerticalIcon size={24} />
+      </div>
+
+      {/** Mobile action dropdown */}
+      <div
+        className={cn(
+          "lg:hidden w-64 h-0 absolute top-10 right-0 bg-foreground py-6 px-3 space-y-2 rounded-lg shadow-md z-90 transition-all transform-gpu duration-300 overflow-hidden -translate-y-20 opacity-0",
+          {
+            "h-32 translate-y-5 opacity-100": showDropdown,
+          }
+        )}
+      >
+        <Button
+          type="button"
+          variant="ghost"
+          asChild
+          className="w-full bg-green-100 hover:bg-primary text-dark-300"
+        >
+          <Link href={`/create-product/${productId}`}>Update</Link>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => handleDeleteProduct(productId)}
+          className="w-full text-dark-300 bg-red-200 cursor-pointer"
+        >
+          {loading ? (
+            <Loader2Icon size={16} className="text-foreground animate-spin" />
+          ) : (
+            <>Delete</>
+          )}
+        </Button>
+      </div>
     </div>
   );
 };
