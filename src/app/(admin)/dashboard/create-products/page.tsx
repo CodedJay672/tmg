@@ -1,8 +1,16 @@
 import ProductForm from "@/components/ProductForm";
+import { getProductById } from "@/lib/actions/products.actions";
 import Image from "next/image";
 import React from "react";
 
-const CreateProducts = () => {
+const CreateProducts = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ productId: string }>;
+}) => {
+  const { productId } = await searchParams;
+
+  const product = await getProductById(productId);
   return (
     <section className="dashboard-container flex flex-col">
       <div className="w-full max-w-lg py-10">
@@ -19,7 +27,10 @@ const CreateProducts = () => {
         <p className="text-sm lg:text-base text-center text-dark-300">
           Please enter the products details
         </p>
-        <ProductForm />
+        <ProductForm
+          type={product?.data?.total ? "UPDATE" : "CREATE"}
+          product={product?.data?.documents?.[0]}
+        />
       </div>
     </section>
   );

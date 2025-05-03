@@ -8,15 +8,21 @@ import { UploadCloudIcon } from "lucide-react";
 import Image from "next/image";
 import { useUploadProduct } from "@/lib/queries/productQueries/products";
 import { toast } from "sonner";
+import { Models } from "node-appwrite";
 
-const ProductForm = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
+interface ProductFormProps {
+  type: string;
+  product: Models.Document | undefined;
+}
+
+const ProductForm = ({ type, product }: ProductFormProps) => {
+  const [name, setName] = useState(product?.name ?? "");
+  const [price, setPrice] = useState(product?.price ?? "");
   const [error, setError] = useState<Record<string, string[]> | null>(null);
-  const [imgUrl, setImgUrl] = useState("");
+  const [imgUrl, setImgUrl] = useState(product?.imgUrl ?? "");
   const [category, setCategory] = useState<
     "mechanical" | "steel" | "electrical"
-  >("mechanical");
+  >(product?.category ?? "mechanical");
   const [file, setFile] = useState<File[] | null>(null);
   const { mutateAsync: uploadProduct, isPending: loading } = useUploadProduct();
 
@@ -37,18 +43,21 @@ const ProductForm = () => {
       return;
     }
 
-    const response = await uploadProduct({
-      name,
-      price: parseInt(price),
-      file: file[0],
-      category,
-    });
+    if (type === "CREATE") {
+      const response = await uploadProduct({
+        name,
+        price: parseInt(price),
+        file: file[0],
+        category,
+      });
 
-    if (!response.status) {
-      if (response.data) {
-        setError(response.data);
+      if (!response.status) {
+        if (response.data) {
+          setError(response.data);
+        }
+        return toast.error(response.message);
       }
-      return toast.error(response.message);
+      toast.success(response.message);
     }
 
     setName("");
@@ -57,7 +66,6 @@ const ProductForm = () => {
     setImgUrl("");
     setCategory("mechanical");
     setFile(null);
-    toast.success(response.message);
   };
 
   return (

@@ -127,3 +127,33 @@ export const getAllProducts = async (query?: string) => {
     };
   }
 };
+
+export const getProductById = async (id: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const response = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.productCollection,
+      [Query.equal("$id", id)]
+    );
+
+    if (!response.total)
+      return {
+        status: false,
+        message: "Product not found.",
+      };
+
+    return {
+      status: true,
+      message: "Product fetched successfully.",
+      data: response,
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error?.message,
+    };
+  }
+};

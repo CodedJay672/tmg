@@ -2,18 +2,36 @@
 
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { useDeleteProduct } from "@/lib/queries/productQueries/products";
 import { Loader2Icon, MoreVerticalIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ProductActionButton = ({ productId }: { productId: string }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const { mutateAsync: handleDeleteProduct, isPending: loading } =
     useDeleteProduct();
+  const param = useSearchParams();
+
+  const router = useRouter();
 
   const toggleMenu = () => {
     setShowDropdown((prev) => !prev);
+  };
+
+  const updateProduct = (id: string) => {
+    //close the dropdown
+    toggleMenu();
+
+    //route to the createf-product form
+    const productId = new URLSearchParams(param);
+
+    const pathname = "/dashboard/create-products";
+
+    if (!id) return null;
+
+    productId.set("productId", id);
+    router.push(`${pathname}?${productId.toString()}`);
   };
 
   return (
@@ -21,10 +39,10 @@ const ProductActionButton = ({ productId }: { productId: string }) => {
       <Button
         type="button"
         variant="link"
-        asChild
+        onClick={() => updateProduct(productId)}
         className="hidden lg:block bg-secondary hover:bg-primary text-foreground"
       >
-        <Link href={`/create-product/${productId}`}>Update</Link>
+        Update
       </Button>
       <Button
         type="button"
@@ -57,10 +75,10 @@ const ProductActionButton = ({ productId }: { productId: string }) => {
         <Button
           type="button"
           variant="ghost"
-          asChild
+          onClick={() => updateProduct(productId)}
           className="w-full bg-green-100 hover:bg-primary text-dark-300"
         >
-          <Link href={`/create-product/${productId}`}>Update</Link>
+          Update
         </Button>
         <Button
           type="button"
