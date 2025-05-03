@@ -1,14 +1,35 @@
 "use client";
 
-import { HeartIcon, Trash2Icon } from "lucide-react";
+import { Loader2Icon, Trash2Icon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import ProductQuantity from "./ProductQuantity";
 import { useStore } from "@/store/appStore";
-import { cn } from "@/lib/utils";
+import WatchlistButton from "./WatchlistButton";
+import { getLoggedInUser } from "@/lib/server/appwrite";
+import { Models } from "node-appwrite";
 
 const CartCard = ({ id, name, price, category, imgUrl, qty }: TCart) => {
   const { clearCart } = useStore();
+  const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
+    null
+  );
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await getLoggedInUser();
+
+      if (!user) return;
+
+      setUser(user);
+    };
+
+    getUser();
+  }, []);
+
+  if (!user) {
+    return <Loader2Icon size={24} className="text-primary animate-spin" />;
+  }
 
   return (
     <article className="w-full space-y-1">
@@ -42,8 +63,11 @@ const CartCard = ({ id, name, price, category, imgUrl, qty }: TCart) => {
             <span className="text-sm text-dark-300">Delete</span>
           </div>
           <div className="flex items-center gap-1 cursor-pointer">
-            <HeartIcon size={12} className="text-dark-300" />
-            <span className="text-sm text-dark-300">Add to wishlist</span>
+            <WatchlistButton
+              userId={user?.$id || ""}
+              productId={id}
+              label="Add to watchlist"
+            />
           </div>
         </div>
         <div className="flex items-center">

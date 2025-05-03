@@ -2,7 +2,7 @@
 
 import { cache } from "react";
 import { config } from "../server/config";
-import { createAdminClient } from "../server/appwrite";
+import { createAdminClient, getLoggedInUser } from "../server/appwrite";
 import { ID, Models, Query } from "node-appwrite";
 import { TUserDetails, userDetails } from "@/constants/validations/schema";
 import { revalidatePath } from "next/cache";
@@ -43,13 +43,13 @@ export const getUser = cache(
 );
 
 export const updateUserInfo = async (
-  { fullname, email, location, address, phone, imgUrl }: Partial<TUserDetails>,
+  { data, productId }: { data: Partial<TUserDetails>; productId?: string },
   file?: File,
   id?: string
 ) => {
   try {
     const { database } = await createAdminClient();
-    let filePrev, res;
+    let filePrev, res, watchlist;
 
     // check for a valid id
     if (!id) {
@@ -61,12 +61,7 @@ export const updateUserInfo = async (
 
     //validate form data
     const parsedData = userDetails.safeParse({
-      fullname,
-      email,
-      location,
-      address,
-      phone,
-      imgUrl,
+      ...data,
     });
 
     if (!parsedData.success) {
@@ -91,18 +86,18 @@ export const updateUserInfo = async (
       filePrev = await getFilePreview(res.data!);
     }
 
+    // check for produts to add to watchlist
+    if (productId) watchlist = await updateWatchlist(productId);
+
     // update the users imgUrl
     const response = await database.updateDocument(
       config.appwrite.databaseId,
       config.appwrite.usersCollection,
       id,
       {
-        fullname,
-        email,
-        location,
-        address,
-        phone,
+        ...data,
         imgUrl: filePrev,
+        watchlist: [...watchlist],
       }
     );
 
@@ -119,6 +114,7 @@ export const updateUserInfo = async (
     // revalidate paths
     revalidatePath(`/user/${id}`);
     revalidatePath(`/`);
+    revalidatePath("/cart");
 
     return {
       status: true,
@@ -182,4 +178,47 @@ export const getFilePreview = async (file: Models.File) => {
   return `${config.appwrite.endpoint}/storage/buckets/${file.bucketId}/files/${
     file?.$id
   }/preview?project=${[config.appwrite.projectId]}`;
+};
+
+//watchlist logic
+const updateWatchlist = async (productId: string) => {
+  try {
+    const { database } = await createAdminClient();
+    const user = await getLoggedInUser();
+
+    // get user watchlist
+    const currentUser = await getUser(user?.$id);
+    const watchlist = currentUser?.data?.documents?.[0].watchlist;
+
+    // get product details
+    const productInfo = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.productCollection,
+      [Query.equal("$id", productId)]
+    );
+    if (!productInfo.total) {
+      return {
+        status: false,
+        message: "Product not found.",
+      };
+    }
+
+    const isAdded = watchlist.find(
+      (item: Models.Document) => item.$id === productInfo.documents?.[0].$id
+    );
+
+    if (isAdded) {
+      return watchlist.filter(
+        (item: Models.Document) => item.$id !== productInfo.documents?.[0].$id
+      );
+    }
+
+    return [{ ...productInfo.documents?.[0] }, ...watchlist];
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error?.message,
+    };
+  }
 };

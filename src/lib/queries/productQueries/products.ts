@@ -23,9 +23,3 @@ export const useGetProducts = (enabled: boolean, query?: string) => {
     enabled: enabled ? enabled : !!query,
   });
 };
-
-export const useAddProductsToCart = (
-  userId: string,
-  itemId: string,
-  qty: number
-) => {};
