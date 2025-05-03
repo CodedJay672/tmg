@@ -17,11 +17,11 @@ export default async function Home() {
       <CategoryTab />
 
       <div className="hidden lg:block w-full flex-1">
-        <ProductGallery query="" enabled={true} />
+        <ProductGallery userId={user?.$id} query="" enabled={true} />
       </div>
 
       <div className="lg:hidden">
-        <MobileProductsGallery />
+        <MobileProductsGallery userId={user?.$id} />
       </div>
     </section>
   );

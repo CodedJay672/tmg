@@ -44,8 +44,8 @@ export const getUser = cache(
 
 export const updateUserInfo = async (
   { data, productId }: { data: Partial<TUserDetails>; productId?: string },
-  file?: File,
-  id?: string
+  id: string,
+  file?: File
 ) => {
   try {
     const { database } = await createAdminClient();
@@ -53,6 +53,7 @@ export const updateUserInfo = async (
 
     // check for a valid id
     if (!id) {
+      console.log(id);
       return {
         status: false,
         message: "Invalid user id.",

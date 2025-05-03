@@ -1,14 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetProducts } from "@/lib/queries/productQueries/products";
 import { Loader2Icon } from "lucide-react";
 import ProductCard from "./shared/ProductCard";
 
 const ProductGallery = ({
+  userId,
   query,
   enabled,
 }: {
+  userId: string;
   query: string;
   enabled: boolean;
 }) => {
@@ -16,6 +18,10 @@ const ProductGallery = ({
     enabled,
     query
   );
+
+  useEffect(() => {
+    console.log(userId);
+  }, []);
 
   return (
     <>
@@ -47,7 +53,7 @@ const ProductGallery = ({
           <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mt-6">
             {allProducts?.data?.total &&
               allProducts.data.documents.map((item) => (
-                <ProductCard key={item.$id} item={item} />
+                <ProductCard key={item.$id} userId={userId} item={item} />
               ))}
           </div>
         </>

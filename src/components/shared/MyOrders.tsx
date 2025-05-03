@@ -6,7 +6,6 @@ import { Loader2Icon, ShoppingBasket } from "lucide-react";
 import CountBadge from "./CountBadge";
 import { useStore } from "@/store/appStore";
 import CustomSheet from "./CustomSheet";
-import Back from "./Back";
 import CartContent from "../CartContent";
 import { useGetUserById } from "@/lib/queries/userQueried/users";
 
@@ -39,7 +38,7 @@ const MyOrders = ({ userId }: { userId: string }) => {
           <p className="text-sm text-dark-300">Cart preview.</p>
         </div>
 
-        <CartContent userId={userId} />
+        <CartContent user={userInfo?.data?.documents?.[0]} />
       </CustomSheet>
     </>
   );

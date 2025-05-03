@@ -3,27 +3,14 @@
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
-import { getLoggedInUser } from "@/lib/server/appwrite";
 import WatchlistButton from "./WatchlistButton";
-import { useEffect, useState } from "react";
 
-const ProductCard = ({ item }: { item: Models.Document }) => {
-  const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
-    null
-  );
+interface ProductCardProps {
+  item: Models.Document;
+  userId: string;
+}
 
-  useEffect(() => {
-    const getUser = async () => {
-      const res = await getLoggedInUser();
-
-      if (!res) return;
-
-      setUser(res);
-    };
-
-    getUser();
-  }, []);
-
+const ProductCard = ({ item, userId }: ProductCardProps) => {
   return (
     <article className="w-full space-y-4 rounded-md shadow-md relative">
       <Image
@@ -47,11 +34,10 @@ const ProductCard = ({ item }: { item: Models.Document }) => {
           <CartActionButton item={item} />
         </div>
       </div>
-      {user && (
-        <div className="absolute top-1 right-1 flex-center bg-foreground rounded-full">
-          <WatchlistButton userId={user?.$id} productId={item.$id} />
-        </div>
-      )}
+
+      <div className="absolute top-1 right-1 flex-center bg-foreground rounded-full">
+        <WatchlistButton userId={userId} productId={item.$id} />
+      </div>
     </article>
   );
 };

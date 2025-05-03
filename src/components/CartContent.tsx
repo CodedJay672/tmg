@@ -3,29 +3,20 @@
 import { useStore } from "@/store/appStore";
 import React from "react";
 import CartCard from "./shared/CartCard";
-import { useGetUserById } from "@/lib/queries/userQueried/users";
-import { Loader2Icon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { Models } from "node-appwrite";
 
-const CartContent = ({ userId }: { userId: string }) => {
+const CartContent = ({ user }: { user?: Models.Document }) => {
   const { cart, clearCart } = useStore();
-  const { data: userInfo, isPending: loading } = useGetUserById(userId);
-
   const total = cart.reduce((init, item) => item.price * item.qty + init, 0);
-
-  if (loading)
-    <Loader2Icon
-      size={24}
-      className="text-primary animate-spin place-self-center"
-    />;
 
   return (
     <aside className="w-full overflow-y-scroll no-scrollbar">
       <ul className="w-full mt-4 space-y-6">
         {cart.map((item) => (
           <li key={item.id} className="bg-dark-100/30 p-6 lg:p-3 rounded-lg">
-            <CartCard {...item} />
+            <CartCard user={user} data={item} />
           </li>
         ))}
       </ul>
@@ -57,7 +48,7 @@ const CartContent = ({ userId }: { userId: string }) => {
           </div>
 
           <div className="w-full grid grid-cols-2 gap-6 p-6 mt-6">
-            {userInfo?.data?.total ? (
+            {user ? (
               <>
                 <Button
                   type="button"

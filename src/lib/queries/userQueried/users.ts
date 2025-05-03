@@ -24,7 +24,7 @@ export const useUpdateUserInfo = () => {
       id: string;
       data: Partial<TUserDetails>;
       productId: string;
-    }) => updateUserInfo({ data, productId }, undefined, id),
+    }) => updateUserInfo({ data, productId }, id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.UPDATE_USER_INFO],

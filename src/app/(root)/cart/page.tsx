@@ -1,11 +1,14 @@
 import CartContent from "@/components/CartContent";
 import Back from "@/components/shared/Back";
 import { getUser } from "@/lib/actions/user.actions";
+
 import { getLoggedInUser } from "@/lib/server/appwrite";
 import React from "react";
 
 const CartPage = async () => {
   const user = await getLoggedInUser();
+
+  const currentUser = await getUser(user?.$id);
 
   return (
     <section className="content-wrapper">
@@ -17,7 +20,7 @@ const CartPage = async () => {
         </div>
       </div>
 
-      <CartContent userId={user.$id} />
+      <CartContent user={currentUser?.data?.documents?.[0]} />
     </section>
   );
 };
