@@ -2,7 +2,7 @@ import React from "react";
 import SearchBar from "@/components/SearchBar";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
-import ProductGallery from "@/components/ProductGallery";
+import ProductListing from "@/components/ProductListing";
 
 const ProductsPage = async ({
   searchParams,
@@ -48,7 +48,8 @@ const ProductsPage = async ({
             </span>
           </p>
         )}
-        <ProductGallery query={query} enabled />
+
+        <ProductListing query={query} />
       </div>
     </section>
   );

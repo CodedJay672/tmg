@@ -62,6 +62,34 @@ export const uploadProducts = async (values: TProductDetails) => {
   }
 };
 
+export const deleteProduct = async (productId: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.deleteDocument(
+      config.appwrite.databaseId,
+      config.appwrite.productCollection,
+      productId
+    );
+
+    //revalidate paths
+    revalidatePath("/");
+    revalidatePath("/dashboard/products");
+
+    //return
+    return {
+      status: true,
+      message: "Product removed successfully.",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
 export const getAllProducts = async (query?: string) => {
   try {
     const { database } = await createAdminClient();

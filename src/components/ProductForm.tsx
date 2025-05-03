@@ -63,7 +63,7 @@ const ProductForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-lg my-10 lg:my-6 flex-center flex-col gap-4"
+      className="w-full my-10 lg:my-6 flex-center flex-col gap-4"
     >
       <CustomInput
         label="Product name"

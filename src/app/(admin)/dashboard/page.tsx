@@ -26,15 +26,6 @@ const Dashboard = async () => {
         </p>
       </header>
 
-      {/** Dashboard metrics: Overflow-x-scroll for mobile phones
-       *
-       * Total users
-       *
-       * Total orders:- processing, completed cancelled.
-       *
-       * invoices:- processing, paid.
-       */}
-
       <div className="w-full py-2 flex items-center gap-6 overflow-x-scroll no-scrollbar my-4">
         <DashboardInfo heading="All Users" data="3000+" />
         <DashboardInfo

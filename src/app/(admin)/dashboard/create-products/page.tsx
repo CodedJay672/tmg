@@ -5,7 +5,7 @@ import React from "react";
 const CreateProducts = () => {
   return (
     <section className="dashboard-container flex flex-col">
-      <div className="flex-1 pt-24">
+      <div className="w-full max-w-lg py-10">
         <Image
           src="/assets/logo.png"
           alt="tmg procurement"
