@@ -12,7 +12,7 @@ import { Models } from "node-appwrite";
 
 interface ProductFormProps {
   type: string;
-  product: Models.Document | undefined;
+  product?: Models.Document;
 }
 
 const ProductForm = ({ type, product }: ProductFormProps) => {
@@ -37,35 +37,39 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // ensure a file is selected
-    if (!file || file.length === 0) {
-      setError({ file: ["Product image is required."] });
-      return;
-    }
-
-    if (type === "CREATE") {
-      const response = await uploadProduct({
-        name,
-        price: parseInt(price),
-        file: file[0],
-        category,
-      });
-
-      if (!response.status) {
-        if (response.data) {
-          setError(response.data);
-        }
-        return toast.error(response.message);
+    try {
+      // ensure a file is selected
+      if (!file || file.length === 0) {
+        setError({ file: ["Product image is required."] });
+        return;
       }
-      toast.success(response.message);
-    }
 
-    setName("");
-    setPrice("");
-    setError(null);
-    setImgUrl("");
-    setCategory("mechanical");
-    setFile(null);
+      if (type === "CREATE") {
+        const response = await uploadProduct({
+          name,
+          price: parseInt(price),
+          file: file[0],
+          category,
+        });
+
+        if (!response.status) {
+          if (response.data) {
+            setError(response.data);
+          }
+          return toast.error(response.message);
+        }
+        toast.success(response.message);
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setName("");
+      setPrice("");
+      setError(null);
+      setImgUrl("");
+      setCategory("mechanical");
+      setFile(null);
+    }
   };
 
   return (
@@ -138,7 +142,9 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
         <p className="text-sm text-red-500">{error["file"]}</p>
       )}
 
-      <SubmitButton label="Add product" />
+      <SubmitButton
+        label={type === "CREATE" ? "Add product" : "Update product"}
+      />
     </form>
   );
 };

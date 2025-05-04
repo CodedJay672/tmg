@@ -43,18 +43,16 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
     try {
       const fullname = `${firstname} ${lastname}`;
 
-      const res = await updateUserInfo(
-        {
-          fullname,
-          email,
-          location,
-          address,
-          phone,
-          imgUrl,
-        },
-        userFile?.[0],
-        user?.$id
-      );
+      const data = {
+        fullname,
+        email,
+        location,
+        address,
+        phone,
+        imgUrl,
+      };
+
+      const res = await updateUserInfo({ data }, user?.$id, userFile?.[0]);
 
       if (!res.status) {
         if (res.data) setErrors(res.data);
@@ -73,7 +71,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl space-y-4 p-4 lg:p-6 flex flex-col"
+      className="w-full max-w-2xl space-y-4 lg:p-6 flex flex-col"
     >
       <fieldset className="w-full flex justify-between">
         <div className="size-24 flex-center rounded-full bg-secondary relative">
@@ -121,7 +119,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         </div>
       </fieldset>
 
-      <fieldset className="flex-between gap-1 lg:gap-3">
+      <fieldset className="flex-between gap-2 lg:gap-3">
         <CustomInput
           label="Firstname"
           type="text"
@@ -149,7 +147,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         onChange={setEmail}
       />
 
-      <fieldset className="flex-between gap-1 lg:gap-3 mt-6 mb-2">
+      <fieldset className="flex-between gap-2 lg:gap-3 mt-6 mb-2">
         <legend className="text-lg font-medium mb-3">Location details</legend>
 
         <CustomInput

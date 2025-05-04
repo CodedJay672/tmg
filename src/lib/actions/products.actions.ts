@@ -128,9 +128,11 @@ export const getAllProducts = async (query?: string) => {
   }
 };
 
-export const getProductById = async (id: string) => {
+export const getProductById = async (id?: string) => {
   try {
     const { database } = await createAdminClient();
+
+    if (!id) return;
 
     const response = await database.listDocuments(
       config.appwrite.databaseId,

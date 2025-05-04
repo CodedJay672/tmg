@@ -44,7 +44,7 @@ export const getUser = cache(
 
 export const updateUserInfo = async (
   { data, productId }: { data: Partial<TUserDetails>; productId?: string },
-  id: string,
+  id?: string,
   file?: File
 ) => {
   try {
@@ -98,7 +98,7 @@ export const updateUserInfo = async (
       {
         ...data,
         imgUrl: filePrev,
-        watchlist: [...watchlist],
+        watchlist: watchlist ? [...watchlist] : watchlist,
       }
     );
 

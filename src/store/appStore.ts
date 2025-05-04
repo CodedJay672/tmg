@@ -19,6 +19,7 @@ interface TCartState {
   changeQty: (type: string, product: TCart) => void;
   clearCart: (id?: string) => void;
   showDropdown: boolean;
+  hideDropdown: () => void;
   toggleDropdown: () => void;
 }
 
@@ -68,6 +69,9 @@ export const useStore = create<TCartState>()(
 
         //showDropdown
         showDropdown: false,
+
+        //close dropdown
+        hideDropdown: () => set(() => ({ showDropdown: false })),
 
         //toggle dropdown
         toggleDropdown: () =>

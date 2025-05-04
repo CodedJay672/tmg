@@ -11,6 +11,7 @@ const CreateProducts = async ({
   const { productId } = await searchParams;
 
   const product = await getProductById(productId);
+
   return (
     <section className="dashboard-container flex flex-col">
       <div className="w-full max-w-lg py-10">

@@ -14,7 +14,7 @@ const FileUploader = ({
   ref: RefObject<HTMLInputElement | null>;
 }) => {
   const onDrop = useCallback((acceptedFiles?: File[]) => {
-    if (!acceptedFiles) return;
+    if (!acceptedFiles?.length) return;
 
     const filePath = URL.createObjectURL(acceptedFiles[0]);
 
@@ -22,7 +22,13 @@ const FileUploader = ({
     onChange(acceptedFiles);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".png", ".jpg", ".jpeg"],
+      "video/*": [".mp4"],
+    },
+  });
 
   return (
     <div {...getRootProps()}>

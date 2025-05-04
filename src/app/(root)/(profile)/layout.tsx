@@ -9,7 +9,7 @@ const HomeLayout = async ({ children }: { children: React.ReactNode }) => {
   const userDetails = await getUser(user?.$id);
 
   return (
-    <main className="content-wrapper flex gap-3">
+    <main className="content-wrapper lg:flex gap-10">
       <div className="mt-2 lg:mt-10">
         <SidebarLinks user={userDetails?.data?.documents?.[0]} />
       </div>

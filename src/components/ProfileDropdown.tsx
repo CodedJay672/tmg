@@ -1,11 +1,18 @@
 "use client";
 
-import React, { useContext, useRef } from "react";
+import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/store/appStore";
+import { useWindowScroll } from "react-use";
 
 const ProfileDropdown = ({ children }: { children: React.ReactNode }) => {
-  const { showDropdown } = useStore();
+  const { showDropdown, hideDropdown } = useStore();
+  const { y } = useWindowScroll();
+
+  //perform some options onscroll
+  useEffect(() => {
+    if (showDropdown) hideDropdown();
+  }, [y]);
 
   return (
     <article

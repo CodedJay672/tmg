@@ -19,13 +19,13 @@ const ProfileDetails = async ({
   if (!userDetails.status) redirect("/sign-up");
 
   return (
-    <section className="content-wrapper w-full">
-      <div className="w-full py-3 lg:py-10 px-6 hidden lg:flex items-center gap-1">
+    <section className="w-full">
+      <div className="w-full py-3 lg:py-10 hidden lg:flex items-center gap-1">
         <Segments title="Personal data" />
       </div>
-      <div className="w-full lg:py-3 py-2 px-4 flex justify-between items-center lg:justify-start">
+      <div className="w-full lg:py-3 py-2 flex justify-between items-center lg:justify-start mb-4 lg:mb-0">
         <div className="">
-          <h2 className="text-lg font-bold">Personal Data</h2>
+          <h2 className="text-lg font-bold">Personal Data.</h2>
           <p className="hidden lg:block text-base text-gray-400">
             Your personal information
           </p>

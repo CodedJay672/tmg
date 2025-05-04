@@ -1,21 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import GlobalContext from "./GlobalContext";
-import { useWindowScroll } from "react-use";
 
 const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [editDetails, setEditDetails] = useState(false);
   const [category, setCategory] = useState("all");
-
-  const { y } = useWindowScroll();
-
-  //perform some options onscroll
-  useEffect(() => {
-    if (showDropdown) setShowDropdown(false);
-  }, [y]);
 
   const toggleProfileMenu = () => {
     setShowProfileMenu((prev) => !prev);
