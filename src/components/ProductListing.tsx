@@ -5,14 +5,6 @@ import ProductDetails from "./shared/ProductDetails";
 
 const ProductListing = async ({ query }: { query?: string }) => {
   const products = await getAllProducts(query);
-
-  //add spinner while fetching data
-  if (!products.status && !products.data?.total) {
-    return (
-      <Loader2Icon size={24} className="text-primary animate-spin mx-auto" />
-    );
-  }
-
   return (
     <section className="w-full p-1 lg:p-2 space-y-4 mt-10">
       {products?.data?.total ? (
@@ -20,7 +12,9 @@ const ProductListing = async ({ query }: { query?: string }) => {
           <ProductDetails key={data.$id} data={data} />
         ))
       ) : (
-        <p className="text-base text-dark-200">No products to show.</p>
+        <p className="text-base text-dark-200 text-center">
+          No products to show.
+        </p>
       )}
     </section>
   );

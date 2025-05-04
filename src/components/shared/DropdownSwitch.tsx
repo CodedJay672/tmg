@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils";
 import { ChevronDownIcon } from "lucide-react";
 import React, { useContext } from "react";
 import { Button } from "../ui/button";
+import { useStore } from "@/store/appStore";
 
 const DropdownSwitch = () => {
-  const { showDropdown, toggleDropdown } = useContext(GlobalContext);
+  const { showDropdown, toggleDropdown } = useStore();
 
   return (
     <Button

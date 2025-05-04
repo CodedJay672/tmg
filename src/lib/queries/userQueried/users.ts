@@ -23,7 +23,7 @@ export const useUpdateUserInfo = () => {
     }: {
       id: string;
       data: Partial<TUserDetails>;
-      productId: string;
+      productId?: string;
     }) => updateUserInfo({ data, productId }, id),
     onSuccess: () => {
       queryClient.invalidateQueries({

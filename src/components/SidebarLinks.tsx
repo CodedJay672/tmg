@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import {
   HeartIcon,
+  ShieldCloseIcon,
   ShoppingBasketIcon,
   User2Icon,
   XCircleIcon,
@@ -74,18 +75,35 @@ const SidebarLinks = ({ user }: { user?: Models.Document }) => {
             <User2Icon size={16} /> Profile
           </Link>
           <Link
-            href={`/user/${user.$id}`}
+            href={`/orders/${user?.accountId}`}
             onClick={toggleProfileMenu}
-            className="py-2 px-4 rounded-lg flex items-center gap-3 hover:bg-secondary/30 transition-all"
+            className={cn(
+              "py-2 px-4 rounded-lg flex items-center gap-3 hover:bg-secondary/30 transition-all",
+              {
+                "text-primary": isActive(`/orders/${user?.accountId}`),
+              }
+            )}
           >
             <ShoppingBasketIcon size={16} /> Orders
           </Link>
           <Link
-            href={`/user/${user.$id}`}
+            href={`/watchlist/${user?.accountId}`}
+            onClick={toggleProfileMenu}
+            className={cn(
+              "py-2 px-4 rounded-lg flex items-center gap-3 hover:bg-secondary/30 transition-all",
+              {
+                "text-primary": isActive(`/watchlist/${user?.accountId}`),
+              }
+            )}
+          >
+            <HeartIcon size={16} /> Watchlist
+          </Link>
+          <Link
+            href={`/recover-password`}
             onClick={toggleProfileMenu}
             className="py-2 px-4 rounded-lg flex items-center gap-3 hover:bg-secondary/30 transition-all"
           >
-            <HeartIcon size={16} /> Watchlist
+            <ShieldCloseIcon size={16} /> Password reset
           </Link>
 
           <SignOut />

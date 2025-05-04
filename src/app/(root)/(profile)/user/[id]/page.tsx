@@ -23,22 +23,17 @@ const ProfileDetails = async ({
       <div className="w-full py-3 lg:py-10 px-6 hidden lg:flex items-center gap-1">
         <Segments title="Personal data" />
       </div>
-      <div className="flex gap-3">
-        <SidebarLinks user={userDetails?.data?.documents?.[0]} />
-        <div className="w-full">
-          <div className="w-full lg:py-3 py-2 px-4 flex justify-between items-center lg:justify-start">
-            <div className="">
-              <h2 className="text-lg font-bold">Personal Data</h2>
-              <p className="hidden lg:block text-base text-gray-400">
-                Your personal information
-              </p>
-            </div>
-            <ProfileMenuSwitch />
-          </div>
-
-          <UserDetailsForm user={userDetails.data?.documents?.[0]} />
+      <div className="w-full lg:py-3 py-2 px-4 flex justify-between items-center lg:justify-start">
+        <div className="">
+          <h2 className="text-lg font-bold">Personal Data</h2>
+          <p className="hidden lg:block text-base text-gray-400">
+            Your personal information
+          </p>
         </div>
+        <ProfileMenuSwitch />
       </div>
+
+      <UserDetailsForm user={userDetails.data?.documents?.[0]} />
     </section>
   );
 };

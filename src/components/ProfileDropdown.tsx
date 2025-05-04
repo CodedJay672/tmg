@@ -1,23 +1,11 @@
 "use client";
 
 import React, { useContext, useRef } from "react";
-import GlobalContext from "@/context/GlobalContext";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/store/appStore";
 
 const ProfileDropdown = ({ children }: { children: React.ReactNode }) => {
-  const { showDropdown, toggleDropdown } = useStore();
-  const dropdownRef = useRef<HTMLElement | null>(null);
-
-  const closeDropdown = (e: React.MouseEvent<HTMLElement>) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(e.target as Node)
-    ) {
-      toggleDropdown();
-    }
-    return;
-  };
+  const { showDropdown } = useStore();
 
   return (
     <article
@@ -27,8 +15,6 @@ const ProfileDropdown = ({ children }: { children: React.ReactNode }) => {
           "h-68 translate-y-0 opacity-100": showDropdown,
         }
       )}
-      ref={dropdownRef}
-      onClick={closeDropdown}
     >
       {children}
     </article>

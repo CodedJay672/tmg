@@ -1,6 +1,5 @@
 "use client";
 
-import GlobalContext from "@/context/GlobalContext";
 import {
   useGetUserById,
   useUpdateUserInfo,
@@ -8,12 +7,13 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, Loader2Icon, MapPinIcon } from "lucide-react";
 import { Models } from "node-appwrite";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import CustomInput from "./shared/CustomInput";
 import SubmitButton from "./shared/SubmitButton";
 import { toast } from "sonner";
 import { getUser } from "@/lib/actions/user.actions";
+import { useStore } from "@/store/appStore";
 
 const LocationDropdown = ({
   user,
@@ -25,7 +25,7 @@ const LocationDropdown = ({
     isPending: loading,
     isError: error,
   } = useGetUserById(user.$id);
-  const { showDropdown, toggleDropdown } = useContext(GlobalContext);
+  const { showDropdown, toggleDropdown } = useStore();
   const { mutateAsync: updateLocation, isPending: loadingLocation } =
     useUpdateUserInfo();
   const [location, setLocation] = useState("");
