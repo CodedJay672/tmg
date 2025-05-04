@@ -140,7 +140,7 @@ export const signUp = async (values: {
 export async function signOut(): Promise<void> {
   const { account } = await createSessionClient();
 
-  (await cookies()).delete("my-custom-session");
+  (await cookies()).delete("tmg-session");
   await account?.deleteSession("current");
 
   redirect("/sign-in");
