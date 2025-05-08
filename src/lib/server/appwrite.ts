@@ -13,7 +13,8 @@ export async function createSessionClient() {
   const session = (await cookies()).get("tmg-session");
 
   if (!session || !session.value) {
-    throw new Error("No session");
+    console.log("No session");
+    return null;
   }
 
   client.setSession(session?.value);
@@ -45,7 +46,11 @@ export async function createAdminClient() {
 }
 
 export const getLoggedInUser = cache(async () => {
-  const { account } = await createSessionClient();
+  const response = await createSessionClient();
+
+  if (!response) return;
+
+  const { account } = response;
 
   return await account.get();
 });

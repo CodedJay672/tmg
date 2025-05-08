@@ -9,19 +9,21 @@ import {
 import { HeartIcon, Loader2Icon } from "lucide-react";
 import { Models } from "node-appwrite";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const WatchlistButton = ({
   userId,
   productId,
   label,
 }: {
-  userId: string;
+  userId: string | undefined;
   productId: string;
   label?: string;
 }) => {
   const { data: userInfo } = useGetUserById(userId);
   const { mutateAsync: updateWatchlist, isPending: loading } =
     useUpdateUserInfo();
+  const router = useRouter();
 
   const isAdded = () => {
     return userInfo?.data?.documents?.[0].watchlist.find(
@@ -29,15 +31,25 @@ const WatchlistButton = ({
     );
   };
 
+  const handleClick = async () => {
+    try {
+      const response = await updateWatchlist({
+        id: userInfo?.data?.documents?.[0].$id!,
+        data: {},
+        productId,
+      });
+
+      if (!response.status) return toast.error(response.message);
+
+      toast.success(response.message);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
+
   return (
     <div
-      onClick={() =>
-        updateWatchlist({
-          id: userInfo?.data?.documents?.[0].$id!,
-          data: {},
-          productId,
-        })
-      }
+      onClick={handleClick}
       className="w-full p-1 flex-center rounded-full overflow-hidden gap-1"
     >
       {loading ? (

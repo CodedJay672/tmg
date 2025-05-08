@@ -10,7 +10,7 @@ const ProductGallery = ({
   query,
   enabled,
 }: {
-  userId: string;
+  userId: string | undefined;
   query: string;
   enabled: boolean;
 }) => {
@@ -18,10 +18,6 @@ const ProductGallery = ({
     enabled,
     query
   );
-
-  useEffect(() => {
-    console.log(userId);
-  }, []);
 
   return (
     <>

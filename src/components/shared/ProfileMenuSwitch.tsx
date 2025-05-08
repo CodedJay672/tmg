@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
-import { LucideAlignVerticalJustifyEnd, MoreVerticalIcon } from "lucide-react";
-import GlobalContext from "@/context/GlobalContext";
+import { MoreVerticalIcon } from "lucide-react";
+import { useStore } from "@/store/appStore";
 
 const ProfileMenuSwitch = () => {
-  const { toggleProfileMenu } = useContext(GlobalContext);
+  const { toggleProfileMenu } = useStore();
 
   return (
     <Button

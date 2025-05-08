@@ -21,6 +21,8 @@ interface TCartState {
   showDropdown: boolean;
   hideDropdown: () => void;
   toggleDropdown: () => void;
+  showProfileMenu: boolean;
+  toggleProfileMenu: () => void;
 }
 
 export const useStore = create<TCartState>()(
@@ -76,6 +78,11 @@ export const useStore = create<TCartState>()(
         //toggle dropdown
         toggleDropdown: () =>
           set((state) => ({ showDropdown: !state.showDropdown })),
+
+        //profile menu
+        showProfileMenu: false,
+        toggleProfileMenu: () =>
+          set((state) => ({ showProfileMenu: !state.showProfileMenu })),
       }),
       {
         name: "cart-storage",

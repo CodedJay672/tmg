@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useContext } from "react";
+import React from "react";
 import {
   HeartIcon,
   ShieldCloseIcon,
@@ -9,15 +9,15 @@ import {
   User2Icon,
   XCircleIcon,
 } from "lucide-react";
-import GlobalContext from "@/context/GlobalContext";
 import { cn } from "@/lib/utils";
 import SignOut from "./shared/SignOut";
 import { Models } from "node-appwrite";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useStore } from "@/store/appStore";
 
 const SidebarLinks = ({ user }: { user?: Models.Document }) => {
-  const { showProfileMenu, toggleProfileMenu } = useContext(GlobalContext);
+  const { showProfileMenu, toggleProfileMenu } = useStore();
   const pathname = usePathname();
 
   const isActive = (path: string) => {

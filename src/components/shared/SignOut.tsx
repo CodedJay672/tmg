@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import { LogOut } from "lucide-react";
 import { signOut } from "@/lib/actions/auth.actions";
 import { toast } from "sonner";
-import GlobalContext from "@/context/GlobalContext";
+import { useStore } from "@/store/appStore";
 
 const SignOut = () => {
-  const { toggleDropdown, toggleProfileMenu } = useContext(GlobalContext);
+  const { toggleDropdown, toggleProfileMenu } = useStore();
 
   const handleLogout = async () => {
     await signOut();

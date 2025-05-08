@@ -138,12 +138,14 @@ export const signUp = async (values: {
 // };
 
 export async function signOut(): Promise<void> {
-  const { account } = await createSessionClient();
+  const response = await createSessionClient();
 
-  (await cookies()).delete("tmg-session");
-  await account?.deleteSession("current");
+  if (response) {
+    const { account } = response;
 
-  redirect("/sign-in");
+    (await cookies()).delete("tmg-session");
+    await account?.deleteSession("current");
+  }
 }
 
 const saveToDB = async (name: string, email: string, accountId: string) => {

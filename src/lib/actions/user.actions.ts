@@ -6,10 +6,11 @@ import { createAdminClient, getLoggedInUser } from "../server/appwrite";
 import { ID, Models, Query } from "node-appwrite";
 import { TUserDetails, userDetails } from "@/constants/validations/schema";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export const getUser = cache(
   async (
-    id: string
+    id?: string
   ): Promise<{
     status: boolean;
     message: string;
@@ -19,7 +20,10 @@ export const getUser = cache(
       const { database } = await createAdminClient();
 
       if (!id) {
-        return { status: false, message: "Sign in to view your profile." };
+        return {
+          status: false,
+          message: "Sign in to continue.",
+        };
       }
 
       const response = await database.listDocuments(
@@ -28,7 +32,9 @@ export const getUser = cache(
         [Query.equal("accountId", id)]
       );
 
-      if (!response.total) return { status: false, message: "User not found." };
+      if (!response.total) {
+        return { status: false, message: "User not found." };
+      }
 
       return {
         status: true,
@@ -186,6 +192,9 @@ const updateWatchlist = async (productId: string) => {
   try {
     const { database } = await createAdminClient();
     const user = await getLoggedInUser();
+
+    //check if the user is signed in
+    if (!user) redirect("/sign-in");
 
     // get user watchlist
     const currentUser = await getUser(user?.$id);

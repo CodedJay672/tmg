@@ -7,7 +7,7 @@ import WatchlistButton from "./WatchlistButton";
 
 interface ProductCardProps {
   item: Models.Document;
-  userId: string;
+  userId: string | undefined;
 }
 
 const ProductCard = ({ item, userId }: ProductCardProps) => {
