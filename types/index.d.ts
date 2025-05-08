@@ -18,3 +18,11 @@ type TCart = {
   price: number;
   qty: number;
 };
+
+type TransactionEntryType = {
+  userId?: string;
+  order: TCart[];
+  total: number;
+  location: string;
+  status: "CANCELLED" | "PROCESSING" | "COMPLETED";
+};

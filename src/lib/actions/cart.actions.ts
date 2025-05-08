@@ -126,3 +126,94 @@ export const getUserCart = async (userId: string) => {
     };
   }
 };
+
+export const completeTransaction = async (
+  transaction: TransactionEntryType
+) => {
+  try {
+    const { database } = await createAdminClient();
+
+    if (!transaction) return;
+
+    const response = await saveCart(
+      transaction.order,
+      transaction.total,
+      transaction.userId
+    );
+
+    const res = await database.createDocument(
+      config.appwrite.databaseId,
+      config.appwrite.transactionsCollection,
+      ID.unique(),
+      {
+        creator: transaction.userId,
+        order: response.data?.$id,
+        total: transaction.total,
+        location: transaction.location,
+      }
+    );
+
+    if (!res)
+      return {
+        status: false,
+        message: "Transaction Failed.",
+      };
+
+    return {
+      status: true,
+      message: "Transaction completed.",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
+export const saveCart = async (
+  order: TCart[],
+  total: number,
+  user?: string
+) => {
+  try {
+    const { database } = await createAdminClient();
+
+    if (!user)
+      return {
+        status: false,
+        message: "User Not found",
+      };
+
+    const response = await database.createDocument(
+      config.appwrite.databaseId,
+      config.appwrite.cartCollection,
+      ID.unique(),
+      {
+        user,
+        product: order.map((item) => item.id),
+        total,
+        qty: order.map((item) => item.qty),
+      }
+    );
+
+    if (!response)
+      return {
+        status: false,
+        message: "Failed to save cart.",
+      };
+
+    return {
+      status: true,
+      message: "Cart saved successfully.",
+      data: response,
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};

@@ -1,16 +1,45 @@
 "use client";
 
 import { useStore } from "@/store/appStore";
-import React from "react";
+import React, { useId, useState } from "react";
 import CartCard from "./shared/CartCard";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Models } from "node-appwrite";
+import { toast } from "sonner";
+import Modal from "./Modal";
+import { completeTransaction } from "@/lib/actions/cart.actions";
+import { Loader2Icon } from "lucide-react";
 
 const CartContent = ({ user }: { user?: Models.Document }) => {
-  const { cart, clearCart } = useStore();
+  const [loading, setLoading] = useState(false);
+  const { cart, clearCart, toggleModal } = useStore();
   const total = cart.reduce((init, item) => item.price * item.qty + init, 0);
 
+  const handleCheckout = async () => {
+    try {
+      setLoading(true);
+      const transactionEntry: TransactionEntryType = {
+        userId: user?.$id,
+        order: cart,
+        total: total,
+        location: user?.location,
+        status: "PROCESSING",
+      };
+
+      const response = await completeTransaction(transactionEntry);
+
+      if (!response?.status) return toast.error(response?.message);
+
+      toggleModal();
+      return toast.success(response.message);
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+      clearCart();
+    }
+  };
   return (
     <aside className="w-full overflow-y-scroll no-scrollbar">
       <ul className="w-full mt-4 space-y-6">
@@ -46,7 +75,6 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
               </p>
             </div>
           </div>
-
           <div className="w-full grid grid-cols-2 gap-6 p-6 mt-6">
             {user ? (
               <>
@@ -60,6 +88,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
                 </Button>
                 <Button
                   type="button"
+                  onClick={toggleModal}
                   className="w-full bg-primary text-foreground cursor-pointer"
                 >
                   Checkout
@@ -82,6 +111,43 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
               </>
             )}
           </div>
+          <p className="text-sm font-light text-primary text-center">
+            <span className="text-sm font-bold">Disclaimer:</span> Payment
+            should be made on delivery.
+          </p>
+
+          <Modal>
+            <h3 className="text-lg lg:text-xl font-bold text-dark-300 text-center">
+              CONFIRM ORDER
+            </h3>
+            <p className="text-lg mt-6">
+              Please ensure you have double checked your orders before
+              proceeding to confirm the transaction.
+            </p>
+
+            <div className="w-full grid grid-cols-2 gap-3 mt-6">
+              <Button
+                onClick={toggleModal}
+                className="w-full bg-transparent hover:bg-transparent border border-red-500 text-red-500"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleCheckout}
+                disabled={loading}
+                className="w-full text-foreground"
+              >
+                {loading ? (
+                  <Loader2Icon
+                    size={16}
+                    className="text-foreground animate-spin"
+                  />
+                ) : (
+                  <>Confirm</>
+                )}
+              </Button>
+            </div>
+          </Modal>
         </>
       )}
     </aside>
