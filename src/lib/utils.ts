@@ -11,3 +11,29 @@ export const formatTitle = (title?: string) => {
   const response = title.split("-").join(" ");
   return response;
 };
+
+export const formatDate = (iso: string) => {
+  const date = new Date(iso);
+
+  if (!date) return console.log("invalid date format");
+
+  const option: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
+  const formatter = new Intl.DateTimeFormat("en-US", option);
+  return formatter.format(date);
+};
+
+export const formatCurrency = (amount: number) => {
+  const formatter = new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  return formatter.format(amount);
+};

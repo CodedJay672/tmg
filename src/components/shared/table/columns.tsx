@@ -1,0 +1,78 @@
+"use client";
+
+import { cn, formatCurrency, formatDate } from "@/lib/utils";
+import { ColumnDef } from "@tanstack/react-table";
+import { Models } from "node-appwrite";
+
+export const orderTable: ColumnDef<Models.Document>[] = [
+  {
+    accessorKey: "$id",
+    header: "Trans. ID",
+  },
+  {
+    accessorKey: "order",
+    header: "Order ID",
+    cell: ({ row }) => {
+      const order: Models.Document = row.getValue("order");
+
+      const { $id } = order;
+      return $id;
+    },
+  },
+  {
+    accessorKey: "$createdAt",
+    header: "Date",
+    cell: ({ row }) => {
+      const date = row.getValue("$createdAt") as string;
+
+      const format = formatDate(date);
+
+      return format;
+    },
+  },
+  {
+    accessorKey: "creator",
+    header: "Customer",
+    cell: ({ row }) => {
+      const data: Models.Document = row.getValue("creator");
+
+      const { $id } = data;
+
+      return $id;
+    },
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => {
+      const total = row.getValue("total") as number;
+
+      return formatCurrency(total);
+    },
+  },
+  {
+    accessorKey: "location",
+    header: "Location",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("status") as string;
+
+      return (
+        <span
+          className={`text-sm text-foreground px-2 py-1 rounded-full block flex-center ${
+            status === "PROCESSING"
+              ? "bg-amber-300"
+              : status === "CANCELLED"
+              ? "bg-red-400"
+              : "bg-primary "
+          }`}
+        >
+          {status}
+        </span>
+      );
+    },
+  },
+];

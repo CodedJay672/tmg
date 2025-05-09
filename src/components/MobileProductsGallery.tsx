@@ -1,11 +1,10 @@
 "use client";
 
-import GlobalContext from "@/context/GlobalContext";
-import React, { useContext } from "react";
 import ProductGallery from "./ProductGallery";
+import { useStore } from "@/store/appStore";
 
 const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
-  const { category } = useContext(GlobalContext);
+  const { category } = useStore();
 
   return (
     <ProductGallery

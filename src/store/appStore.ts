@@ -25,6 +25,8 @@ interface TCartState {
   toggleProfileMenu: () => void;
   showModal: boolean;
   toggleModal: () => void;
+  category: string;
+  changeCategory: (cat: string) => void;
 }
 
 export const useStore = create<TCartState>()(
@@ -89,6 +91,10 @@ export const useStore = create<TCartState>()(
         //modal
         showModal: false,
         toggleModal: () => set((state) => ({ showModal: !state.showModal })),
+
+        //category
+        category: "all",
+        changeCategory: (cat: string) => set(() => ({ category: cat })),
       }),
       {
         name: "cart-storage",

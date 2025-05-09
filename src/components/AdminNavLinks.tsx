@@ -8,19 +8,19 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import AdminLink from "./shared/AdminLink";
+import Image from "next/image";
 
 const AdminNavLinks = () => {
   return (
     <nav className="w-full lg:w-72 lg:h-screen px-4 py-6 lg:p-0 flex justify-between items-center  flex-row lg:flex-col lg:justify-start lg:items-start bg-dark-100 sticky bottom-0 order-1 lg:order-0 lg:top-0 left-0 space-y-3">
-      <div className="w-full hidden lg:flex items-center p-6">
-        <Link
-          href="/"
-          className="text-3xl font-bold text-foreground lg:text-background flex gap-1"
-        >
-          <div className="size-10  bg-secondary rounded-full" />
-          TMG
-        </Link>
-      </div>
+      <Link href="/" className="flex items-center px-6">
+        <Image
+          src="/assets/logo.png"
+          alt="tmg procurement"
+          width={120}
+          height={90}
+        />
+      </Link>
 
       <AdminLink
         path="/dashboard"

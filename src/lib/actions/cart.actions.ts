@@ -96,14 +96,14 @@ export const updateCartItem = async (
   }
 };
 
-export const getUserCart = async (userId: string) => {
+export const getUserCart = async (userId?: string) => {
   try {
     const { database } = await createAdminClient();
 
     const response = await database.listDocuments(
       config.appwrite.databaseId,
       config.appwrite.cartCollection,
-      [Query.equal("users", userId)]
+      userId ? [Query.equal("user", userId)] : []
     );
 
     if (!response) {
@@ -116,7 +116,7 @@ export const getUserCart = async (userId: string) => {
     return {
       status: true,
       message: "Carts fetched successfully.",
-      data: response.documents?.[0],
+      data: response,
     };
   } catch (error: any) {
     console.log(error);
@@ -207,6 +207,36 @@ export const saveCart = async (
     return {
       status: true,
       message: "Cart saved successfully.",
+      data: response,
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
+export const getTransaction = async (id?: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const response = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.transactionsCollection,
+      id ? [Query.equal("$id", id)] : []
+    );
+
+    if (!response.total)
+      return {
+        status: false,
+        message: "Unable to get transactions.",
+      };
+
+    return {
+      status: true,
+      message: "Transaction fetched successfully.",
       data: response,
     };
   } catch (error: any) {

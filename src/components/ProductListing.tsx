@@ -1,13 +1,22 @@
+"use client";
+
 import { getAllProducts } from "@/lib/actions/products.actions";
-import { Loader2Icon } from "lucide-react";
 import React from "react";
 import ProductDetails from "./shared/ProductDetails";
+import { useStore } from "@/store/appStore";
+import { useGetProducts } from "@/lib/queries/productQueries/products";
+import { Loader2Icon } from "lucide-react";
 
-const ProductListing = async ({ query }: { query?: string }) => {
-  const products = await getAllProducts(query);
+const ProductListing = ({ query }: { query?: string }) => {
+  const { data: products, isPending: loading } = useGetProducts(true, query);
+
+  const { category } = useStore();
+
   return (
-    <section className="w-full p-1 lg:p-2 space-y-4 mt-10">
-      {products?.data?.total ? (
+    <section className="w-full p-1 lg:p-2 space-y-4">
+      {loading ? (
+        <Loader2Icon size={24} className="text-primary animate-spin mx-auto" />
+      ) : products?.data?.total ? (
         products?.data?.documents?.map((data) => (
           <ProductDetails key={data.$id} data={data} />
         ))

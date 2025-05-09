@@ -1,4 +1,5 @@
 import DashboardInfo from "@/components/DashboardInfo";
+import CustomTab from "@/components/shared/CustomTab";
 import InfoDoughnut from "@/components/shared/InfoDoughnut";
 import TransactionsChart from "@/components/TransactionsChart";
 import { getLoggedInUser } from "@/lib/server/appwrite";
@@ -14,8 +15,8 @@ const Dashboard = async () => {
 
   return (
     <section className="dashboard-container">
-      <header className="w-full space-y-1">
-        <h2 className="text-xl lg:text-3xl font-medium">
+      <div className="w-full space-y-1">
+        <h2 className="admin-title">
           Welcome{" "}
           <span className="text-primary font-semibold">
             {user.name.split(" ")[0]}👋🏼
@@ -24,7 +25,7 @@ const Dashboard = async () => {
         <p className="text-base lg:text-lg text-gray-400">
           See the general overview of your business.
         </p>
-      </header>
+      </div>
 
       <div className="w-full py-2 flex items-center gap-6 overflow-x-scroll no-scrollbar my-4">
         <DashboardInfo heading="All Users" data="3000+" />

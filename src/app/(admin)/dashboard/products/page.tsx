@@ -1,8 +1,8 @@
 import React from "react";
-import SearchBar from "@/components/SearchBar";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import ProductListing from "@/components/ProductListing";
+import CustomTab from "@/components/shared/CustomTab";
 
 const ProductsPage = async ({
   searchParams,
@@ -13,18 +13,14 @@ const ProductsPage = async ({
 
   return (
     <section className="dashboard-container">
-      <div className="px-1 py-2 lg:py-3">
-        <h2 className="text-base lg:text-lg font-semibold">
-          Manage all products
-        </h2>
-        <span className="text-sm lg:text-base text-dark-200">
-          You can manage all products here.
-        </span>
-      </div>
+      <h2 className="admin-title">Products</h2>
 
-      <div className="w-full mt-3 mb-2 flex-between gap-3 lg:gap-6">
-        <div className="flex-1">
-          <SearchBar placeholder="Search available products..." />
+      <div className="w-full mt-6 mb-2 flex-between gap-3 lg:gap-6 ">
+        <div className="flex-1 flex items-center space-x-4">
+          <CustomTab name="admin" title="all" />
+          <CustomTab name="admin" title="mechanical" />
+          <CustomTab name="admin" title="steel" />
+          <CustomTab name="admin" title="electrical" />
         </div>
         <div className="w-max">
           <Link
