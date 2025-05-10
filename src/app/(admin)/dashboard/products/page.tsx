@@ -3,6 +3,7 @@ import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import ProductListing from "@/components/ProductListing";
 import CustomTab from "@/components/shared/CustomTab";
+import { formatDate } from "@/lib/utils";
 
 const ProductsPage = async ({
   searchParams,
@@ -10,10 +11,16 @@ const ProductsPage = async ({
   searchParams: Promise<{ query: string }>;
 }) => {
   const { query } = await searchParams;
+  const today = formatDate(new Date().toISOString());
 
   return (
     <section className="dashboard-container">
-      <h2 className="admin-title">Products</h2>
+      <div className="flex-between flex-col lg:flex-row">
+        <h2 className="admin-title">Products management</h2>
+        <span className="text-sm text-dark-300 font-medium">
+          Date: {today as string}
+        </span>
+      </div>
 
       <div className="w-full mt-6 mb-2 flex-between gap-3 lg:gap-6 ">
         <div className="flex-1 flex items-center space-x-4">

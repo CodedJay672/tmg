@@ -18,6 +18,9 @@ const ProductDetails = ({ data }: { data: Models.Document }) => {
             currency: "NGN",
           })}
         </p>
+        <p className="text-base font-semibold">
+          Category: <span className="font-normal">{data.category}</span>
+        </p>
       </div>
       <ProductActionButton productId={data.$id} />
     </article>
