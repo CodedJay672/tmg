@@ -3,6 +3,8 @@
 import { ID, Models, Query } from "node-appwrite";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
+import { revalidatePath } from "next/cache";
+import { cache } from "react";
 
 export const addProductsToCart = async (
   userId: string,
@@ -135,11 +137,13 @@ export const completeTransaction = async (
 
     if (!transaction) return;
 
-    const response = await saveCart(
-      transaction.order,
-      transaction.total,
-      transaction.userId
-    );
+    const response = await saveCart(transaction.order, transaction.total);
+
+    if (!response.status)
+      return {
+        status: false,
+        message: response.message,
+      };
 
     const res = await database.createDocument(
       config.appwrite.databaseId,
@@ -159,6 +163,7 @@ export const completeTransaction = async (
         message: "Transaction Failed.",
       };
 
+    revalidatePath("/dashboard/orders");
     return {
       status: true,
       message: "Transaction completed.",
@@ -172,26 +177,15 @@ export const completeTransaction = async (
   }
 };
 
-export const saveCart = async (
-  order: TCart[],
-  total: number,
-  user?: string
-) => {
+export const saveCart = async (order: TCart[], total: number) => {
   try {
     const { database } = await createAdminClient();
-
-    if (!user)
-      return {
-        status: false,
-        message: "User Not found",
-      };
 
     const response = await database.createDocument(
       config.appwrite.databaseId,
       config.appwrite.cartCollection,
       ID.unique(),
       {
-        user,
         product: order.map((item) => item.id),
         total,
         qty: order.map((item) => item.qty),
@@ -218,14 +212,14 @@ export const saveCart = async (
   }
 };
 
-export const getTransaction = async (id?: string) => {
+export const getTransaction = cache(async (query?: string) => {
   try {
     const { database } = await createAdminClient();
 
     const response = await database.listDocuments(
       config.appwrite.databaseId,
       config.appwrite.transactionsCollection,
-      id ? [Query.equal("$id", id)] : []
+      query ? [Query.equal("status", query)] : []
     );
 
     if (!response.total)
@@ -246,4 +240,4 @@ export const getTransaction = async (id?: string) => {
       message: error.message,
     };
   }
-};
+});

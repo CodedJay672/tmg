@@ -8,9 +8,11 @@ import { useGetProducts } from "@/lib/queries/productQueries/products";
 import { Loader2Icon } from "lucide-react";
 
 const ProductListing = ({ query }: { query?: string }) => {
-  const { data: products, isPending: loading } = useGetProducts(true, query);
-
   const { category } = useStore();
+  const { data: products, isPending: loading } = useGetProducts(
+    true,
+    query ?? category !== "all" ? category : ""
+  );
 
   return (
     <section className="w-full p-1 lg:p-2 space-y-4">

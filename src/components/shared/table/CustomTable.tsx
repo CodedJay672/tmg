@@ -61,10 +61,10 @@ const CustomTable = <TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="even:bg-dark-100 odd:bg-foreground hover:bg-dark-100/50 cursor-pointer tansition-all"
+                className="even:bg-dark-100 odd:bg-foreground hover:bg-dark-100/50 cursor-pointer tansition-all border-none"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-sm px-1 py-5">
+                  <TableCell key={cell.id} className="text-sm p-3">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

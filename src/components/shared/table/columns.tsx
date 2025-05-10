@@ -20,25 +20,14 @@ export const orderTable: ColumnDef<Models.Document>[] = [
     },
   },
   {
-    accessorKey: "$createdAt",
-    header: "Date",
-    cell: ({ row }) => {
-      const date = row.getValue("$createdAt") as string;
-
-      const format = formatDate(date);
-
-      return format;
-    },
-  },
-  {
     accessorKey: "creator",
     header: "Customer",
     cell: ({ row }) => {
       const data: Models.Document = row.getValue("creator");
 
-      const { $id } = data;
+      const { fullname } = data;
 
-      return $id;
+      return fullname;
     },
   },
   {
@@ -53,6 +42,17 @@ export const orderTable: ColumnDef<Models.Document>[] = [
   {
     accessorKey: "location",
     header: "Location",
+  },
+  {
+    accessorKey: "$createdAt",
+    header: "Date",
+    cell: ({ row }) => {
+      const date = row.getValue("$createdAt") as string;
+
+      const format = formatDate(date);
+
+      return format;
+    },
   },
   {
     accessorKey: "status",

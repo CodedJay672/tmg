@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import Modal from "./Modal";
 import { completeTransaction } from "@/lib/actions/cart.actions";
 import { Loader2Icon } from "lucide-react";
+import Image from "next/image";
 
 const CartContent = ({ user }: { user?: Models.Document }) => {
   const [loading, setLoading] = useState(false);
@@ -32,12 +33,12 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
       if (!response?.status) return toast.error(response?.message);
 
       toggleModal();
+      clearCart();
       return toast.success(response.message);
     } catch (error: any) {
       toast.error(error.message);
     } finally {
       setLoading(false);
-      clearCart();
     }
   };
   return (
@@ -117,6 +118,13 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
           </p>
 
           <Modal>
+            <Image
+              src="/icons/error.png"
+              alt="warning"
+              width={48}
+              height={48}
+              className="mx-auto object-contain"
+            />
             <h3 className="text-lg lg:text-xl font-bold text-dark-300 text-center">
               CONFIRM ORDER
             </h3>

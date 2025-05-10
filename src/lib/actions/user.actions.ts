@@ -59,7 +59,6 @@ export const updateUserInfo = async (
 
     // check for a valid id
     if (!id) {
-      console.log(id);
       return {
         status: false,
         message: "Invalid user id.",

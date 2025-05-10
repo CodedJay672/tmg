@@ -1,8 +1,15 @@
+import CustomTab from "@/components/shared/CustomTab";
 import OrdersTable from "@/components/shared/table/orders/OrdersTable";
 import { Calendar1Icon } from "lucide-react";
 import React from "react";
 
-const Orders = () => {
+const Orders = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ query: string }>;
+}) => {
+  const { query } = await searchParams;
+
   return (
     <section className="dashboard-container">
       <div className="w-full flex-between mb-10">
@@ -18,10 +25,14 @@ const Orders = () => {
       </div>
 
       <div className="w-full z-0">
-        <h2 className="text-base lg:text-lg font-semibold">
-          Recent transactions
-        </h2>
-        <OrdersTable />
+        <div className="flex items-center space-x-3">
+          <CustomTab name="status" title="all" />
+          <CustomTab name="status" title="processing" />
+          <CustomTab name="status" title="cancelled" />
+          <CustomTab name="status" title="completed" />
+        </div>
+
+        <OrdersTable query={query} />
       </div>
     </section>
   );
