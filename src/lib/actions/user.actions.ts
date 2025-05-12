@@ -19,17 +19,10 @@ export const getUser = cache(
     try {
       const { database } = await createAdminClient();
 
-      if (!id) {
-        return {
-          status: false,
-          message: "Sign in to continue.",
-        };
-      }
-
       const response = await database.listDocuments(
         config.appwrite.databaseId,
         config.appwrite.usersCollection,
-        [Query.equal("accountId", id)]
+        id ? [Query.equal("accountId", id)] : []
       );
 
       if (!response.total) {

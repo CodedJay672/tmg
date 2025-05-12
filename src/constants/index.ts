@@ -949,3 +949,9 @@ export const states_and_lgas = {
     },
   ],
 };
+
+export const colors = {
+  RED: "red",
+  AMBER: "yellow",
+  GREEN: "green",
+};

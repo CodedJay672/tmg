@@ -76,3 +76,34 @@ export const orderTable: ColumnDef<Models.Document>[] = [
     },
   },
 ];
+
+export const smallTable: ColumnDef<Models.Document>[] = [
+  {
+    accessorKey: "$id",
+    header: "Trans. ID",
+  },
+  {
+    accessorKey: "creator",
+    header: "Customer",
+    cell: ({ row }) => {
+      const data: Models.Document = row.getValue("creator");
+
+      const { fullname } = data;
+
+      return fullname;
+    },
+  },
+  {
+    accessorKey: "location",
+    header: "Location",
+  },
+  {
+    accessorKey: "total",
+    header: "Total",
+    cell: ({ row }) => {
+      const total = row.getValue("total") as number;
+
+      return formatCurrency(total);
+    },
+  },
+];
