@@ -30,17 +30,19 @@ const Topbar = async () => {
         />
       </Link>
 
-      <div className="hidden w-xl lg:flex justify-between items-center gap-2">
+      <div className="hidden w-full max-w-3xl lg:flex justify-between items-center gap-2">
         <GlobalSearch />
         <MyOrders userId={user?.$id} />
         <MyWatchlist />
 
         {user ? (
-          <div className="w-83 bg-secondary flex-center p-1 rounded-full pr-3 relative">
-            <div className="size-7 bg-primary rounded-full flex-center">
+          <div className="w-max bg-secondary flex items-center p-1 rounded-full pr-3 relative">
+            <div className="size-7 bg-primary rounded-full flex-center shrink-0">
               <h2 className="text-sm uppercase font-medium">{user?.name[0]}</h2>
             </div>
-            <span className="text-sm ml-1">{user?.name}</span>
+            <span className="w-full text-sm ml-1 text-nowrap">
+              {user?.name}
+            </span>
             <DropdownSwitch />
             <ProfileDropdown>
               <UserDropdownInfo user={user} />

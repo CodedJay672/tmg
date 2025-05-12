@@ -23,7 +23,7 @@ const MyOrders = ({ userId }: { userId: string }) => {
         title="My Orders"
         size="icon"
         onClick={togglePopover}
-        className="small-icons relative"
+        className="w-max  px-2 border border-secondary relative"
       >
         <ShoppingBasket />
         {cart.length > 0 && (
@@ -31,6 +31,7 @@ const MyOrders = ({ userId }: { userId: string }) => {
             <CountBadge item={cart} />
           </div>
         )}
+        <span>View cart</span>
       </Button>
       <CustomSheet>
         <div className="w-full p-1">

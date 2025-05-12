@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import { ShoppingBasketIcon, User2Icon } from "lucide-react";
 import SignOut from "./shared/SignOut";
 import { Models } from "node-appwrite";
 import Link from "next/link";
-import GlobalContext from "@/context/GlobalContext";
+import { useStore } from "@/store/appStore";
 
 const UserDropdownInfo = ({
   user,
 }: {
   user: Models.User<Models.Preferences>;
 }) => {
-  const { toggleDropdown } = useContext(GlobalContext);
+  const { toggleDropdown } = useStore();
 
   return (
     <>
@@ -31,7 +31,7 @@ const UserDropdownInfo = ({
           Profile
         </Link>
         <Link
-          href={`#`}
+          href="/cart"
           onClick={toggleDropdown}
           className="text-base font-light flex items-center gap-3"
         >

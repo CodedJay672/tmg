@@ -11,7 +11,7 @@ const CartPage = async () => {
   const currentUser = await getUser(user?.$id);
 
   return (
-    <section className="content-wrapper">
+    <section className="content-wrapper max-w-screen-lg mx-auto">
       <div className="flex items-center">
         <Back />
         <div className="ml-1">

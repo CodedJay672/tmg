@@ -10,7 +10,7 @@ const MyWatchlist = () => {
       variant="ghost"
       title="Watchlist"
       size="icon"
-      className="small-icons"
+      className="small-icons border border-secondary"
     >
       <HeartIcon />
     </Button>

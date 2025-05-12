@@ -42,7 +42,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
     }
   };
   return (
-    <aside className="w-full overflow-y-scroll no-scrollbar">
+    <section className="w-full overflow-y-scroll no-scrollbar">
       <ul className="w-full mt-4 space-y-6">
         {cart.map((item) => (
           <li key={item.id} className="bg-dark-100/30 p-6 lg:p-3 rounded-lg">
@@ -52,7 +52,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
       </ul>
 
       {cart.length > 0 && (
-        <>
+        <div className="w-full">
           <div className="w-full mt-4 p-6 lg:p-3">
             <h2 className="text-base lg:text-lg font-semibold">Summary</h2>
             <div className="flex-between mt-2">
@@ -156,9 +156,9 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
               </Button>
             </div>
           </Modal>
-        </>
+        </div>
       )}
-    </aside>
+    </section>
   );
 };
 
