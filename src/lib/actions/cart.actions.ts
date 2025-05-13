@@ -222,8 +222,8 @@ export const getTransaction = cache(async (query?: string) => {
       query
         ? [
             Query.or([
-              Query.search("creator", query),
-              Query.search("status", query),
+              Query.equal("creator", query),
+              Query.equal("status", query.toUpperCase()),
             ]),
           ]
         : []
