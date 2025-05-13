@@ -107,3 +107,22 @@ export const smallTable: ColumnDef<Models.Document>[] = [
     },
   },
 ];
+
+export const OderDetails: ColumnDef<Models.Document>[] = [
+  {
+    accessorKey: "order",
+    header: "Item",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+  {
+    accessorKey: "qty",
+    header: "Quantity",
+  },
+  {
+    accessorKey: "order",
+    header: "Price",
+  },
+];

@@ -98,7 +98,7 @@ export const updateCartItem = async (
   }
 };
 
-export const getUserCart = async (id?: string) => {
+export const getUserCart = cache(async (id?: string) => {
   try {
     const { database } = await createAdminClient();
 
@@ -127,7 +127,7 @@ export const getUserCart = async (id?: string) => {
       message: error?.message,
     };
   }
-};
+});
 
 export const completeTransaction = async (
   transaction: TransactionEntryType
@@ -137,7 +137,7 @@ export const completeTransaction = async (
 
     if (!transaction) return;
 
-    const response = await saveCart(transaction.order, transaction.total);
+    const response = await saveCart(transaction.order);
 
     if (!response.status)
       return {
@@ -177,7 +177,7 @@ export const completeTransaction = async (
   }
 };
 
-export const saveCart = async (order: TCart[], total: number) => {
+export const saveCart = async (order: TCart[]) => {
   try {
     const { database } = await createAdminClient();
 
@@ -186,8 +186,7 @@ export const saveCart = async (order: TCart[], total: number) => {
       config.appwrite.cartCollection,
       ID.unique(),
       {
-        product: order.map((item) => item.id),
-        total,
+        products: order.map((item) => item.id),
         qty: order.map((item) => item.qty),
       }
     );
@@ -223,8 +222,10 @@ export const getTransaction = cache(async (query?: string) => {
         ? [
             Query.or([
               Query.equal("creator", query),
+              Query.equal("order", query),
               Query.equal("status", query.toUpperCase()),
             ]),
+            Query.orderDesc("$createdAt"),
           ]
         : []
     );

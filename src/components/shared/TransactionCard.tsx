@@ -3,20 +3,11 @@
 import { formatCurrency, formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { Models } from "node-appwrite";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
-import { useStore } from "@/store/appStore";
-import OrderInfo from "./OrderInfo";
-import CustomSheet from "./CustomSheet";
-import { useGetCartById } from "@/lib/queries/cartQueries/cart";
-import { Loader2Icon } from "lucide-react";
+import Link from "next/link";
 
 const TransactionCard = ({ info }: { info: Models.Document }) => {
-  const { togglePopover } = useStore();
-  const [orderId, setOrderId] = useState<string>("");
-  const { data: orderDetails, isPending: loading } = useGetCartById(
-    info.order.$id
-  );
   const [client, setClient] = useState(false);
 
   const orderDate = formatDate(info.$createdAt);
@@ -26,16 +17,9 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
   useEffect(() => {
     if (!client) return;
 
+    console.log(info.order);
     setClient(true);
   }, []);
-
-  const handleClick = useCallback(
-    (id: string) => {
-      setOrderId(id);
-      togglePopover();
-    },
-    [orderId]
-  );
 
   return (
     <article className="w-full p-4 border border-dark-200 rounded-xl">
@@ -65,43 +49,37 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
       </div>
       <div className="w-full flex-between flex-col lg:flex-row gap-10 p-3">
         <div className="w-full flex items-center gap-3">
-          <div className="w-50 h-32 flex-center relative">
-            {loading ? (
-              <Loader2Icon size={24} className="animate-spin text-primary" />
-            ) : (
-              <Image
-                src={
-                  orderDetails?.data?.documents?.[0].product?.[0].imgUrl ?? null
-                }
-                alt={orderDetails?.data?.documents?.[0].product?.[0].name}
-                width={200}
-                height={128}
-              />
-            )}
+          <div className="flex-center relative">
+            <Image
+              src={info.order.products?.[0].imgUrl ?? null}
+              alt={info.order.products?.[0].name}
+              width={120}
+              height={100}
+            />
           </div>
           <div>
             <p className="text-base font-bold">
-              {orderDetails?.data?.documents?.[0].product?.[0].name}
+              {info.order.products?.[0].name}
             </p>
             <p className="text-sm font-medium text-dark-300">
-              {formatCurrency(
-                orderDetails?.data?.documents?.[0].product?.[0].price
-              )}{" "}
-              X {info.order.qty[0]}
+              {formatCurrency(info.order.products?.[0].price)} X{" "}
+              {info.order.qty[0]}
             </p>
+            {info.order.products.length > 1 && (
+              <p className="text-xs font-medium text-dark-200 mt-3">
+                And {info.order.products.length - 1} More...
+              </p>
+            )}
           </div>
         </div>
         <Button
           type="button"
-          variant="outline"
-          onClick={() => handleClick(info.order.$id)}
-          className="text-primary font-bold bg-foreground border-primary"
+          variant="link"
+          asChild
+          className="text-primary font-bold bg-foreground border-primary border"
         >
-          View Details
+          <Link href={`/orders/details/${info.order.$id}`}>View Details</Link>
         </Button>
-        <CustomSheet>
-          <OrderInfo orderId={orderId} />
-        </CustomSheet>
       </div>
     </article>
   );
