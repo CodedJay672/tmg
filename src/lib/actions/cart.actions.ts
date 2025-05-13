@@ -98,14 +98,14 @@ export const updateCartItem = async (
   }
 };
 
-export const getUserCart = async (userId?: string) => {
+export const getUserCart = async (id?: string) => {
   try {
     const { database } = await createAdminClient();
 
     const response = await database.listDocuments(
       config.appwrite.databaseId,
       config.appwrite.cartCollection,
-      userId ? [Query.equal("user", userId)] : []
+      id ? [Query.equal("$id", id)] : []
     );
 
     if (!response) {
@@ -219,7 +219,14 @@ export const getTransaction = cache(async (query?: string) => {
     const response = await database.listDocuments(
       config.appwrite.databaseId,
       config.appwrite.transactionsCollection,
-      query ? [Query.equal("status", query)] : []
+      query
+        ? [
+            Query.or([
+              Query.search("creator", query),
+              Query.search("status", query),
+            ]),
+          ]
+        : []
     );
 
     if (!response.total)

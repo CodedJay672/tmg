@@ -1,6 +1,6 @@
 "use client";
 
-import { cn, formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Models } from "node-appwrite";
 
