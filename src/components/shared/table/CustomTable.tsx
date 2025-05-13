@@ -41,7 +41,7 @@ const CustomTable = <TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className="text-lg text-dark-300 bg-dark-100 font-bold py-2"
+                    className="text-base text-primary bg-dark-100 font-bold py-2"
                   >
                     {header.isPlaceholder
                       ? null

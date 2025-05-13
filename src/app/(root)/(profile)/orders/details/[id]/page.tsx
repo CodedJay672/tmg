@@ -1,7 +1,12 @@
 import Back from "@/components/shared/Back";
+import Status from "@/components/shared/Status";
+import { orderDetails } from "@/components/shared/table/columns";
+import CustomTable from "@/components/shared/table/CustomTable";
+import { Button } from "@/components/ui/button";
 import { getTransaction } from "@/lib/actions/cart.actions";
-import { formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate, getTableData } from "@/lib/utils";
 import { Loader2Icon } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
@@ -15,14 +20,19 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
     );
   }
 
-  console.log(orderInfo.data?.documents?.[0].order);
-
   const date = formatDate(orderInfo.data?.documents?.[0].$createdAt as string);
 
+  // generate the order table data
+  const tableData = getTableData(orderInfo.data?.documents?.[0]);
+
   return (
-    <section className="content-wrapper space-y-6">
-      <div className="w-full px-3 py-5 border flex gap-3 border-gray-200 rounded-xl space-y-3">
-        <div className="flex-center border rounded-xl border-dark-200">
+    <section className="w-full space-y-6 lg:pt-10">
+      <div className="flex items-center gap-2 lg:hidden border-b border-dark-200 pb-4">
+        <Back />
+        <span className="text-lg font-bold">Back</span>
+      </div>
+      <div className="w-full px-3 py-5 border flex flex-col lg:flex-row gap-3 border-gray-200 rounded-xl space-y-3">
+        <div className="hidden lg:flex justify-center items-center border rounded-xl border-dark-200">
           <Back />
         </div>
         <div className="space-y-4">
@@ -30,17 +40,8 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
             <h1 className="text-lg font-stretch-200% lg:text-xl font-medium">
               #{id}
             </h1>
-            <span
-              className={`text-xs py-1 px-3 border inline-block rounded-lg font-semibold ${
-                orderInfo.data?.documents?.[0].status === "PROCESSING"
-                  ? "border-amber-500 text-amber-500"
-                  : orderInfo.data?.documents?.[0].status === "COMPLETE"
-                  ? "border-green-500 text-green-500"
-                  : "border-red-500 text-red-500"
-              }`}
-            >
-              {orderInfo.data?.documents?.[0].status}
-            </span>
+
+            <Status status={orderInfo.data?.documents?.[0].status} />
           </div>
           <div className="w-full flex items-center">
             <span className="text-dark-200 text-xs lg:text-sm font-medium">
@@ -50,8 +51,68 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
         </div>
       </div>
 
-      <div className="w-full p-3 border border-gray-200 rounded-xl">
-        <h2 className="text-lg lg:text-xl font-medium">Products</h2>
+      <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex-1 space-y-5">
+          <div className="w-full p-3 border border-gray-200 rounded-xl">
+            <h2 className="text-lg lg:text-xl font-medium">Products</h2>
+            <CustomTable columns={orderDetails} data={tableData || []} />
+          </div>
+        </div>
+        <div className="w-full lg:w-3xs space-y-5">
+          <div className="w-full p-3 border border-gray-200 rounded-xl">
+            <h2 className="text-lg lg:text-xl font-medium">Payment</h2>
+            <div className="flex-between mt-4">
+              <p className="text-dark-200">Subtotal</p>
+              <p className="text-dark-200">
+                {formatCurrency(orderInfo.data?.documents?.[0].total)}
+              </p>
+            </div>
+            <div className="flex-between">
+              <p className="text-dark-200">Discount</p>
+              <p className="text-dark-200">0.00</p>
+            </div>
+            <div className="flex-between mt-5">
+              <p className="text-dark-300 font-bold">Total</p>
+              <p className="text-dark-300 font-bold">
+                {formatCurrency(orderInfo.data?.documents?.[0].total)}
+              </p>
+            </div>
+
+            <div className="w-full mt-10 flex-center">
+              <Button
+                type="button"
+                variant="outline"
+                className="mx-auto text-primary border-primary font-bold bg-foreground"
+              >
+                Download Invoice
+              </Button>
+            </div>
+          </div>
+
+          <div className="w-full p-3 border border-gray-200 rounded-xl">
+            <h2 className="text-lg lg:text-xl font-medium">Customer</h2>
+            <p className="text-sm font-light text-pretty mt-4">
+              {orderInfo.data?.documents?.[0].creator.fullname}
+            </p>
+            <Link
+              href={`mailto:${orderInfo.data?.documents?.[0].creator.email}`}
+              className="text-sm text-blue-600 underline"
+            >
+              {orderInfo.data?.documents?.[0].creator.email}
+            </Link>
+            <p className="text-sm font-light text-pretty">
+              {orderInfo.data?.documents?.[0].creator.phone}
+            </p>
+
+            <h3 className="text-xs text-dark-300 font-medium mt-3">
+              Delivery address
+            </h3>
+            <p>
+              {orderInfo.data?.documents?.[0].creator.address},{" "}
+              {orderInfo.data?.documents?.[0].creator.location}
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

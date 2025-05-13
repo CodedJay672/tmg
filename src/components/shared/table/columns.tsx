@@ -3,6 +3,8 @@
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Models } from "node-appwrite";
+import ProductMiniCard from "../ProductMiniCard";
+import Status from "../Status";
 
 export const orderTable: ColumnDef<Models.Document>[] = [
   {
@@ -108,21 +110,23 @@ export const smallTable: ColumnDef<Models.Document>[] = [
   },
 ];
 
-export const OderDetails: ColumnDef<Models.Document>[] = [
+export const orderDetails: ColumnDef<TableTypeProps>[] = [
   {
-    accessorKey: "order",
+    accessorKey: "product",
     header: "Item",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
+    cell: ({ row }) => <ProductMiniCard order={row.getValue("product")} />,
   },
   {
     accessorKey: "qty",
     header: "Quantity",
   },
   {
-    accessorKey: "order",
+    accessorKey: "price",
     header: "Price",
+    cell: ({ row }) => {
+      const product = row.getValue("product") as Models.Document;
+
+      return formatCurrency(product.price);
+    },
   },
 ];

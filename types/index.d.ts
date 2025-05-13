@@ -26,3 +26,8 @@ type TransactionEntryType = {
   location: string;
   status: "CANCELLED" | "PROCESSING" | "COMPLETED";
 };
+
+type TableTypeProps = {
+  product: Models.Document;
+  qty: number;
+};

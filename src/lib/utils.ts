@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { Models } from "node-appwrite";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -39,4 +40,21 @@ export const formatCurrency = (amount: number) => {
   });
 
   return formatter.format(amount);
+};
+
+export const getTableData = (data?: Models.Document) => {
+  if (!data) return;
+
+  let result: TableTypeProps[] = [];
+
+  data.order.products.forEach((product: Models.Document, idx: number) => {
+    const res = {
+      product,
+      qty: data.order?.qty?.[idx],
+    };
+
+    result.push(res);
+  });
+
+  return result;
 };
