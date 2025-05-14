@@ -1,4 +1,5 @@
 import Back from "@/components/shared/Back";
+import OrderActionButton from "@/components/shared/OrderActionButton";
 import Status from "@/components/shared/Status";
 import { orderDetails } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
@@ -35,7 +36,7 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
         <div className="hidden lg:flex justify-center items-center border rounded-xl border-dark-200">
           <Back />
         </div>
-        <div className="space-y-4">
+        <div className="flex-1 space-y-4">
           <div className="flex items-center gap-4">
             <h1 className="text-lg font-stretch-200% lg:text-xl font-medium">
               #{id}
@@ -49,6 +50,15 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
             </span>
           </div>
         </div>
+        {orderInfo.data?.documents?.[0].status === "PROCESSING" && (
+          <OrderActionButton
+            data={{
+              id: orderInfo.data?.documents?.[0].$id as string,
+              status: "CANCELLED",
+              label: "cancel order",
+            }}
+          />
+        )}
       </div>
 
       <div className="flex flex-col lg:flex-row gap-6">
@@ -78,15 +88,17 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
               </p>
             </div>
 
-            <div className="w-full mt-10 flex-center">
-              <Button
-                type="button"
-                variant="outline"
-                className="mx-auto text-primary border-primary font-bold bg-foreground"
-              >
-                Download Invoice
-              </Button>
-            </div>
+            {orderInfo.data?.documents?.[0].status !== "CANCELLED" && (
+              <div className="w-full mt-10 flex-center">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="mx-auto text-primary border-primary font-bold bg-foreground"
+                >
+                  Download Invoice
+                </Button>
+              </div>
+            )}
           </div>
 
           <div className="w-full p-3 border border-gray-200 rounded-xl">
