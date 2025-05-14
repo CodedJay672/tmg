@@ -17,7 +17,7 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
     <Dialog open={showModal} onOpenChange={toggleModal}>
       <DialogOverlay className="fixed inset-0 place-items-center z-[999] grid bg-black/20 p-4">
         <DialogContent
-          aria-describedby="custom modal"
+          aria-describedby={undefined}
           className="bg-foreground w-full max-w-md p-4 rounded-xl"
         >
           <DialogTitle>

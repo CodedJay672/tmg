@@ -249,3 +249,41 @@ export const getTransaction = cache(async (query?: string) => {
     };
   }
 });
+
+export const updateTransactionStatus = async (data: {
+  id: string;
+  status: "CANCELLED" | "PROCESSING" | "COMPLETED";
+}) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const res = await database.updateDocument(
+      config.appwrite.databaseId,
+      config.appwrite.transactionsCollection,
+      data.id,
+      {
+        status: data.status,
+      }
+    );
+
+    if (!res) {
+      return {
+        status: false,
+        message: "Failed to update.",
+      };
+    }
+
+    revalidatePath("/dashboard/orders");
+
+    return {
+      status: true,
+      message: "Updated successfully.",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};

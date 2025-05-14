@@ -5,22 +5,32 @@ import React, { useMemo } from "react";
 import TransactionCard from "./shared/TransactionCard";
 import { useStore } from "@/store/appStore";
 import { Models } from "node-appwrite";
+import { Loader2Icon } from "lucide-react";
 
 const UserTransactionContent = ({ userId }: { userId: string }) => {
   const { category } = useStore();
-  const userInfo = useGetUserById(userId);
+  const { data: userInfo, isPending: loading } = useGetUserById(userId);
+
+  const query = category === "all" ? "" : category;
 
   const filteredData: Models.Document[] = useMemo(
     () =>
-      userInfo.data?.data?.documents?.[0].transactions.filter(
-        (item: Models.Document) => {
-          if (category === "all") return true;
-
-          return item.status === category.toUpperCase();
-        }
-      ),
+      userInfo?.data?.documents?.[0].transactions
+        .sort(
+          (a: Models.Document, b: Models.Document) =>
+            a.$createdAt > b.$createdAt
+        )
+        .filter((item: Models.Document) =>
+          item.status.includes(query.toUpperCase())
+        ),
     [category]
   );
+
+  if (loading)
+    <Loader2Icon
+      size={24}
+      className="text-primary animate-spin mx-auto mt-10"
+    />;
 
   return (
     <div className="w-full flex-center flex-col gap-6 mt-10">

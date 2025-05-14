@@ -12,10 +12,10 @@ const CustomSheet = ({ children }: { children: React.ReactNode }) => {
     <Sheet open={showPopover} onOpenChange={togglePopover}>
       <SheetContent
         role="popover"
-        aria-describedby="popover"
-        className="w-full px-4 backdrop:bg-dark-100/50 bg-foreground p-3"
+        aria-describedby={undefined}
+        className="w-full px-4 bg-foreground p-3"
       >
-        <DialogTitle className="hidden">Popover</DialogTitle>
+        <DialogTitle className="hidden">Details</DialogTitle>
         {children}
       </SheetContent>
     </Sheet>

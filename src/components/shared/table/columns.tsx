@@ -4,9 +4,21 @@ import { formatCurrency, formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Models } from "node-appwrite";
 import ProductMiniCard from "../ProductMiniCard";
-import Status from "../Status";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDownIcon, MoreVerticalIcon } from "lucide-react";
+import CustomSheet from "../CustomSheet";
+import AdminTransactionView from "@/components/AdminTransactionView";
+import { useStore } from "@/store/appStore";
+import React, { useMemo } from "react";
 
 export const orderTable: ColumnDef<Models.Document>[] = [
+  {
+    id: "s/n",
+    header: "S/N",
+    cell: ({ row, table }) => {
+      return table.getSortedRowModel().flatRows.indexOf(row) + 1;
+    },
+  },
   {
     accessorKey: "$id",
     header: "Trans. ID",
@@ -23,7 +35,17 @@ export const orderTable: ColumnDef<Models.Document>[] = [
   },
   {
     accessorKey: "creator",
-    header: "Customer",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Customer
+          <ArrowUpDownIcon size={16} />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const data: Models.Document = row.getValue("creator");
 
@@ -34,7 +56,17 @@ export const orderTable: ColumnDef<Models.Document>[] = [
   },
   {
     accessorKey: "total",
-    header: "Total",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Total
+          <ArrowUpDownIcon size={16} />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const total = row.getValue("total") as number;
 
@@ -47,7 +79,18 @@ export const orderTable: ColumnDef<Models.Document>[] = [
   },
   {
     accessorKey: "$createdAt",
-    header: "Date",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="font-medium"
+        >
+          Date
+          <ArrowUpDownIcon size={16} />
+        </Button>
+      );
+    },
     cell: ({ row }) => {
       const date = row.getValue("$createdAt") as string;
 
@@ -74,6 +117,26 @@ export const orderTable: ColumnDef<Models.Document>[] = [
         >
           {status}
         </span>
+      );
+    },
+  },
+  {
+    id: "action",
+    cell: ({ row }) => {
+      const { togglePopover } = useStore();
+      return (
+        <>
+          <Button
+            variant="ghost"
+            onClick={togglePopover}
+            className="cursor-pointer"
+          >
+            <MoreVerticalIcon size={24} className="text-dark-300" />
+          </Button>
+          <CustomSheet>
+            <AdminTransactionView info={row.original} />
+          </CustomSheet>
+        </>
       );
     },
   },

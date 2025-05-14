@@ -1,8 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../queryKey";
-import { getTransaction, getUserCart } from "@/lib/actions/cart.actions";
+import {
+  getTransaction,
+  getUserCart,
+  updateTransactionStatus,
+} from "@/lib/actions/cart.actions";
 
 export const useGetCartById = (id: string) => {
   return useQuery({
@@ -16,5 +20,21 @@ export const useGetTransactions = (query: string) => {
     queryKey: ["get transaction", query],
     queryFn: ({ queryKey }: { queryKey: string[] }) =>
       getTransaction(queryKey[1]),
+  });
+};
+
+export const useUpdateTransactionStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: {
+      id: string;
+      status: "CANCELLED" | "PROCESSING" | "COMPLETED";
+    }) => updateTransactionStatus(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.UPDATE_USER_INFO],
+      });
+    },
   });
 };

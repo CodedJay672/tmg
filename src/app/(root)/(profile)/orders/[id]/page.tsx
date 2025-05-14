@@ -19,7 +19,7 @@ const Orders = async ({ params }: { params: Promise<{ id: string }> }) => {
         <ProfileMenuSwitch />
       </div>
 
-      <div className="w-full mt-6">
+      <div className="w-full">
         <div className="w-full flex items-center space-x-3">
           <CustomTab title="all" name="userTransactions" />
           <CustomTab title="cancelled" name="userTransactions" />

@@ -31,7 +31,7 @@ const UserDropdownInfo = ({
           Profile
         </Link>
         <Link
-          href="/cart"
+          href={`/orders/${user?.$id}`}
           onClick={toggleDropdown}
           className="text-base font-light flex items-center gap-3"
         >
