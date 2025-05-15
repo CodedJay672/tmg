@@ -53,12 +53,27 @@ const Dashboard = async () => {
     ],
   };
 
+  // get the number of transactions according to their status
+  const completed = transactions.data?.documents.filter(
+    (item) => item.status === "COMPLETED"
+  );
+  const cancelled = transactions.data?.documents.filter(
+    (item) => item.status === "CANCELLED"
+  );
+  const processing = transactions.data?.documents.filter(
+    (item) => item.status === "PROCESSING"
+  );
+
   const doughnutData: ChartData<"doughnut"> = {
     labels: ["CANCELLED", "PROCESSING", "COMPLETED"],
     datasets: [
       {
         label: "all transactions",
-        data: [80, 90, 100],
+        data: [
+          cancelled?.length ?? 0,
+          processing?.length ?? 0,
+          completed?.length ?? 0,
+        ],
         backgroundColor: ["rgb(255, 99, 132)", "rgb(255, 205, 86)", "#4caf50"],
       },
     ],
@@ -87,19 +102,19 @@ const Dashboard = async () => {
       </div>
 
       <div className="flex flex-col lg:flex-row gap-10 my-6">
-        <div className="w-full space-y-6 flex-1 overflow-hidden">
+        <div className="w-full space-y-6 flex-1 overflow-hidden border border-gray-200 shadow-md shadow-gray-300 rounded-xl p-5">
           <div>
-            <p className="text-base font-medium">Reports</p>
+            <p className="text-base lg:text-lg font-medium">Reports</p>
           </div>
           <TransactionsChart data={data} />
         </div>
-        <div className="w-full max-w-96">
-          <p className="text-base font-medium">Analytics</p>
-          <div className="w-full overflow-hidden p-10 flex-center flex-col">
+        <div className="w-full max-w-96 border border-gray-200 shadow-gray-300 shadow-md flex flex-col rounded-xl p-5">
+          <p className="text-base lg:text-lg font-medium">Analytics</p>
+          <div className="w-full mt-10 lg:mt-16 flex-1 overflow-hidden flex-between flex-col">
             <div className="w-full max-w-60">
               <InfoDoughnut title="All transactions" info={doughnutData} />
             </div>
-            <div className="flex-between mt-10 gap-3">
+            <div className="flex-between gap-3 mt-5 lg:mt-0">
               <div className="flex items-center gap-1">
                 <div className="p-1 rounded-full bg-green-400" />
                 <span className="text-sm">Success</span>
@@ -117,16 +132,16 @@ const Dashboard = async () => {
         </div>
       </div>
 
-      <div className="flex-between flex-col lg:flex-row mt-10 gap-16">
-        <div className="space-y-4 w-full overflow-hidden">
-          <p className="text-base font-medium">Recent Orders</p>
+      <div className="flex-between flex-col lg:flex-row mt-10 gap-10">
+        <div className="space-y-4 w-full p-5 overflow-hidden border border-gray-200 shadow-gray-300 shadow-md">
+          <p className="text-base lg:text-lg font-medium">Recent Orders</p>
           <CustomTable
             columns={smallTable}
             data={transactions?.data?.documents || []}
           />
         </div>
-        <div className="space-y-4 w-full max-w-96">
-          <p className="text-base font-medium">Top sellers</p>
+        <div className="space-y-4 p-5 w-full max-w-96 border border-gray-200 shadow-md shadow-gray-300">
+          <p className="text-base lg:text-lg font-medium">Top sellers</p>
           <CustomTable
             columns={smallTable}
             data={transactions?.data?.documents || []}
