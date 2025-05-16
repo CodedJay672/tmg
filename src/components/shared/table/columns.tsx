@@ -10,6 +10,7 @@ import CustomSheet from "../CustomSheet";
 import AdminTransactionView from "@/components/AdminTransactionView";
 import { useStore } from "@/store/appStore";
 import React, { useMemo } from "react";
+import Image from "next/image";
 
 export const orderTable: ColumnDef<Models.Document>[] = [
   {
@@ -190,6 +191,104 @@ export const orderDetails: ColumnDef<TableTypeProps>[] = [
       const product = row.getValue("product") as Models.Document;
 
       return formatCurrency(product.price);
+    },
+  },
+];
+
+export const customerTable: ColumnDef<Models.Document>[] = [
+  {
+    accessorKey: "s/n",
+    header: "s/n",
+    cell: ({ row, table }) => {
+      return table.getSortedRowModel().flatRows.indexOf(row);
+    },
+  },
+  {
+    accessorKey: "imgUrl",
+    header: ({ column }) => {
+      return (
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => {
+            return column.toggleSorting(column.getIsSorted() === "asc");
+          }}
+        >
+          Customer <ArrowUpDownIcon size={16} />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const rowInfo = row.original;
+      const { fullname, imgUrl } = rowInfo;
+
+      return (
+        <div className="flex items-center gap-2">
+          <Image
+            src={imgUrl}
+            alt={fullname}
+            width={24}
+            height={24}
+            className="object-contain shrink-0 rounded-full"
+          />
+          <p className="text-base font-medium text-dark-300 line-clamp-1 truncate">
+            {fullname}
+          </p>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "location",
+    header: ({ column }) => {
+      return (
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => {
+            return column.toggleSorting(column.getIsSorted() === "asc");
+          }}
+        >
+          Location <ArrowUpDownIcon size={16} />
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "transactions",
+    header: "Orders",
+    cell: ({ row }) => {
+      const transactions = row.getValue("transactions") as Models.Document[];
+
+      return (
+        <p className="text-dak-3">
+          {transactions.length ? transactions.length : null}{" "}
+          {transactions.length > 1
+            ? "Orders"
+            : transactions.length < 1
+            ? "N/A"
+            : "Order"}
+        </p>
+      );
+    },
+  },
+  {
+    accessorKey: "total",
+    header: "Total spending",
+    cell: ({ row }) => {
+      const transactions = row.getValue("transactions") as Models.Document[];
+
+      const total = transactions.reduce(
+        (init, item) =>
+          item.status === "COMPLETED" ? item.total + init : init,
+        0
+      );
+
+      return (
+        <p className="text-dark-300">
+          {total > 0 ? formatCurrency(total) : "N/A"}
+        </p>
+      );
     },
   },
 ];

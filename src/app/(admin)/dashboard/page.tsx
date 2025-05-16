@@ -132,7 +132,7 @@ const Dashboard = async () => {
         </div>
       </div>
 
-      <div className="flex-between flex-col lg:flex-row mt-10 gap-10">
+      <div className="flex justify-between flex-col lg:flex-row mt-10 gap-10">
         <div className="space-y-4 w-full p-5 overflow-hidden border border-gray-200 shadow-gray-300 shadow-md">
           <p className="text-base lg:text-lg font-medium">Recent Orders</p>
           <CustomTable

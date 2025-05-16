@@ -29,8 +29,8 @@ const AdminNavLinks = () => {
       />
 
       <AdminLink
-        path="/dashboard/users"
-        label="Users"
+        path="/dashboard/customers"
+        label="Customers"
         icon={<Users2Icon size={24} />}
       />
 
