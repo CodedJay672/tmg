@@ -8,8 +8,9 @@ const Footer = async () => {
   return (
     <footer className="hidden lg:block bg-black px-10 py-16 space-y-24">
       <div className="w-full max-w-screen-lg mx-auto">
+        
         <h3 className="text-4xl font-medium text-foreground w-96">
-          Stay in the loop with current mark pricings
+          Stay in the loop with current market pricings
         </h3>
       </div>
 

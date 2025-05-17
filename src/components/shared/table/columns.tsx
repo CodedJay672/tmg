@@ -124,17 +124,18 @@ export const orderTable: ColumnDef<Models.Document>[] = [
   {
     id: "action",
     cell: ({ row }) => {
-      const { togglePopover } = useStore();
+      const [open, setOpen] = React.useState(false);
+
       return (
         <>
           <Button
             variant="ghost"
-            onClick={togglePopover}
+            onClick={() => setOpen(true)}
             className="cursor-pointer"
           >
             <MoreVerticalIcon size={24} className="text-dark-300" />
           </Button>
-          <CustomSheet>
+          <CustomSheet open={open} onOpenChange={setOpen}>
             <AdminTransactionView info={row.original} />
           </CustomSheet>
         </>
@@ -198,9 +199,9 @@ export const orderDetails: ColumnDef<TableTypeProps>[] = [
 export const customerTable: ColumnDef<Models.Document>[] = [
   {
     accessorKey: "s/n",
-    header: "s/n",
+    header: "S/N",
     cell: ({ row, table }) => {
-      return table.getSortedRowModel().flatRows.indexOf(row);
+      return table.getSortedRowModel().flatRows.indexOf(row) + 1;
     },
   },
   {

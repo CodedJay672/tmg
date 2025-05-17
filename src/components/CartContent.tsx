@@ -1,7 +1,7 @@
 "use client";
 
 import { useStore } from "@/store/appStore";
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
 import CartCard from "./shared/CartCard";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -14,7 +14,8 @@ import Image from "next/image";
 
 const CartContent = ({ user }: { user?: Models.Document }) => {
   const [loading, setLoading] = useState(false);
-  const { cart, clearCart, toggleModal } = useStore();
+  const { cart, clearCart } = useStore();
+  const [open, setOpen] = useState(false);
   const total = cart.reduce((init, item) => item.price * item.qty + init, 0);
 
   const handleCheckout = async () => {
@@ -32,7 +33,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
 
       if (!response?.status) return toast.error(response?.message);
 
-      toggleModal();
+      setOpen(false);
       clearCart();
       return toast.success(response.message);
     } catch (error: any) {
@@ -89,7 +90,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
                 </Button>
                 <Button
                   type="button"
-                  onClick={toggleModal}
+                  onClick={() => setOpen}
                   className="w-full bg-primary text-foreground cursor-pointer"
                 >
                   Checkout
@@ -117,7 +118,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
             should be made on delivery.
           </p>
 
-          <Modal>
+          <Modal open={open} onOpenChange={setOpen}>
             <Image
               src="/icons/error.png"
               alt="warning"
@@ -135,7 +136,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
 
             <div className="w-full grid grid-cols-2 gap-3 mt-6">
               <Button
-                onClick={toggleModal}
+                onClick={() => setOpen}
                 className="w-full bg-transparent hover:bg-transparent border border-red-500 text-red-500"
               >
                 Cancel

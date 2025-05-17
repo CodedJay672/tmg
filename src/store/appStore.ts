@@ -13,8 +13,6 @@ interface TProduct {
 
 interface TCartState {
   cart: TCart[];
-  showPopover: boolean;
-  togglePopover: () => void;
   addToCart: (product: TProduct) => void;
   changeQty: (type: string, product: TCart) => void;
   clearCart: (id?: string) => void;
@@ -23,8 +21,6 @@ interface TCartState {
   toggleDropdown: () => void;
   showProfileMenu: boolean;
   toggleProfileMenu: () => void;
-  showModal: boolean;
-  toggleModal: () => void;
   category: string;
   changeCategory: (cat: string) => void;
 }
@@ -66,13 +62,6 @@ export const useStore = create<TCartState>()(
             return { cart: [...newCart] };
           }),
 
-        // hide/show popover sheet
-        showPopover: false,
-
-        //toggle the popover sheet
-        togglePopover: () =>
-          set((state) => ({ showPopover: !state.showPopover })),
-
         //showDropdown
         showDropdown: false,
 
@@ -87,10 +76,6 @@ export const useStore = create<TCartState>()(
         showProfileMenu: false,
         toggleProfileMenu: () =>
           set((state) => ({ showProfileMenu: !state.showProfileMenu })),
-
-        //modal
-        showModal: false,
-        toggleModal: () => set((state) => ({ showModal: !state.showModal })),
 
         //category
         category: "all",

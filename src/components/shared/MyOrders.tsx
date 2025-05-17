@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Loader2Icon, ShoppingBasket } from "lucide-react";
 import CountBadge from "./CountBadge";
@@ -10,8 +10,9 @@ import CartContent from "../CartContent";
 import { useGetUserById } from "@/lib/queries/userQueried/users";
 
 const MyOrders = ({ userId }: { userId: string }) => {
-  const { togglePopover, cart } = useStore();
+  const { cart } = useStore();
   const { data: userInfo, isLoading: loading } = useGetUserById(userId);
+  const [open, setOpen] = useState(false);
 
   if (loading) {
     return <Loader2Icon size={24} className="text-primary animate-spin" />;
@@ -22,7 +23,7 @@ const MyOrders = ({ userId }: { userId: string }) => {
         variant="ghost"
         title="My Orders"
         size="icon"
-        onClick={togglePopover}
+        onClick={() => setOpen(true)}
         className="w-max  px-2 border border-secondary relative"
       >
         <ShoppingBasket />
@@ -33,7 +34,7 @@ const MyOrders = ({ userId }: { userId: string }) => {
         )}
         <span>View cart</span>
       </Button>
-      <CustomSheet>
+      <CustomSheet open={open} onOpenChange={setOpen}>
         <div className="w-full p-1">
           <h2 className="text-base font-medium">Cart</h2>
           <p className="text-sm text-dark-300">Cart preview.</p>

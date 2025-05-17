@@ -273,7 +273,7 @@ export const updateTransactionStatus = async (data: {
       };
     }
 
-    revalidatePath("/dashboard/orders");
+    revalidatePath("/dashboard/orders", "page");
 
     return {
       status: true,

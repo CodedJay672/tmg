@@ -1,15 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { Dispatch } from "react";
 import { Sheet, SheetContent } from "../ui/sheet";
 import { useStore } from "@/store/appStore";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
-const CustomSheet = ({ children }: { children: React.ReactNode }) => {
-  const { showPopover, togglePopover } = useStore();
+interface CustomSheetProps {
+  children: React.ReactNode;
+  open: boolean;
+  onOpenChange: Dispatch<boolean>;
+}
 
+const CustomSheet = ({ open, onOpenChange, children }: CustomSheetProps) => {
   return (
-    <Sheet open={showPopover} onOpenChange={togglePopover}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         role="popover"
         aria-describedby={undefined}
