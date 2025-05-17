@@ -90,7 +90,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
                 </Button>
                 <Button
                   type="button"
-                  onClick={() => setOpen}
+                  onClick={() => setOpen(true)}
                   className="w-full bg-primary text-foreground cursor-pointer"
                 >
                   Checkout
@@ -136,7 +136,7 @@ const CartContent = ({ user }: { user?: Models.Document }) => {
 
             <div className="w-full grid grid-cols-2 gap-3 mt-6">
               <Button
-                onClick={() => setOpen}
+                onClick={() => setOpen(false)}
                 className="w-full bg-transparent hover:bg-transparent border border-red-500 text-red-500"
               >
                 Cancel

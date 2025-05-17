@@ -1,6 +1,5 @@
 "use client";
 
-import GlobalContext from "@/context/GlobalContext";
 import { Models } from "node-appwrite";
 import React, { useContext, useRef, useState } from "react";
 import CustomInput from "./shared/CustomInput";
@@ -14,7 +13,7 @@ import { updateUserInfo } from "@/lib/actions/user.actions";
 import { cn } from "@/lib/utils";
 
 const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
-  const { handleEditDetails, editDetails } = useContext(GlobalContext);
+  const [editDetails, setEditDetails] = useState(false);
   const fileUploadRef = useRef<HTMLInputElement | null>(null);
 
   const [firstname, setFirstname] = useState(
@@ -64,7 +63,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
       if (error.data) setErrors(error.data);
       return toast.error(error.message);
     } finally {
-      handleEditDetails();
+      setEditDetails(false);
     }
   };
 
@@ -107,7 +106,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           )}
         </div>
         <div
-          onClick={handleEditDetails}
+          onClick={() => setEditDetails((prev) => !prev)}
           className={cn(
             "size-10 text-dark-200 rounded-full border border-dark-200 flex-center cursor-pointer transition-all",
             {
@@ -182,7 +181,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           <SubmitButton label="Submit" />
           <Button
             type="button"
-            onClick={handleEditDetails}
+            onClick={() => setEditDetails(false)}
             className="w-full rounded-lg mt-2 bg-red-500 text-foreground hover:bg-red-500 transition-all"
           >
             Cancel

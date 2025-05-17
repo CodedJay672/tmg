@@ -111,9 +111,9 @@ export const updateUserInfo = async (
     }
 
     // revalidate paths
-    revalidatePath(`/user/${id}`);
-    revalidatePath(`/`);
-    revalidatePath("/cart");
+    revalidatePath(`/user/${id}`, "page");
+    revalidatePath(`/`, "page");
+    revalidatePath("/cart", "page");
 
     return {
       status: true,

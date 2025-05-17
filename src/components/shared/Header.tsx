@@ -21,6 +21,7 @@ const Header = async () => {
             alt="tmg procurement"
             width={120}
             height={90}
+            className="shrink-0 object-contain"
           />
         </Link>
         <div className="w-full flex-between space-x-1 lg:py-3">
@@ -32,14 +33,23 @@ const Header = async () => {
             <MailIcon size={24} className="text-primary" />
 
             {/* user profile */}
-            <Link href={`/user/${user?.$id}`} className="flex gap-1">
-              <Image
-                src={currentUser?.data?.documents?.[0].imgUrl}
-                alt={currentUser?.data?.documents?.[0].fullname}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
+            <Link
+              href={`/user/${user?.$id}`}
+              className="flex items-center gap-2"
+            >
+              {currentUser.data?.documents?.[0].imgUrl ? (
+                <Image
+                  src={currentUser?.data?.documents?.[0].imgUrl}
+                  alt={currentUser?.data?.documents?.[0].fullname}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              ) : (
+                <div className="size-8 p-2 flex-center bg-primary rounded-full">
+                  <span>{currentUser?.data?.documents?.[0].fullname[0]}</span>
+                </div>
+              )}
               <div className="hidden lg:block">
                 <h2 className="text-base font-semibold">
                   {currentUser?.data?.documents?.[0].fullname}

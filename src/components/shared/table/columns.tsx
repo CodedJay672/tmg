@@ -8,8 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDownIcon, MoreVerticalIcon } from "lucide-react";
 import CustomSheet from "../CustomSheet";
 import AdminTransactionView from "@/components/AdminTransactionView";
-import { useStore } from "@/store/appStore";
-import React, { useMemo } from "react";
+import React from "react";
 import Image from "next/image";
 
 export const orderTable: ColumnDef<Models.Document>[] = [
@@ -225,13 +224,19 @@ export const customerTable: ColumnDef<Models.Document>[] = [
 
       return (
         <div className="flex items-center gap-2">
-          <Image
-            src={imgUrl}
-            alt={fullname}
-            width={24}
-            height={24}
-            className="object-contain shrink-0 rounded-full"
-          />
+          {imgUrl ? (
+            <Image
+              src={imgUrl}
+              alt={fullname}
+              width={24}
+              height={24}
+              className="object-contain shrink-0 rounded-full"
+            />
+          ) : (
+            <div className="size-8 p-1 rounded-full bg-primary flex-center border border-dark-200">
+              <span className="text-base font-bold">{fullname[0]}</span>
+            </div>
+          )}
           <p className="text-base font-medium text-dark-300 line-clamp-1 truncate">
             {fullname}
           </p>
@@ -253,6 +258,11 @@ export const customerTable: ColumnDef<Models.Document>[] = [
           Location <ArrowUpDownIcon size={16} />
         </Button>
       );
+    },
+    cell: ({ row }) => {
+      const location = row.getValue("location");
+
+      return location ? location : "N/A";
     },
   },
   {
