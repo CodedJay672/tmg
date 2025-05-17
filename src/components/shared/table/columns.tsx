@@ -10,6 +10,7 @@ import CustomSheet from "../CustomSheet";
 import AdminTransactionView from "@/components/AdminTransactionView";
 import React from "react";
 import Image from "next/image";
+import CustomerDetails from "../CustomerDetails";
 
 export const orderTable: ColumnDef<Models.Document>[] = [
   {
@@ -299,6 +300,23 @@ export const customerTable: ColumnDef<Models.Document>[] = [
         <p className="text-dark-300">
           {total > 0 ? formatCurrency(total) : "N/A"}
         </p>
+      );
+    },
+  },
+  {
+    id: "action",
+    cell: ({ row }) => {
+      const [open, setOpen] = React.useState(false);
+
+      return (
+        <>
+          <Button variant="ghost" onClick={() => setOpen(true)}>
+            <MoreVerticalIcon size={24} />
+          </Button>
+          <CustomSheet open={open} onOpenChange={setOpen}>
+            <CustomerDetails info={row.original} />
+          </CustomSheet>
+        </>
       );
     },
   },
