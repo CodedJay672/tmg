@@ -120,22 +120,43 @@ export const signUp = async (values: {
   }
 };
 
-// const googleAuth = async () => {
-//   try {
-//     const { account } = await createSessionClient();
+export const googleAuth = async () => {
+  try {
+    const sessionClient = await createSessionClient();
 
-//     const response = await account.createOAuth2Token(
-//       OAuthProvider.Google,
-//       "https://localhost:3000"
-//     );
-//   } catch (error: any) {
-//     console.log(error);
-//     return {
-//       status: false,
-//       message: error.message,
-//     };
-//   }
-// };
+    if (!sessionClient) {
+      return {
+        status: false,
+        message: "Failed to create session client.",
+      };
+    }
+
+    const { account } = sessionClient;
+
+    const response = await account.createOAuth2Token(
+      OAuthProvider.Google,
+      "https://localhost:3000"
+    );
+
+    if (!response) {
+      return {
+        status: false,
+        message: "sign up failed",
+      };
+    }
+
+    return {
+      status: true,
+      message: "Signed up success.",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
 
 export async function signOut(): Promise<void> {
   const response = await createSessionClient();

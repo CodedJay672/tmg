@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import CustomInput from "./shared/CustomInput";
 import SubmitButton from "./shared/SubmitButton";
-import { SignIn, signUp } from "@/lib/actions/auth.actions";
+import { googleAuth, SignIn, signUp } from "@/lib/actions/auth.actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -173,7 +173,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
 
       <Button
         variant="outline"
-        // onClick={logginWithGoogle}
+        onClick={googleAuth}
         className="w-full mx-auto flex-center gap-2 border border-secondary rounded-md p-4 cursor-pointer bg-foreground hover:bg-secondary transition-all"
       >
         <Image src="/icons/google.svg" alt="google" width={24} height={24} />
