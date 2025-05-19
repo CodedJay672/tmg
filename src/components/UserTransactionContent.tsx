@@ -16,12 +16,12 @@ const UserTransactionContent = ({ userId }: { userId: string }) => {
   const filteredData: Models.Document[] = useMemo(
     () =>
       userInfo?.data?.documents?.[0].transactions
-        .sort(
-          (a: Models.Document, b: Models.Document) =>
-            a.$createdAt > b.$createdAt
-        )
         .filter((item: Models.Document) =>
           item.status.includes(query.toUpperCase())
+        )
+        .sort(
+          (a: Models.Document, b: Models.Document) =>
+            new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime()
         ),
     [category]
   );
