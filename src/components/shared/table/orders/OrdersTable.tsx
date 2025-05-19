@@ -29,7 +29,13 @@ const OrdersTable = ({ query }: { query: string }) => {
           )}
           <CustomTable
             columns={orderTable}
-            data={orders?.data?.documents ?? []}
+            data={
+              orders?.data?.documents.sort(
+                (a, b) =>
+                  new Date(b.$createdAt).getTime() -
+                  new Date(a.$createdAt).getTime()
+              ) ?? []
+            }
           />
         </>
       )}
