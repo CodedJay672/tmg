@@ -137,14 +137,14 @@ const Dashboard = async () => {
           <p className="text-base lg:text-lg font-medium">Recent Orders</p>
           <CustomTable
             columns={smallTable}
-            data={transactions?.data?.documents || []}
+            data={transactions?.data?.documents.slice(0, 6) || []}
           />
         </div>
         <div className="space-y-4 p-5 w-full max-w-96 border border-gray-200 shadow-md shadow-gray-300">
           <p className="text-base lg:text-lg font-medium">Top sellers</p>
           <CustomTable
             columns={smallTable}
-            data={transactions?.data?.documents || []}
+            data={transactions?.data?.documents.slice(0, 6) || []}
           />
         </div>
       </div>
