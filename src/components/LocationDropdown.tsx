@@ -7,13 +7,12 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, Loader2Icon, MapPinIcon } from "lucide-react";
 import { Models } from "node-appwrite";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
-import CustomInput from "./shared/CustomInput";
-import SubmitButton from "./shared/SubmitButton";
 import { toast } from "sonner";
 import { getUser } from "@/lib/actions/user.actions";
 import { Button } from "./ui/button";
+import DeliveryDetailsForm from "./shared/DeliveryDetailsForm";
 
 const LocationDropdown = ({
   user,
@@ -28,45 +27,43 @@ const LocationDropdown = ({
   const { mutateAsync: updateLocation, isPending: loadingLocation } =
     useUpdateUserInfo();
   const [showDropdown, setShowDropdown] = useState(false);
-
-  // get all delivery details from the database
-  const [deliveryLocation, setDeliveryLocation] = useState(
-    userInfo?.data?.documents?.[0].delivery_location
-  );
-  const [deliveryAddress, setDeliveryAddress] = useState(
-    userInfo?.data?.documents?.[0].delivery_address
-  );
-  const [receiverName, setReceiverName] = useState(
-    userInfo?.data?.documents?.[0].receiver_name
-  );
-  const [receiverPhone, setReceiverPhone] = useState(
-    userInfo?.data?.documents?.[0].receiver_phone
-  );
+  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   // handle the update action here
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const handleSubmit = async (formData: FormData) => {
+    setErrors(null);
     const currentUser = await getUser(user?.$id);
 
-    if (!currentUser.status) return toast.error(currentUser.message);
+    if (!currentUser.status) {
+      toast.error(currentUser.message);
+      return currentUser.message;
+    }
+
+    const delivery_address = formData.get("delivery_address") as string;
+    const delivery_location = formData.get("delivery_location") as string;
+    const receiver_name = formData.get("receiver_name") as string;
+    const receiver_phone = formData.get("receiver_phone") as string;
 
     const res = await updateLocation({
       id: currentUser.data?.documents?.[0].$id!,
       data: {
-        delivery_address: deliveryAddress,
-        delivery_location: deliveryLocation,
-        receiver_name: receiverName,
-        receiver_phone: receiverPhone,
+        delivery_address,
+        delivery_location,
+        receiver_name,
+        receiver_phone,
       },
     });
 
     if (!loadingLocation && !res.status) {
-      return toast.error(res.message);
+      if (res.data) setErrors(res.data);
+      toast.error(res.message);
+      console.log(res);
+      return res.message;
     }
 
     setShowDropdown(false);
-    return toast.success(res.message);
+    toast.success(res.message);
+    return res.message;
   };
 
   if (loading && !userInfo) {
@@ -111,47 +108,11 @@ const LocationDropdown = ({
             <p className="text-xl font-bold">Provide delivery information.</p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="w-full flex flex-col gap-3 mb-4"
-          >
-            <CustomInput
-              label="Location"
-              type="text"
-              name="delivery_location"
-              value={deliveryLocation}
-              onChange={setDeliveryLocation}
-            />
-            <CustomInput
-              label="Address"
-              type="text"
-              name="delivery_address"
-              value={deliveryAddress}
-              onChange={setDeliveryAddress}
-            />
-            <CustomInput
-              label="Name (Receiver)"
-              type="text"
-              name="receiver_name"
-              value={receiverName}
-              onChange={setReceiverName}
-            />
-            <CustomInput
-              label="Phone (Receiver)"
-              type="text"
-              name="receiver_phone"
-              value={receiverPhone}
-              onChange={setReceiverPhone}
-            />
-
-            <SubmitButton label="Update" />
-            <small className="w-full text-center text-dark-200 mt-4">
-              Note! This will become your{" "}
-              <span className="font-bold text-secondary">
-                default delivery location.
-              </span>
-            </small>
-          </form>
+          <DeliveryDetailsForm
+            user={user}
+            errors={errors}
+            action={handleSubmit}
+          />
         </div>
       </ProfileDropdown>
     </>

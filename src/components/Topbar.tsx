@@ -50,7 +50,7 @@ const Topbar = async () => {
         )}
       </div>
 
-      <div className="w-48 lg:hidden bg-secondary rounded-full p-1 flex items-center gap-2 relative">
+      <div className="w-48 lg:hidden bg-secondary rounded-full px-3 flex items-center gap-2 relative">
         <LocationDropdown user={user} />
       </div>
     </header>

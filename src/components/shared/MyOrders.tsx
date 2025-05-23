@@ -40,7 +40,7 @@ const MyOrders = ({ userId }: { userId: string }) => {
           <p className="text-sm text-dark-300">Cart preview.</p>
         </div>
 
-        <CartContent user={userInfo?.data?.documents?.[0]} />
+        <CartContent action={setOpen} user={userInfo?.data?.documents?.[0]} />
       </CustomSheet>
     </>
   );
