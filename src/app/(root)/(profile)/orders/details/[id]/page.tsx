@@ -103,25 +103,45 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
 
           <div className="w-full p-3 border border-gray-200 rounded-xl">
             <h2 className="text-lg lg:text-xl font-medium">Customer</h2>
-            <p className="text-sm font-light text-pretty mt-4">
+            <p className="text-base font-normal text-pretty mt-4">
               {orderInfo.data?.documents?.[0].creator.fullname}
             </p>
             <Link
               href={`mailto:${orderInfo.data?.documents?.[0].creator.email}`}
-              className="text-sm text-blue-600 underline"
+              className="text-base text-blue-600 underline"
             >
               {orderInfo.data?.documents?.[0].creator.email}
             </Link>
-            <p className="text-sm font-light text-pretty">
+            <p className="text-base font-normal text-pretty">
               {orderInfo.data?.documents?.[0].creator.phone}
             </p>
 
-            <h3 className="text-xs text-dark-300 font-medium mt-3">
+            <h3 className="text-base text-dark-200 font-medium mt-6 mb-2">
               Delivery address
             </h3>
             <p>
-              {orderInfo.data?.documents?.[0].creator.address},{" "}
-              {orderInfo.data?.documents?.[0].creator.location}
+              Address:{" "}
+              <span className="text-sm text-dark-300 font-medium">
+                {orderInfo.data?.documents?.[0].delivery_address || "--"}
+              </span>
+            </p>
+            <p>
+              Location:{" "}
+              <span className="text-sm text-dark-300 font-medium">
+                {orderInfo.data?.documents?.[0].delivery_location || "--"}
+              </span>
+            </p>
+            <p>
+              Name:{" "}
+              <span className="text-sm text-dark-300 font-medium">
+                {orderInfo.data?.documents?.[0].receiver_name || "--"}
+              </span>
+            </p>
+            <p>
+              Phone:{" "}
+              <span className="text-sm text-dark-300 font-medium">
+                {orderInfo.data?.documents?.[0].receiver_phone || "--"}
+              </span>
             </p>
           </div>
         </div>

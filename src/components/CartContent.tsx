@@ -1,11 +1,13 @@
 "use client";
 
 import { useStore } from "@/store/appStore";
-import React from "react";
+import React, { useState } from "react";
 import CartCard from "./shared/CartCard";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { Models } from "node-appwrite";
+import { toast } from "sonner";
+import { completeTransaction } from "@/lib/actions/cart.actions";
 
 const CartContent = ({
   action,
@@ -17,6 +19,40 @@ const CartContent = ({
   const { cart, clearCart } = useStore();
   const total = cart.reduce((init, item) => item.price * item.qty + init, 0);
 
+  // get delivery details
+  const [deliveryLocation, setDeliveryLocation] = useState(
+    user?.delivery_location ?? ""
+  );
+  const [deliveryAddress, setDeliveryAddress] = useState(
+    user?.delivery_address ?? ""
+  );
+  const [receiverName, setReceiverName] = useState(user?.receiver_name ?? "");
+  const [receiverPhone, setReceiverPhone] = useState(
+    user?.receiver_phone ?? ""
+  );
+
+  const handleCheckout = async () => {
+    try {
+      const response = await completeTransaction({
+        userId: user?.$id,
+        order: cart,
+        total,
+        location: user?.location,
+        status: "PROCESSING",
+        delivery_location: deliveryLocation,
+        delivery_address: deliveryAddress,
+        receiver_name: receiverName,
+        receiver_phone: receiverPhone,
+      });
+
+      if (!response?.status) return toast.error(response?.message);
+
+      clearCart();
+      toast.success(response?.message);
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  };
   return (
     <section className="w-full overflow-y-scroll no-scrollbar">
       <ul className="w-full mt-4 space-y-6">
@@ -26,6 +62,44 @@ const CartContent = ({
           </li>
         ))}
       </ul>
+
+      {cart.length > 0 && (
+        <div className="space-y-3 my-10 p-6 border border-gray-300 rounded-xl ">
+          <h2 className="text-base lg:text-lg font-medium">
+            Delivery information
+          </h2>
+          <form className="space-y-5">
+            <input
+              type="text"
+              value={deliveryLocation}
+              onChange={(e) => setDeliveryLocation(e.target.value)}
+              placeholder="Delivery location"
+              className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
+            />
+            <input
+              type="text"
+              value={deliveryAddress}
+              onChange={(e) => setDeliveryAddress(e.target.value)}
+              placeholder="Delivery address"
+              className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
+            />
+            <input
+              type="text"
+              value={receiverName}
+              onChange={(e) => setReceiverName(e.target.value)}
+              placeholder="Receiver's name"
+              className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
+            />
+            <input
+              type="text"
+              value={receiverPhone}
+              onChange={(e) => setReceiverPhone(e.target.value)}
+              placeholder="Receiver's phone"
+              className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
+            />
+          </form>
+        </div>
+      )}
 
       {cart.length > 0 && (
         <div className="w-full">
@@ -66,10 +140,10 @@ const CartContent = ({
                 <Button
                   type="button"
                   variant="link"
-                  onClick={action ? () => action(false) : () => null}
+                  onClick={handleCheckout}
                   className="w-full bg-primary text-foreground cursor-pointer"
                 >
-                  <Link href="/checkout">Checkout</Link>
+                  Checkout
                 </Button>
               </>
             ) : (

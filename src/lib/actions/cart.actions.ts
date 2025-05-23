@@ -154,6 +154,10 @@ export const completeTransaction = async (
         order: response.data?.$id,
         total: transaction.total,
         location: transaction.location,
+        delivery_location: transaction.delivery_location,
+        delivery_address: transaction.delivery_address,
+        receiver_name: transaction.receiver_name,
+        receiver_phone: transaction.receiver_phone,
       }
     );
 

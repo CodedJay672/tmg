@@ -25,6 +25,10 @@ type TransactionEntryType = {
   total: number;
   location: string;
   status: "CANCELLED" | "PROCESSING" | "COMPLETED";
+  delivery_location: string;
+  delivery_address: string;
+  receiver_name: string;
+  receiver_phone: string;
 };
 
 type TableTypeProps = {
