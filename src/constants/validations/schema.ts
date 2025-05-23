@@ -37,6 +37,10 @@ export const userDetails = z.object({
   address: z.string().optional(),
   phone: z.string().optional(),
   imgUrl: z.string().optional(),
+  delivery_location: z.string().optional(),
+  delivery_address: z.string().optional(),
+  receiver_name: z.string().optional(),
+  receiver_phone: z.string().optional(),
 });
 
 export const productSchema = z.object({

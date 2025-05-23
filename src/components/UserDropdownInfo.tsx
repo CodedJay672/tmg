@@ -15,7 +15,7 @@ const UserDropdownInfo = ({
   const { toggleDropdown } = useStore();
 
   return (
-    <>
+    <div className="w-64">
       <h3 className="text-base font-bold">{user?.name}</h3>
       <p className="text-sm text-gray-400">{user?.email}</p>
 
@@ -44,7 +44,7 @@ const UserDropdownInfo = ({
       <hr className="w-full my-4 text-gray-300" />
 
       <p className="text-sm font-light">Customer support</p>
-    </>
+    </div>
   );
 };
 

@@ -2,24 +2,30 @@
 
 import React, { useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { useStore } from "@/store/appStore";
 import { useWindowScroll } from "react-use";
 
-const ProfileDropdown = ({ children }: { children: React.ReactNode }) => {
-  const { showDropdown, hideDropdown } = useStore();
+const ProfileDropdown = ({
+  show,
+  setShow,
+  children,
+}: {
+  children: React.ReactNode;
+  show: boolean;
+  setShow: (t: boolean) => void;
+}) => {
   const { y } = useWindowScroll();
 
   //perform some options onscroll
   useEffect(() => {
-    if (showDropdown) hideDropdown();
+    if (show) setShow(false);
   }, [y]);
 
   return (
     <article
       className={cn(
-        "w-64 h-0 absolute top-10 right-0 bg-foreground py-6 px-3 rounded-lg shadow-md z-90 transition-all transform-gpu duration-300 overflow-hidden -translate-y-20 opacity-0",
+        "w-max h-0 absolute overflow-hidden top-15 right-0 bg-foreground py-6 px-3 rounded-lg shadow-lg z-90 transition-all transform-gpu duration-300  -translate-y-100 opacity-0",
         {
-          "h-68 translate-y-0 opacity-100": showDropdown,
+          "h-max translate-y-0 opacity-100": show,
         }
       )}
     >

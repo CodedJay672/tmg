@@ -95,6 +95,7 @@ export const updateUserInfo = async (
       id,
       {
         ...data,
+        $updatedAt: new Date(),
         imgUrl: filePrev,
         watchlist: watchlist ? [...watchlist] : watchlist,
       }
@@ -111,8 +112,8 @@ export const updateUserInfo = async (
     }
 
     // revalidate paths
-    revalidatePath(`/user/${id}`, "page");
     revalidatePath(`/`, "page");
+    revalidatePath(`/user/${id}`, "page");
     revalidatePath("/cart", "page");
 
     return {
