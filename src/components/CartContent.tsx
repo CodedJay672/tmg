@@ -64,7 +64,7 @@ const CartContent = ({
       </ul>
 
       {cart.length > 0 && (
-        <div className="space-y-3 my-10 p-6 border border-gray-300 rounded-xl ">
+        <div className="space-y-3 my-10 p-6 rounded-xl ">
           <h2 className="text-base lg:text-lg font-medium">
             Delivery information
           </h2>
@@ -139,7 +139,6 @@ const CartContent = ({
                 </Button>
                 <Button
                   type="button"
-                  variant="link"
                   onClick={handleCheckout}
                   className="w-full bg-primary text-foreground cursor-pointer"
                 >
