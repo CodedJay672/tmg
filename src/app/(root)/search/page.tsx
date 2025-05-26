@@ -1,6 +1,7 @@
 import ProductGallery from "@/components/ProductGallery";
 import SearchBar from "@/components/SearchBar";
 import GoHome from "@/components/shared/GoHome";
+import { getLoggedInUser } from "@/lib/server/appwrite";
 import React from "react";
 
 const SearchPage = async ({
@@ -9,6 +10,8 @@ const SearchPage = async ({
   searchParams: Promise<{ query: string }>;
 }) => {
   const { query } = await searchParams;
+
+  const user = await getLoggedInUser();
 
   return (
     <section className="content-wrapper flex-center flex-col">
@@ -30,7 +33,7 @@ const SearchPage = async ({
       )}
 
       <div className="w-full flex-1">
-        <ProductGallery query={query} enabled={false} />
+        <ProductGallery userId={user?.$id} query={query} enabled={true} />
       </div>
     </section>
   );

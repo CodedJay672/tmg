@@ -14,7 +14,7 @@ export default async function Home() {
       <CategoryTab />
 
       <div className="hidden lg:block w-full flex-1">
-        <ProductGallery userId={user?.$id} query="" enabled={true} />
+        <ProductGallery userId={user?.$id} enabled={false} />
       </div>
 
       <div className="lg:hidden">

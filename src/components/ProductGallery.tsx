@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useGetProducts } from "@/lib/queries/productQueries/products";
 import { Loader2Icon } from "lucide-react";
 import ProductCard from "./shared/ProductCard";
@@ -11,17 +11,14 @@ const ProductGallery = ({
   enabled,
 }: {
   userId: string | undefined;
-  query: string;
   enabled: boolean;
+  query?: string;
 }) => {
-  const { data: allProducts, isPending: loading } = useGetProducts(
-    enabled,
-    query
-  );
+  const { data: allProducts, isLoading } = useGetProducts(enabled, query);
 
   return (
     <>
-      {loading && !allProducts && (
+      {isLoading && !allProducts && (
         <div className="flex-center mt-24 gap-1">
           <Loader2Icon size={24} className="animate-spin" />
           <p className="text-sm lg:text-base text-dark-300">
@@ -30,15 +27,17 @@ const ProductGallery = ({
         </div>
       )}
 
-      {!loading && !allProducts?.status && (
+      {!isLoading && !allProducts?.data?.total && (
         <div className="flex-center mt-24 gap-1">
-          <p className="text-sm lg:text-base text-dark-200">
-            No products to view!
+          <p className="text-lg lg:text-xl text-dark-200">
+            {query
+              ? "No products found."
+              : "Search from over 5000+ products..."}
           </p>
         </div>
       )}
 
-      {!loading && allProducts?.status && (
+      {!isLoading && allProducts?.data?.total && (
         <>
           <h2 className="text-lg lg:text-xl font-medium text-left w-full mt-4 lg:mt-10 capitalize">
             {query ? `${query}` : "All products"}{" "}
