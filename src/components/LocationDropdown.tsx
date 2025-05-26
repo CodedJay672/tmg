@@ -82,7 +82,7 @@ const LocationDropdown = ({
     <>
       <p className="flex-1 text-sm text-dark-300 font-medium truncate line-clamp-1 flex items-center gap-1">
         <MapPinIcon size={16} className="shrink-0 text-dark-300" />
-        {userInfo.data?.total
+        {userInfo.data?.documents?.[0].delivery_location
           ? `${userInfo.data.documents?.[0].delivery_location}, ${userInfo.data.documents?.[0].delivery_address}`
           : "Set location here."}
       </p>

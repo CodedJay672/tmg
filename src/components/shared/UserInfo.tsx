@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 
 const UserInfo = ({ user }: { user: Models.User<Models.Preferences> }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+
   return (
     <div className="w-max bg-secondary flex items-center p-1 rounded-full pr-3 relative">
       <div className="size-7 bg-primary rounded-full flex-center shrink-0">
@@ -32,7 +33,7 @@ const UserInfo = ({ user }: { user: Models.User<Models.Preferences> }) => {
         />
       </Button>
       <ProfileDropdown show={showDropdown} setShow={setShowDropdown}>
-        <UserDropdownInfo user={user} />
+        <UserDropdownInfo action={setShowDropdown} user={user} />
       </ProfileDropdown>
     </div>
   );

@@ -26,6 +26,16 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
   const [phone, setPhone] = useState(user?.phone || "");
   const [imgUrl, setImgUrl] = useState(user?.imgUrl || "");
   const [userFile, setUserFile] = useState<File[]>([]);
+  const [deliveryLocation, setDeliveryLocation] = useState(
+    user?.delivery_location || ""
+  );
+  const [deliveryAddress, setDeliveryAddress] = useState(
+    user?.delivery_address || ""
+  );
+  const [receiverPhone, setReceiverPhone] = useState(
+    user?.receiver_phone || ""
+  );
+  const [receiverName, setReceiverName] = useState(user?.recevier_name || "");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const uploadFile = () => {
@@ -49,6 +59,10 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         address,
         phone,
         imgUrl,
+        delivery_location: deliveryLocation,
+        delivery_address: deliveryAddress,
+        receiver_phone: receiverPhone,
+        receiver_name: receiverName,
       };
 
       const res = await updateUserInfo({ data }, user?.$id, userFile?.[0]);
@@ -175,6 +189,49 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         disabled={!editDetails}
         onChange={setAddress}
       />
+
+      <fieldset className="mt-5">
+        <legend className="text-lg font-medium mb-3">Delivery details</legend>
+
+        <div className="flex-between gap-2 lg:gap-3 mb-2">
+          <CustomInput
+            label="delivery Location"
+            type="text"
+            name="delivery_location"
+            value={deliveryLocation}
+            disabled={!editDetails}
+            onChange={setDeliveryLocation}
+          />
+
+          <CustomInput
+            label="delivery address"
+            type="text"
+            name="delivery_address"
+            value={deliveryAddress}
+            disabled={!editDetails}
+            onChange={setDeliveryAddress}
+          />
+        </div>
+
+        <div className="flex-between gap-2 lg:gap-3 mb-2">
+          <CustomInput
+            label="receiver's name"
+            type="text"
+            name="receiver_name"
+            value={receiverName}
+            disabled={!editDetails}
+            onChange={setReceiverName}
+          />
+          <CustomInput
+            label="receiver's phone"
+            type="text"
+            name="receiver_phone"
+            value={deliveryLocation}
+            disabled={!editDetails}
+            onChange={setReceiverPhone}
+          />
+        </div>
+      </fieldset>
 
       {editDetails && (
         <fieldset className="w-full lg:w-96 mt-6 grid grid-cols-2 gap-1 lg:gap-3 place-self-end place-content-center">

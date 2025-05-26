@@ -5,15 +5,14 @@ import { ShoppingBasketIcon, User2Icon } from "lucide-react";
 import SignOut from "./shared/SignOut";
 import { Models } from "node-appwrite";
 import Link from "next/link";
-import { useStore } from "@/store/appStore";
 
 const UserDropdownInfo = ({
   user,
+  action,
 }: {
   user: Models.User<Models.Preferences>;
+  action: (t: boolean) => void;
 }) => {
-  const { toggleDropdown } = useStore();
-
   return (
     <div className="w-64">
       <h3 className="text-base font-bold">{user?.name}</h3>
@@ -24,7 +23,7 @@ const UserDropdownInfo = ({
       <div className="space-y-2">
         <Link
           href={`/user/${user?.$id}`}
-          onClick={toggleDropdown}
+          onClick={() => action(false)}
           className="text-base font-light flex items-center gap-3"
         >
           <User2Icon size={16} />
@@ -32,7 +31,7 @@ const UserDropdownInfo = ({
         </Link>
         <Link
           href={`/orders/${user?.$id}`}
-          onClick={toggleDropdown}
+          onClick={() => action(false)}
           className="text-base font-light flex items-center gap-3"
         >
           <ShoppingBasketIcon size={16} />

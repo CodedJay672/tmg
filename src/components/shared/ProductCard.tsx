@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
 import WatchlistButton from "./WatchlistButton";
+import { useGetUserById } from "@/lib/queries/userQueried/users";
 
 interface ProductCardProps {
   item: Models.Document;
@@ -11,6 +12,8 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ item, userId }: ProductCardProps) => {
+  const { data: currentUser } = useGetUserById(userId);
+
   return (
     <article className="w-full space-y-4 rounded-md shadow-md relative">
       <Image
@@ -26,12 +29,16 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
         </p>
         <div className="flex-between">
           <span>
-            {item.price.toLocaleString("en-NG", {
-              style: "currency",
-              currency: "NGN",
-            })}
+            {currentUser?.data?.documents?.[0].delivery_location
+              ? item.price.toLocaleString("en-NG", {
+                  style: "currency",
+                  currency: "NGN",
+                })
+              : "Location required"}
           </span>
-          <CartActionButton item={item} />
+          {currentUser?.data?.documents?.[0].delivery_location && (
+            <CartActionButton item={item} />
+          )}
         </div>
       </div>
 
