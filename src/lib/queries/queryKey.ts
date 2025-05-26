@@ -5,4 +5,6 @@ export const QUERY_KEYS = {
   UPDATE_USER_INFO: "updateUserinfo",
   GET_CART: "getUserCart",
   GET_WATCHLIST: "getUserWatchlist",
+  GET_LOCATIONS: "getAllLocations",
+  UPDATE_LOCATIONS: "updateLocations",
 };

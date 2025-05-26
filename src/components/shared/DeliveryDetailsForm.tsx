@@ -19,16 +19,16 @@ const DeliveryDetailsForm = ({
 
   // get all delivery details from the database
   const [deliveryLocation, setDeliveryLocation] = useState(
-    userInfo?.data?.documents?.[0].delivery_location
+    userInfo?.data?.documents?.[0].delivery_location ?? ""
   );
   const [deliveryAddress, setDeliveryAddress] = useState(
-    userInfo?.data?.documents?.[0].delivery_address
+    userInfo?.data?.documents?.[0].delivery_address ?? ""
   );
   const [receiverName, setReceiverName] = useState(
-    userInfo?.data?.documents?.[0].receiver_name
+    userInfo?.data?.documents?.[0].receiver_name ?? ""
   );
   const [receiverPhone, setReceiverPhone] = useState(
-    userInfo?.data?.documents?.[0].receiver_phone
+    userInfo?.data?.documents?.[0].receiver_phone ?? ""
   );
 
   // Handler to adapt FormEvent to FormData for the action prop

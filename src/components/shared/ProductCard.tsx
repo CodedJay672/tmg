@@ -5,6 +5,7 @@ import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
 import WatchlistButton from "./WatchlistButton";
 import { useGetUserById } from "@/lib/queries/userQueried/users";
+import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
 
 interface ProductCardProps {
   item: Models.Document;
@@ -13,6 +14,15 @@ interface ProductCardProps {
 
 const ProductCard = ({ item, userId }: ProductCardProps) => {
   const { data: currentUser } = useGetUserById(userId);
+  const { data: userLocationInfo } = useGetAllLocations(
+    currentUser?.data?.documents?.[0].delivery_location
+  );
+
+  const percentIncrease = Math.floor(
+    (userLocationInfo?.data?.documents?.[0].charge * item.price) / 100
+  );
+
+  const price = item.price + percentIncrease;
 
   return (
     <article className="w-full space-y-4 rounded-md shadow-md relative">
@@ -30,7 +40,7 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
         <div className="flex-between">
           <span>
             {currentUser?.data?.documents?.[0].delivery_location
-              ? item.price.toLocaleString("en-NG", {
+              ? price.toLocaleString("en-NG", {
                   style: "currency",
                   currency: "NGN",
                 })

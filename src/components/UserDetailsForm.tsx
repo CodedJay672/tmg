@@ -35,7 +35,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
   const [receiverPhone, setReceiverPhone] = useState(
     user?.receiver_phone || ""
   );
-  const [receiverName, setReceiverName] = useState(user?.recevier_name || "");
+  const [receiverName, setReceiverName] = useState(user?.receiver_name || "");
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   const uploadFile = () => {
@@ -226,7 +226,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
             label="receiver's phone"
             type="text"
             name="receiver_phone"
-            value={deliveryLocation}
+            value={receiverPhone}
             disabled={!editDetails}
             onChange={setReceiverPhone}
           />
