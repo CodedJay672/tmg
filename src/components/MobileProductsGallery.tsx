@@ -10,7 +10,7 @@ const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
     <ProductGallery
       userId={userId}
       query={category === "all" ? "" : category}
-      enabled
+      enabled={false}
     />
   );
 };
