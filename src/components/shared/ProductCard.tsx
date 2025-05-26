@@ -47,7 +47,7 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
               : "Location required"}
           </span>
           {currentUser?.data?.documents?.[0].delivery_location && (
-            <CartActionButton item={item} />
+            <CartActionButton item={{ ...item, price: price }} />
           )}
         </div>
       </div>

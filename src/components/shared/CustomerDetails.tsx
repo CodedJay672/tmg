@@ -23,7 +23,31 @@ const CustomerDetails = ({ info }: { info: Models.Document }) => {
       </div>
 
       <div className="w-full p-2 border border-dark-100 rounded-xl">
-        <h2>Billing Address</h2>
+        <h2 className="text-lg font-semibold mb-3">Billing Address</h2>
+        <p className="text-base text-dark-300">
+          Address:{" "}
+          <span className="text-sm text-dark-300 font-medium">
+            {info.delivery_address || "--"}
+          </span>
+        </p>
+        <p className="text-base text-dark-300">
+          Location:{" "}
+          <span className="text-sm text-dark-300 font-medium">
+            {info.delivery_location || "--"}
+          </span>
+        </p>
+        <p className="text-base text-dark-300">
+          Name:{" "}
+          <span className="text-sm text-dark-300 font-medium">
+            {info.receiver_name || "--"}
+          </span>
+        </p>
+        <p className="text-base text-dark-300">
+          Phone:{" "}
+          <span className="text-sm text-dark-300 font-medium">
+            {info.receiver_phone || "--"}
+          </span>
+        </p>
       </div>
     </aside>
   );
