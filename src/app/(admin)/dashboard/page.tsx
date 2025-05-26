@@ -140,7 +140,7 @@ const Dashboard = async () => {
             data={transactions?.data?.documents.slice(0, 6) || []}
           />
         </div>
-        <div className="space-y-4 p-5 w-full max-w-96 border border-gray-200 shadow-md shadow-gray-300">
+        <div className="space-y-4 p-5 w-full max-w-96 border border-gray-200 shadow-md shadow-gray-300 z-0">
           <p className="text-base lg:text-lg font-medium">Top sellers</p>
           <CustomTable
             columns={smallTable}

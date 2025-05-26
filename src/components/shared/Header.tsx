@@ -63,7 +63,7 @@ const Header = async () => {
         </div>
       </div>
       <div className="lg:hidden w-full bg-dark-200/20">
-        <SearchBar placeholder="Search orders..." />
+        <SearchBar placeholder="Search..." />
       </div>
     </header>
   );

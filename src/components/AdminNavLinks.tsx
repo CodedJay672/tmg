@@ -1,8 +1,8 @@
 import React from "react";
 import {
-  FileAxis3DIcon,
   LayoutDashboardIcon,
   ListOrderedIcon,
+  SettingsIcon,
   ShoppingBagIcon,
   Users2Icon,
 } from "lucide-react";
@@ -12,8 +12,8 @@ import Image from "next/image";
 
 const AdminNavLinks = () => {
   return (
-    <nav className="w-full lg:w-72 lg:h-screen px-4 py-6 lg:p-0 flex justify-between items-center  flex-row lg:flex-col lg:justify-start lg:items-start bg-dark-100 sticky bottom-0 order-1 lg:order-0 lg:top-0 left-0 space-y-3">
-      <Link href="/" className="flex items-center px-6">
+    <nav className="w-full lg:w-72 lg:h-screen px-4 py-6 lg:p-0 flex justify-between items-center  flex-row lg:flex-col lg:justify-start lg:items-start bg-dark-100 sticky bottom-0 order-1 lg:order-0 lg:top-0 left-0 space-y-3 z-10">
+      <Link href="/" className="hidden lg:flex items-center px-6">
         <Image
           src="/assets/logo.png"
           alt="tmg procurement"
@@ -47,9 +47,9 @@ const AdminNavLinks = () => {
       />
 
       <AdminLink
-        path="/dashboard/invoices"
-        label="Invoices"
-        icon={<FileAxis3DIcon size={24} />}
+        path="/dashboard/settings"
+        label="Settings"
+        icon={<SettingsIcon size={24} />}
       />
 
       <p className="text-sm text-gray-400 hidden lg:block absolute bottom-2 left-6">
