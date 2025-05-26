@@ -1,6 +1,5 @@
 "use client";
 
-import { getAllProducts } from "@/lib/actions/products.actions";
 import React from "react";
 import ProductDetails from "./shared/ProductDetails";
 import { useStore } from "@/store/appStore";
@@ -10,7 +9,7 @@ import { Loader2Icon } from "lucide-react";
 const ProductListing = ({ query }: { query?: string }) => {
   const { category } = useStore();
   const { data: products, isPending: loading } = useGetProducts(
-    true,
+    false,
     query ?? category !== "all" ? category : ""
   );
 
