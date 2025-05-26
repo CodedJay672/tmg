@@ -9,6 +9,7 @@ export const config = {
     productCollection: process.env.APPWRITE_PRODUCTS_COLLECTION_ID!,
     transactionsCollection: process.env.APPWRITE_TRANSACTIONS_COLLECTION_ID!,
     cartCollection: process.env.APPWRITE_CARTS_COLLECTION_ID!,
+    locationCollection: process.env.APPWRITE_LOCATIONS_COLLECTION_ID!,
     storageId: process.env.APPWRITE_STORAGE_ID!,
   },
 };
