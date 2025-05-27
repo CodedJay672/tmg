@@ -32,7 +32,7 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
         <Back />
         <span className="text-lg font-bold">Back</span>
       </div>
-      <div className="w-full px-3 py-5 border flex flex-col lg:flex-row gap-3 border-gray-200 rounded-xl space-y-3">
+      <div className="w-full px-3 py-5 border flex flex-col md:flex-row gap-3 border-gray-200 rounded-xl space-y-3">
         <div className="hidden lg:flex justify-center items-center border rounded-xl border-dark-200">
           <Back />
         </div>

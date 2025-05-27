@@ -84,7 +84,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl space-y-4 lg:p-6 flex flex-col"
+      className="w-full lg:w-2xl space-y-4 lg:p-6 flex flex-col"
     >
       <fieldset className="w-full flex justify-between">
         <div className="size-24 flex-center rounded-full bg-secondary relative">

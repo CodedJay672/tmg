@@ -47,7 +47,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
           </p>
         </div>
       </div>
-      <div className="w-full flex-between flex-col lg:flex-row gap-10 p-3">
+      <div className="w-full flex-between flex-col md:flex-row gap-10 p-3">
         <div className="w-full flex items-center gap-3">
           <div className="flex-center relative">
             <Image

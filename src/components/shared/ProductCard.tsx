@@ -33,12 +33,12 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
         height={64}
         className="object-cover rounded-md overflow-hidden"
       />
-      <div className="py-2 px-3 space-y-2">
-        <p className="text-lg font-medium truncate line-clamp-1 capitalize">
+      <div className="p-2 lg:py-2 lg:px-3 space-y-2">
+        <p className="text-lg font-semibold truncate line-clamp-1 capitalize">
           {item.name}
         </p>
         <div className="flex-between">
-          <span>
+          <span className="text-sm lg:text-base font-medium">
             {currentUser?.data?.documents?.[0].delivery_location
               ? price.toLocaleString("en-NG", {
                   style: "currency",

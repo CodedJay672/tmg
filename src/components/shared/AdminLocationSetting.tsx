@@ -70,6 +70,7 @@ const AdminLocationSetting = () => {
             Location
             <select
               defaultValue={details?.location || "Select a state"}
+              required
               onChange={(e) => setLocation(e.target.value)}
               className="text-base font-medium capitalize w-full bg-dark-100 border border-primary rounded-lg p-3 mt-4 outline-none"
             >
@@ -90,6 +91,7 @@ const AdminLocationSetting = () => {
             <input
               type="number"
               value={charge}
+              required
               onChange={(e) => setCharge(e.target.value)}
               className="w-full bg-dark-100 border border-primary rounded-lg outline-none p-2 mt-3"
             />

@@ -35,7 +35,7 @@ const ProductActionButton = ({ productId }: { productId: string }) => {
   };
 
   return (
-    <div className="flex-center p-6 gap-2 relative">
+    <div className="flex-center lg:p-6 gap-2 relative">
       <Button
         type="button"
         variant="link"
