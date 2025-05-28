@@ -37,6 +37,6 @@ export const useGetProducts = (enabled: boolean, query?: string) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query],
     queryFn: () => getAllProducts(query),
-    enabled: enabled ? !!query : true,
+    enabled: enabled ? !!query : !enabled,
   });
 };
