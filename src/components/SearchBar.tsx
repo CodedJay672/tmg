@@ -16,8 +16,6 @@ const SearchBar = ({
   const param = useSearchParams();
   const pathname = usePathname();
 
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
   const searchProducts = useDebouncedCallback((searchTerm: string) => {
     const queryString = new URLSearchParams(param);
 
@@ -37,7 +35,6 @@ const SearchBar = ({
     <div className="w-full relative">
       <input
         placeholder={placeholder}
-        ref={inputRef}
         defaultValue={param.get("query")?.toString()}
         onChange={(e) => searchProducts(e.target.value)}
         onClick={action}

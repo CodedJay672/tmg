@@ -13,8 +13,8 @@ const CartContent = ({
   action,
   user,
 }: {
+  action: (t: boolean) => void;
   user?: Models.Document;
-  action?: (t: boolean) => void;
 }) => {
   const { cart, clearCart } = useStore();
   const total = cart.reduce((init, item) => item.price * item.qty + init, 0);
@@ -48,6 +48,7 @@ const CartContent = ({
       if (!response?.status) return toast.error(response?.message);
 
       clearCart();
+      action(false);
       toast.success(response?.message);
     } catch (error: any) {
       toast.error(error.message);

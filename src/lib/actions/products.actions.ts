@@ -90,7 +90,12 @@ export const deleteProduct = async (productId: string) => {
   }
 };
 
-export const getAllProducts = async (query?: string) => {
+export const getAllProducts = async (
+  page: number | undefined,
+  query?: string
+) => {
+  const DOCUMENT_PER_PAGE = 1;
+
   try {
     const { database } = await createAdminClient();
 
@@ -103,8 +108,13 @@ export const getAllProducts = async (query?: string) => {
               Query.search("name", query.toLowerCase()),
               Query.search("category", query.toLowerCase()),
             ]),
+            Query.limit(DOCUMENT_PER_PAGE),
+            page ? Query.offset(page * DOCUMENT_PER_PAGE) : Query.offset(0),
           ]
-        : []
+        : [
+            Query.limit(DOCUMENT_PER_PAGE),
+            page ? Query.offset(page * DOCUMENT_PER_PAGE) : Query.offset(0),
+          ]
     );
 
     if (!response.total) {

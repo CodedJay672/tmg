@@ -5,7 +5,12 @@ import ProductGallery from "@/components/ProductGallery";
 import { slides } from "@/constants";
 import { getLoggedInUser } from "@/lib/server/appwrite";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) {
+  const { page } = await searchParams;
   const user = await getLoggedInUser();
 
   return (
@@ -14,7 +19,7 @@ export default async function Home() {
       <CategoryTab />
 
       <div className="hidden lg:block w-full flex-1">
-        <ProductGallery userId={user?.$id} enabled={false} />
+        <ProductGallery param={page} userId={user?.$id} enabled={false} />
       </div>
 
       <div className="lg:hidden">

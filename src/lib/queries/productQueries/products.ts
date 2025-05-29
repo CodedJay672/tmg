@@ -4,7 +4,12 @@ import {
   getAllProducts,
   uploadProducts,
 } from "@/lib/actions/products.actions";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { QUERY_KEYS } from "../queryKey";
 
 export const useUploadProduct = () => {
@@ -33,10 +38,11 @@ export const useDeleteProduct = () => {
   });
 };
 
-export const useGetProducts = (enabled: boolean, query?: string) => {
+export const useGetProducts = (enabled: boolean, query?: string, page = 0) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query],
-    queryFn: () => getAllProducts(query),
+    queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query, page],
+    queryFn: () => getAllProducts(+page, query),
     enabled: enabled ? !!query : !enabled,
+    placeholderData: keepPreviousData,
   });
 };

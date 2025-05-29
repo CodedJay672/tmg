@@ -7,11 +7,12 @@ const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
   const { category } = useStore();
 
   return (
-    <ProductGallery
-      userId={userId}
-      query={category === "all" ? "" : category}
-      enabled={false}
-    />
+    <></>
+    // <ProductGallery
+    //   userId={userId}
+    //   query={category === "all" ? "" : category}
+    //   enabled={false}
+    // />
   );
 };
 
