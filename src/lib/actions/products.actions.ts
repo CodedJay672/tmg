@@ -138,6 +138,52 @@ export const getAllProducts = async (
   }
 };
 
+//for mobile fetching
+export const getAllProductsMobile = async (
+  pageParams: string,
+  query?: string
+) => {
+  try {
+    const { database } = await createAdminClient();
+    const queryVals: any[] = [];
+
+    if (!pageParams) queryVals.push(Query.cursorAfter(pageParams));
+
+    const response = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.productCollection,
+      query
+        ? [
+            Query.or([
+              Query.search("name", query.toLowerCase()),
+              Query.search("category", query.toLowerCase()),
+            ]),
+            ...queryVals,
+          ]
+        : queryVals
+    );
+
+    if (!response.total) {
+      return {
+        status: false,
+        message: "No products found.",
+      };
+    }
+
+    return {
+      status: true,
+      message: "Products found.",
+      data: response,
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
 export const getProductById = async (id?: string) => {
   try {
     const { database } = await createAdminClient();

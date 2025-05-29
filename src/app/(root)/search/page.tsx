@@ -7,9 +7,9 @@ import React from "react";
 const SearchPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ query: string }>;
+  searchParams: Promise<{ query: string; page: string }>;
 }) => {
-  const { query } = await searchParams;
+  const { query, page } = await searchParams;
 
   const user = await getLoggedInUser();
 
@@ -33,7 +33,12 @@ const SearchPage = async ({
       )}
 
       <div className="w-full flex-1">
-        <ProductGallery userId={user?.$id} query={query} enabled={true} />
+        <ProductGallery
+          userId={user?.$id}
+          query={query}
+          param={page}
+          enabled={true}
+        />
       </div>
     </section>
   );

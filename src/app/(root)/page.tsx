@@ -22,7 +22,7 @@ export default async function Home({
         <ProductGallery param={page} userId={user?.$id} enabled={false} />
       </div>
 
-      <div className="lg:hidden">
+      <div className="w-full mt-6 lg:hidden">
         <MobileProductsGallery userId={user?.$id} />
       </div>
     </section>

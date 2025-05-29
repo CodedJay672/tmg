@@ -58,7 +58,7 @@ const ProductGallery = ({
                 <ProductCard key={item.$id} userId={userId} item={item} />
               ))}
           </div>
-          <div className="w-full flex justify-end">
+          <div className="w-full flex justify-center lg:justify-end mt-16">
             <PaginationButtons
               data={allProducts}
               isPlaceholderData={isPlaceholderData}
