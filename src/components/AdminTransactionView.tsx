@@ -93,8 +93,8 @@ const AdminTransactionView = ({ info }: { info: Models.Document }) => {
             </p>
             <p>
               Location:{" "}
-              <span className="text-sm text-dark-300 font-medium">
-                {info.delivery_location || "--"}
+              <span className="text-sm text-dark-300 font-medium capitalize">
+                {info.delivery_location.location || "--"}
               </span>
             </p>
             <p>
