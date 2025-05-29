@@ -24,10 +24,10 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
     item.price
   );
 
-  const price = item.price + percentIncrease;
+  const price: number = item.price + percentIncrease;
 
   return (
-    <article className="w-full space-y-4 rounded-md shadow-md relative">
+    <article className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative">
       <Image
         src={item.imgUrl}
         alt={item.name}
