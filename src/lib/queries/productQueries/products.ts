@@ -53,7 +53,7 @@ export const useGetProductsInfinite = (query?: string) => {
   return useInfiniteQuery({
     queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query],
     queryFn: ({ pageParam }) => getAllProductsMobile(pageParam, query),
-    initialPageParam: "0",
+    initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
       const documents = lastPage?.data?.documents;
       const total = lastPage?.data?.total;

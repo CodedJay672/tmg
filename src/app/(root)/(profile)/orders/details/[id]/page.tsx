@@ -128,7 +128,8 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
             <p>
               Location:{" "}
               <span className="text-sm text-dark-300 font-medium">
-                {orderInfo.data?.documents?.[0].delivery_location || "--"}
+                {orderInfo.data?.documents?.[0].delivery_location.location ||
+                  "--"}
               </span>
             </p>
             <p>

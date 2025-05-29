@@ -1,6 +1,6 @@
 "use client";
 
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { calculateInterest, formatCurrency, formatDate } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Models } from "node-appwrite";
 import ProductMiniCard from "../ProductMiniCard";
@@ -186,12 +186,18 @@ export const orderDetails: ColumnDef<TableTypeProps>[] = [
     header: "Quantity",
   },
   {
-    accessorKey: "price",
+    accessorKey: "location",
     header: "Price",
     cell: ({ row }) => {
-      const product = row.getValue("product") as Models.Document;
+      const info = row.original;
 
-      return formatCurrency(product.price);
+      const { product, location } = info;
+
+      const interest = calculateInterest(location.charge, product.price);
+
+      const total = product.price + interest;
+
+      return <span>{formatCurrency(total)}</span>;
     },
   },
 ];

@@ -34,4 +34,5 @@ type TransactionEntryType = {
 type TableTypeProps = {
   product: Models.Document;
   qty: number;
+  location: Models.Document;
 };

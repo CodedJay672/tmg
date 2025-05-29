@@ -5,12 +5,20 @@ import { useStore } from "@/store/appStore";
 import React from "react";
 import ProductCard from "./shared/ProductCard";
 import { Loader2Icon } from "lucide-react";
+import { Button } from "./ui/button";
 
 const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
   const { category } = useStore();
 
-  const { data, error, isLoading, isFetchingNextPage, status } =
-    useGetProductsInfinite(category === "all" ? "" : category);
+  const {
+    data,
+    error,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+    status,
+  } = useGetProductsInfinite(category === "all" ? "" : category);
 
   return isLoading ? (
     <Loader2Icon size={24} className="text-primary animate-spin mx-auto" />
@@ -28,15 +36,18 @@ const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
         ))}
       </div>
 
-      <div className="flex-center mt-20">
-        {isLoading && !isFetchingNextPage ? (
-          <Loader2Icon size={24} className="text-primary animate-spin" />
-        ) : (
-          <p className="w-full text-center text-sm text-dark-200">
-            No more products
-          </p>
-        )}
-      </div>
+      {hasNextPage && (
+        <div className="flex-center mt-20">
+          <Button
+            variant="ghost"
+            disabled={isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+            className="border"
+          >
+            Load more
+          </Button>
+        </div>
+      )}
     </>
   );
 };

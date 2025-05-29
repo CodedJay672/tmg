@@ -5,6 +5,7 @@ import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
+import { getAllLocations } from "./location.actions";
 
 export const addProductsToCart = async (
   userId: string,
@@ -145,6 +146,14 @@ export const completeTransaction = async (
         message: response.message,
       };
 
+    const delivery = await getAllLocations(transaction.delivery_location);
+
+    if (!delivery.status)
+      return {
+        status: false,
+        message: delivery.message,
+      };
+
     const res = await database.createDocument(
       config.appwrite.databaseId,
       config.appwrite.transactionsCollection,
@@ -154,7 +163,7 @@ export const completeTransaction = async (
         order: response.data?.$id,
         total: transaction.total,
         location: transaction.location,
-        delivery_location: transaction.delivery_location,
+        delivery_location: delivery.data?.documents?.[0].$id,
         delivery_address: transaction.delivery_address,
         receiver_name: transaction.receiver_name,
         receiver_phone: transaction.receiver_phone,

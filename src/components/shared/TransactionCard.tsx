@@ -1,6 +1,6 @@
 "use client";
 
-import { formatCurrency, formatDate } from "@/lib/utils";
+import { calculateInterest, formatCurrency, formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import React, { useEffect, useState } from "react";
@@ -13,6 +13,14 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
   const orderDate = formatDate(info.$createdAt);
   const totalAmt = formatCurrency(info.total);
 
+  //calculate the interest
+  const percentIncrease = calculateInterest(
+    info.delivery_location.charge,
+    info.order.products?.[0].price
+  );
+
+  const totalCost = info.order.products?.[0].price + percentIncrease;
+
   // ensure component is rendered
   useEffect(() => {
     if (!client) return;
@@ -23,20 +31,19 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
 
   return (
     <article className="w-full p-4 border border-dark-200 rounded-xl">
-      <div className="space-y-1">
-        <div className="flex-between">
-          <p
-            className={`text-xs text-foreground rounded-lg uppercase text-center py-1 px-3 ${
-              info.status === "COMPLETED"
-                ? "bg-primary"
-                : info.status === "PROCESSING"
-                ? "bg-amber-400"
-                : "bg-red-500"
-            }`}
-          >
-            {info.status}
-          </p>
-        </div>
+      <div className="space-y-0.5">
+        <p
+          className={`w-max text-xs text-foreground rounded-lg uppercase text-center py-1 px-3 ${
+            info.status === "COMPLETED"
+              ? "bg-primary"
+              : info.status === "PROCESSING"
+              ? "bg-amber-400"
+              : "bg-red-500"
+          }`}
+        >
+          {info.status}
+        </p>
+
         <div className="flex-between p-3 border-b border-dark-100 gap-7">
           <p className="text-sm text-dark-300">
             {orderDate as string} | Order ID: {info.$id}
@@ -62,8 +69,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
               {info.order.products?.[0].name}
             </p>
             <p className="text-sm font-medium text-dark-300">
-              {formatCurrency(info.order.products?.[0].price)} X{" "}
-              {info.order.qty[0]}
+              {formatCurrency(totalCost)} X {info.order.qty[0]}
             </p>
             {info.order.products.length > 1 && (
               <p className="text-xs font-medium text-dark-200 mt-3">

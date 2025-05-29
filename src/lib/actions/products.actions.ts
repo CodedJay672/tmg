@@ -140,14 +140,14 @@ export const getAllProducts = async (
 
 //for mobile fetching
 export const getAllProductsMobile = async (
-  pageParams: string,
+  pageParams: string | undefined,
   query?: string
 ) => {
   try {
     const { database } = await createAdminClient();
     const queryVals: any[] = [];
 
-    if (!pageParams) queryVals.push(Query.cursorAfter(pageParams));
+    if (pageParams) queryVals.push(Query.cursorAfter(pageParams));
 
     const response = await database.listDocuments(
       config.appwrite.databaseId,

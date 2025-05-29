@@ -51,10 +51,17 @@ export const getTableData = (data?: Models.Document) => {
     const res = {
       product,
       qty: data.order?.qty?.[idx],
+      location: data.delivery_location,
     };
 
     result.push(res);
   });
 
   return result;
+};
+
+export const calculateInterest = (charge: number, price: number) => {
+  const percentIncrease = Math.floor((charge * price) / 100);
+
+  return percentIncrease;
 };

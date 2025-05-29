@@ -6,6 +6,7 @@ import CartActionButton from "./CartActionButton";
 import WatchlistButton from "./WatchlistButton";
 import { useGetUserById } from "@/lib/queries/userQueried/users";
 import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
+import { calculateInterest } from "@/lib/utils";
 
 interface ProductCardProps {
   item: Models.Document;
@@ -18,8 +19,9 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
     currentUser?.data?.documents?.[0].delivery_location
   );
 
-  const percentIncrease = Math.floor(
-    (userLocationInfo?.data?.documents?.[0].charge * item.price) / 100
+  const percentIncrease = calculateInterest(
+    userLocationInfo?.data?.documents?.[0].charge,
+    item.price
   );
 
   const price = item.price + percentIncrease;
@@ -39,7 +41,7 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
         </p>
         <div className="flex-between">
           <span className="text-sm lg:text-base font-medium">
-            {currentUser?.data?.documents?.[0].delivery_location
+            {price
               ? price.toLocaleString("en-NG", {
                   style: "currency",
                   currency: "NGN",

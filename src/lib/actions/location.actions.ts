@@ -4,8 +4,9 @@ import { Query } from "node-appwrite";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { revalidatePath } from "next/cache";
+import { cache } from "react";
 
-export const getAllLocations = async (query?: string) => {
+export const getAllLocations = cache(async (query?: string) => {
   try {
     const { database } = await createAdminClient();
 
@@ -32,7 +33,7 @@ export const getAllLocations = async (query?: string) => {
       message: error.message,
     };
   }
-};
+});
 
 export const updateLocation = async (charge: number, id?: string) => {
   try {
