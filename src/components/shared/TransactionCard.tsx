@@ -6,27 +6,19 @@ import { Models } from "node-appwrite";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { useStore } from "@/store/appStore";
 
 const TransactionCard = ({ info }: { info: Models.Document }) => {
-  const [client, setClient] = useState(false);
-
+  const { priceByLocation: totalCost, setPriceByLocation } = useStore();
   const orderDate = formatDate(info.$createdAt);
   const totalAmt = formatCurrency(info.total);
 
-  //calculate the interest
-  const percentIncrease = calculateInterest(
-    info.delivery_location.charge,
-    info.order.products?.[0].price
-  );
-
-  const totalCost = info.order.products?.[0].price + percentIncrease;
-
   // ensure component is rendered
   useEffect(() => {
-    if (!client) return;
-
-    console.log(info.order);
-    setClient(true);
+    setPriceByLocation(
+      info.delivery_location.charge,
+      info.order.products?.[0].price
+    );
   }, []);
 
   return (

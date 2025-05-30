@@ -1,12 +1,13 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
 import WatchlistButton from "./WatchlistButton";
 import { useGetUserById } from "@/lib/queries/userQueried/users";
 import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
-import { calculateInterest } from "@/lib/utils";
+import { useStore } from "@/store/appStore";
 
 interface ProductCardProps {
   item: Models.Document;
@@ -14,17 +15,18 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ item, userId }: ProductCardProps) => {
+  const { priceByLocation: price, setPriceByLocation } = useStore();
   const { data: currentUser } = useGetUserById(userId);
   const { data: userLocationInfo } = useGetAllLocations(
     currentUser?.data?.documents?.[0].delivery_location
   );
 
-  const percentIncrease = calculateInterest(
-    userLocationInfo?.data?.documents?.[0].charge,
-    item.price
-  );
+  useEffect(() => {
+    if (!userLocationInfo) return;
+    const charge = userLocationInfo?.data?.documents?.[0].charge;
 
-  const price: number = item.price + percentIncrease;
+    setPriceByLocation(charge, item.price);
+  }, [userLocationInfo]);
 
   return (
     <article className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative">

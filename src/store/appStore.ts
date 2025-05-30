@@ -1,5 +1,6 @@
 "use client";
 
+import { calculateInterest } from "@/lib/utils";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
@@ -20,6 +21,8 @@ interface TCartState {
   toggleProfileMenu: () => void;
   category: string;
   changeCategory: (cat: string) => void;
+  priceByLocation: number;
+  setPriceByLocation: (charge: number, price: number) => void;
 }
 
 export const useStore = create<TCartState>()(
@@ -67,6 +70,17 @@ export const useStore = create<TCartState>()(
         //category
         category: "all",
         changeCategory: (cat: string) => set(() => ({ category: cat })),
+
+        // set the price by location
+        priceByLocation: 0,
+        setPriceByLocation: (charge: number, price: number) =>
+          set(() => {
+            const interest = calculateInterest(charge, price);
+
+            const total = price + interest;
+
+            return { priceByLocation: total };
+          }),
       }),
       {
         name: "cart-storage",
