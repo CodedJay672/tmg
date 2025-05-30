@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useGetProducts } from "@/lib/queries/productQueries/products";
 import { Loader2Icon } from "lucide-react";
 import ProductCard from "./shared/ProductCard";
 import PaginationButtons from "./shared/PaginationButtons";
+import { useGetUserById } from "@/lib/queries/userQueried/users";
 
 const ProductGallery = ({
   userId,
@@ -22,6 +23,7 @@ const ProductGallery = ({
     isLoading,
     isPlaceholderData,
   } = useGetProducts(enabled, query, +param);
+  const { data: user } = useGetUserById(userId);
 
   return (
     <>
@@ -54,9 +56,15 @@ const ProductGallery = ({
           </h2>
           <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mt-6">
             {allProducts?.data?.total &&
-              allProducts.data.documents.map((item) => (
-                <ProductCard key={item.$id} userId={userId} item={item} />
-              ))}
+              allProducts.data.documents.map((item) => {
+                return (
+                  <ProductCard
+                    key={item.$id}
+                    user={user?.data?.documents?.[0]}
+                    item={item}
+                  />
+                );
+              })}
           </div>
           <div className="w-full flex justify-center lg:justify-end mt-16">
             <PaginationButtons

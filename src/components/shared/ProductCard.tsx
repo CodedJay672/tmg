@@ -1,32 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
 import WatchlistButton from "./WatchlistButton";
-import { useGetUserById } from "@/lib/queries/userQueried/users";
 import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
-import { useStore } from "@/store/appStore";
+import { Loader2Icon } from "lucide-react";
+import { calculateInterest } from "@/lib/utils";
 
 interface ProductCardProps {
   item: Models.Document;
-  userId: string | undefined;
+  user: Models.Document | undefined;
 }
 
-const ProductCard = ({ item, userId }: ProductCardProps) => {
-  const { priceByLocation: price, setPriceByLocation } = useStore();
-  const { data: currentUser } = useGetUserById(userId);
-  const { data: userLocationInfo } = useGetAllLocations(
-    currentUser?.data?.documents?.[0].delivery_location
+const ProductCard = ({ item, user }: ProductCardProps) => {
+  const { data: location, isPending: loading } = useGetAllLocations(
+    user?.delivery_location
+  );
+  const interest = calculateInterest(
+    location?.data?.documents?.[0].charge,
+    item.price
   );
 
-  useEffect(() => {
-    if (!userLocationInfo) return;
-    const charge = userLocationInfo?.data?.documents?.[0].charge;
-
-    setPriceByLocation(charge, item.price);
-  }, [userLocationInfo]);
+  const total = item.price + interest;
 
   return (
     <article className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative">
@@ -43,21 +39,25 @@ const ProductCard = ({ item, userId }: ProductCardProps) => {
         </p>
         <div className="flex-between">
           <span className="text-sm lg:text-base font-medium">
-            {price
-              ? price.toLocaleString("en-NG", {
-                  style: "currency",
-                  currency: "NGN",
-                })
-              : "Location required"}
+            {loading ? (
+              <Loader2Icon size={20} className="text-primary animate-spin" />
+            ) : location?.data?.total === 1 ? (
+              total.toLocaleString("en-NG", {
+                style: "currency",
+                currency: "NGN",
+              })
+            ) : (
+              "Location required"
+            )}
           </span>
-          {currentUser?.data?.documents?.[0].delivery_location && (
-            <CartActionButton item={{ ...item, price: price }} />
+          {user?.delivery_location && (
+            <CartActionButton item={{ ...item, price: total }} />
           )}
         </div>
       </div>
 
       <div className="absolute top-1 right-1 flex-center bg-foreground rounded-full">
-        <WatchlistButton userId={userId} productId={item.$id} />
+        <WatchlistButton userId={user?.accountId} productId={item.$id} />
       </div>
     </article>
   );
