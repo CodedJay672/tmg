@@ -6,6 +6,8 @@ import { Button } from "../ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { Models } from "node-appwrite";
 
+const DATA_PER_PAGE = 1;
+
 interface PaginationProps {
   data: {
     status: boolean;

@@ -1,9 +1,18 @@
 import React from "react";
 import Segments from "@/components/shared/Segments";
 import ProductGallery from "@/components/ProductGallery";
+import { getLoggedInUser } from "@/lib/server/appwrite";
 
-const Category = async ({ params }: { params: Promise<{ title: string }> }) => {
+const Category = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ title: string }>;
+  searchParams: Promise<{ page: string }>;
+}) => {
   const { title } = await params;
+  const { page } = await searchParams;
+  const user = await getLoggedInUser();
 
   return (
     <section className="content-wrapper flex-center flex-col">
@@ -12,7 +21,12 @@ const Category = async ({ params }: { params: Promise<{ title: string }> }) => {
       </div>
 
       <div className="w-full flex-1">
-        <ProductGallery query={title} />
+        <ProductGallery
+          param={page}
+          query={title}
+          userId={user?.$id}
+          enabled={false}
+        />
       </div>
     </section>
   );

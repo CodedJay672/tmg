@@ -49,7 +49,7 @@ const Carousel = ({ slides }: { slides: string[] }) => {
       </div>
       <div
         ref={nextRef}
-        className="absolute top-0 right-0 z-10 h-full flex-center hover:bg-dark-200/20 hover:shadow-2xs"
+        className="absolute top-0 right-0 z-10 h-full group flex-center hover:bg-dark-200/20 hover:shadow-2xs"
       >
         <ChevronRightIcon
           size={40}
