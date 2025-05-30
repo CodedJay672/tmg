@@ -75,6 +75,7 @@ const CartContent = ({
               value={deliveryLocation}
               onChange={(e) => setDeliveryLocation(e.target.value)}
               placeholder="Delivery location"
+              disabled
               className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
             />
             <input
@@ -82,6 +83,7 @@ const CartContent = ({
               value={deliveryAddress}
               onChange={(e) => setDeliveryAddress(e.target.value)}
               placeholder="Delivery address"
+              disabled
               className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
             />
             <input
@@ -89,6 +91,7 @@ const CartContent = ({
               value={receiverName}
               onChange={(e) => setReceiverName(e.target.value)}
               placeholder="Receiver's name"
+              disabled
               className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
             />
             <input
@@ -96,6 +99,7 @@ const CartContent = ({
               value={receiverPhone}
               onChange={(e) => setReceiverPhone(e.target.value)}
               placeholder="Receiver's phone"
+              disabled
               className="text-dark-300 p-3 border border-secondary outline-none bg-dark-100 w-full rounded-lg"
             />
           </form>

@@ -6,9 +6,11 @@ import React from "react";
 import ProductCard from "./shared/ProductCard";
 import { Loader2Icon } from "lucide-react";
 import { Button } from "./ui/button";
+import { useGetUserById } from "@/lib/queries/userQueried/users";
 
 const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
   const { category } = useStore();
+  const { data: user } = useGetUserById(userId);
 
   const {
     data,
@@ -30,7 +32,11 @@ const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
         {data?.pages.map((group, i) => (
           <React.Fragment key={i}>
             {group?.data?.documents.map((project) => (
-              <ProductCard key={project.$id} item={project} userId={userId} />
+              <ProductCard
+                key={project.$id}
+                item={project}
+                user={user?.data?.documents?.[0]}
+              />
             ))}
           </React.Fragment>
         ))}
@@ -42,9 +48,9 @@ const MobileProductsGallery = ({ userId }: { userId: string | undefined }) => {
             variant="ghost"
             disabled={isFetchingNextPage}
             onClick={() => fetchNextPage()}
-            className="border"
+            className="border border-primary text-primary font-medium"
           >
-            Load more
+            {isFetchingNextPage ? "Loading..." : "Load more"}
           </Button>
         </div>
       )}
