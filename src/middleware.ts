@@ -4,7 +4,11 @@ import { getLoggedInUser } from "./lib/server/appwrite";
 export const middleware = async (req: NextRequest) => {
   const user = await getLoggedInUser();
 
-  if (!user) NextResponse.redirect("/sign-in");
+  if (!user || !user.labels.includes("admin")) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/sign-in";
+    return NextResponse.rewrite(url);
+  }
 
   return NextResponse.next();
 };
