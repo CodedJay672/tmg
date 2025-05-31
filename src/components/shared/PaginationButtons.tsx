@@ -39,9 +39,11 @@ const PaginationButtons = ({ data, isPlaceholderData }: PaginationProps) => {
       <Button
         size="icon"
         onClick={() => setPage((old) => Math.max(old - 1, 0))}
+        variant="outline"
         disabled={page === 0}
+        className="bg-foreground border border-primary cursor-pointer"
       >
-        <ChevronLeftIcon size={20} className=" text-foreground font-bold" />
+        <ChevronLeftIcon size={24} className=" text-primary font-bold" />
       </Button>
       <span className="text-lg font-black">{page + 1}</span>
       <Button
@@ -51,9 +53,11 @@ const PaginationButtons = ({ data, isPlaceholderData }: PaginationProps) => {
             setPage((old) => old + 1);
           }
         }}
+        variant="outline"
         disabled={isPlaceholderData}
+        className="bg-foreground border border-primary cursor-pointer"
       >
-        <ChevronRightIcon size={20} className=" text-foreground font-bold" />
+        <ChevronRightIcon size={24} className=" text-primary font-bold" />
       </Button>
     </div>
   );
