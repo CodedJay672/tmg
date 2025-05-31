@@ -7,9 +7,9 @@ import React from "react";
 const SearchPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ query: string; page: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }) => {
-  const { query, page } = await searchParams;
+  const { page, query } = await searchParams;
 
   const user = await getLoggedInUser();
 

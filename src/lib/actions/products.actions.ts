@@ -6,6 +6,7 @@ import { config } from "../server/config";
 import { ID, Query } from "node-appwrite";
 import { createFile, getFilePreview } from "./user.actions";
 import { revalidatePath } from "next/cache";
+import { cache } from "react";
 
 export const uploadProducts = async (values: TProductDetails) => {
   try {
@@ -90,10 +91,7 @@ export const deleteProduct = async (productId: string) => {
   }
 };
 
-export const getAllProducts = async (
-  page: number | undefined,
-  query?: string
-) => {
+export const getAllProducts = cache(async (page?: number, query?: string) => {
   const DOCUMENT_PER_PAGE = 1;
 
   try {
@@ -136,55 +134,54 @@ export const getAllProducts = async (
       message: error.message,
     };
   }
-};
+});
 
 //for mobile fetching
-export const getAllProductsMobile = async (
-  pageParams: string | undefined,
-  query?: string
-) => {
-  try {
-    const { database } = await createAdminClient();
-    const queryVals: any[] = [];
+export const getAllProductsMobile = cache(
+  async (pageParams?: string, query?: string) => {
+    try {
+      const { database } = await createAdminClient();
+      const queryVals: any[] = [];
 
-    if (pageParams) queryVals.push(Query.cursorAfter(pageParams));
+      if (pageParams) queryVals.push(Query.cursorAfter(pageParams));
 
-    const response = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.productCollection,
-      query
-        ? [
-            Query.or([
-              Query.search("name", query.toLowerCase()),
-              Query.search("category", query.toLowerCase()),
-            ]),
-            ...queryVals,
-          ]
-        : queryVals
-    );
+      const response = await database.listDocuments(
+        config.appwrite.databaseId,
+        config.appwrite.productCollection,
+        query
+          ? [
+              Query.or([
+                Query.search("name", query.toLowerCase()),
+                Query.search("category", query.toLowerCase()),
+              ]),
+              ...queryVals,
+            ]
+          : queryVals
+      );
 
-    if (!response.total) {
+      if (!response.total) {
+        return {
+          status: false,
+          message: "No products found.",
+        };
+      }
+
+      return {
+        status: true,
+        message: "Products found.",
+        data: response,
+      };
+    } catch (error: any) {
+      console.log(error);
       return {
         status: false,
-        message: "No products found.",
+        message: error.message,
       };
     }
-
-    return {
-      status: true,
-      message: "Products found.",
-      data: response,
-    };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
   }
-};
+);
 
-export const getProductById = async (id?: string) => {
+export const getProductById = cache(async (id?: string) => {
   try {
     const { database } = await createAdminClient();
 
@@ -214,4 +211,4 @@ export const getProductById = async (id?: string) => {
       message: error?.message,
     };
   }
-};
+});

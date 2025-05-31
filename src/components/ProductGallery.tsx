@@ -16,13 +16,13 @@ const ProductGallery = ({
   userId: string | undefined;
   enabled: boolean;
   query?: string;
-  param: string;
+  param?: string;
 }) => {
   const {
     data: allProducts,
     isLoading,
     isPlaceholderData,
-  } = useGetProducts(enabled, query, +param);
+  } = useGetProducts(enabled, query, +(param ?? 0));
   const { data: user } = useGetUserById(userId);
 
   return (
