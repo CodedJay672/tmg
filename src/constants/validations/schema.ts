@@ -47,7 +47,9 @@ export const productSchema = z.object({
   name: z.string(),
   price: z.coerce.number(),
   category: z.enum(["mechanical", "steel", "electrical"]),
-  file: z.instanceof(File),
+  file: z.instanceof(File).optional(),
+  datasheet: z.instanceof(File).optional(),
+  description: z.string().optional(),
 });
 
 export type TProductDetails = z.infer<typeof productSchema>;

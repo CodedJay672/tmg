@@ -22,7 +22,7 @@ const ProductGallery = ({
     data: allProducts,
     isLoading,
     isPlaceholderData,
-  } = useGetProducts(enabled, query, +(param ?? 0));
+  } = useGetProducts(enabled, query, param);
   const { data: user } = useGetUserById(userId);
 
   return (

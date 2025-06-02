@@ -8,9 +8,9 @@ import { formatDate } from "@/lib/utils";
 const ProductsPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ query: string }>;
+  searchParams: Promise<{ query: string; page: string }>;
 }) => {
-  const { query } = await searchParams;
+  const { query, page } = await searchParams;
   const today = formatDate(new Date().toISOString());
 
   return (
@@ -52,7 +52,7 @@ const ProductsPage = async ({
           </p>
         )}
 
-        <ProductListing query={query} />
+        <ProductListing query={query} param={page} />
       </div>
     </section>
   );

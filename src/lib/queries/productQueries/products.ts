@@ -40,7 +40,11 @@ export const useDeleteProduct = () => {
   });
 };
 
-export const useGetProducts = (enabled: boolean, query?: string, page = 0) => {
+export const useGetProducts = (
+  enabled: boolean,
+  query?: string,
+  page = "0"
+) => {
   return useQuery({
     queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query, page],
     queryFn: () => getAllProducts(+page, query),

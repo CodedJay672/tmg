@@ -5,13 +5,21 @@ import ProductDetails from "./shared/ProductDetails";
 import { useStore } from "@/store/appStore";
 import { useGetProducts } from "@/lib/queries/productQueries/products";
 import { Loader2Icon } from "lucide-react";
+import PaginationButtons from "./shared/PaginationButtons";
 
-const ProductListing = ({ query }: { query?: string }) => {
+const ProductListing = ({
+  query,
+  param,
+}: {
+  query?: string;
+  param?: string;
+}) => {
   const { category } = useStore();
-  const { data: products, isPending: loading } = useGetProducts(
-    false,
-    query ?? category !== "all" ? category : ""
-  );
+  const {
+    data: products,
+    isPending: loading,
+    isPlaceholderData,
+  } = useGetProducts(false, query ?? category !== "all" ? category : "", param);
 
   return (
     <section className="w-full p-1 lg:p-2 space-y-4">
@@ -25,6 +33,15 @@ const ProductListing = ({ query }: { query?: string }) => {
         <p className="text-base text-dark-200 text-center">
           No products to show.
         </p>
+      )}
+
+      {products?.data?.total && (
+        <div className="w-full mt-16 flex justify-center lg:justify-end pr-10">
+          <PaginationButtons
+            data={products}
+            isPlaceholderData={isPlaceholderData}
+          />
+        </div>
       )}
     </section>
   );

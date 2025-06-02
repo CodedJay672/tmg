@@ -3,7 +3,7 @@
 import { productSchema, TProductDetails } from "@/constants/validations/schema";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
-import { ID, Query } from "node-appwrite";
+import { ID, Models, Query } from "node-appwrite";
 import { createFile, getFilePreview } from "./user.actions";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
@@ -26,8 +26,13 @@ export const uploadProducts = async (values: TProductDetails) => {
     // upload the product image and get the preview url
     const imgUpload = await createFile(values.file);
 
+    const datasheetUpload = await createFile(values.datasheet);
+
     // get file preview
-    const imgUrl = await getFilePreview(imgUpload.data!);
+    const imgUrl = await getFilePreview(imgUpload?.data);
+
+    //get datasheet preview
+    const datasheetUrl = await getFilePreview(datasheetUpload?.data);
 
     const res = await database.createDocument(
       config.appwrite.databaseId,
@@ -38,6 +43,8 @@ export const uploadProducts = async (values: TProductDetails) => {
         price: values.price,
         category: values.category,
         imgUrl,
+        datasheetUrl,
+        desciption: values.description,
       }
     );
 
@@ -55,7 +62,73 @@ export const uploadProducts = async (values: TProductDetails) => {
       message: "Product uploaded successfully.",
     };
   } catch (error: any) {
-    console.log(error);
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
+export const updateProducts = async (
+  values: TProductDetails,
+  product: Models.Document
+) => {
+  try {
+    const { database } = await createAdminClient();
+    let imgUpload,
+      datasheetUpload = null;
+    let imgUrl = product?.imgUrl;
+    let datasheetUrl = product?.datasheetUrl;
+
+    // check the data coming in to ensure it is in the right format
+    const parsedData = productSchema.safeParse(values);
+
+    if (!parsedData.success) {
+      return {
+        status: false,
+        message: "Please check your entries.",
+        data: parsedData.error.flatten().fieldErrors,
+      };
+    }
+
+    if (values.file) {
+      // upload the product image and get the preview url
+      imgUpload = await createFile(values.file);
+      imgUrl = await getFilePreview(imgUpload?.data);
+    }
+
+    if (values.datasheet) {
+      datasheetUpload = await createFile(values.datasheet);
+      datasheetUrl = await getFilePreview(datasheetUpload?.data);
+    }
+
+    const res = await database.updateDocument(
+      config.appwrite.databaseId,
+      config.appwrite.productCollection,
+      product?.$id,
+      {
+        name: values.name,
+        price: values.price,
+        category: values.category,
+        imgUrl,
+        datasheetUrl,
+        description: values.description,
+      }
+    );
+
+    if (!res) {
+      return {
+        status: false,
+        message: "Failed to upload product.",
+      };
+    }
+
+    revalidatePath("/dashboard/products");
+    return {
+      status: true,
+      message: "Product uploaded successfully.",
+    };
+  } catch (error: any) {
     return {
       status: false,
       message: error.message,
@@ -92,7 +165,7 @@ export const deleteProduct = async (productId: string) => {
 };
 
 export const getAllProducts = cache(async (page?: number, query?: string) => {
-  const DOCUMENT_PER_PAGE = 1;
+  const DOCUMENT_PER_PAGE = 2;
 
   try {
     const { database } = await createAdminClient();

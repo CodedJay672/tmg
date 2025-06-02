@@ -75,10 +75,10 @@ export const updateUserInfo = async (
       // upload the file and get filepreview
       res = await createFile(file);
 
-      if (!res.status) {
+      if (!res?.status) {
         return {
           status: false,
-          message: res.message,
+          message: res?.message,
         };
       }
 
@@ -129,9 +129,11 @@ export const updateUserInfo = async (
   }
 };
 
-export const createFile = async (file: File) => {
+export const createFile = async (file: File | undefined) => {
   try {
     const { storage } = await createAdminClient();
+
+    if (!file) return;
 
     const response = await storage.createFile(
       config.appwrite.storageId,
@@ -174,7 +176,9 @@ export const deleteFile = async (id: string) => {
   }
 };
 
-export const getFilePreview = async (file: Models.File) => {
+export const getFilePreview = async (file: Models.File | undefined) => {
+  if (!file) return;
+
   return `${config.appwrite.endpoint}/storage/buckets/${file.bucketId}/files/${
     file?.$id
   }/preview?project=${[config.appwrite.projectId]}`;

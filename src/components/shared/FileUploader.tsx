@@ -27,6 +27,7 @@ const FileUploader = ({
     accept: {
       "image/*": [".png", ".jpg", ".jpeg"],
       "video/*": [".mp4"],
+      "application/pdf": [".pdf"],
     },
   });
 

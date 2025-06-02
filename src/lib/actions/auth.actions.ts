@@ -3,7 +3,6 @@
 import { ID, OAuthProvider } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../server/appwrite";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { config } from "../server/config";
 import {
   AuthSchema,
