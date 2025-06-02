@@ -7,6 +7,7 @@ import WatchlistButton from "./WatchlistButton";
 import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
 import { Loader2Icon } from "lucide-react";
 import { calculateInterest } from "@/lib/utils";
+import Link from "next/link";
 
 interface ProductCardProps {
   item: Models.Document;
@@ -25,7 +26,10 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
   const total = item.price + interest;
 
   return (
-    <article className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative">
+    <Link
+      href={`/details/${item.$id}`}
+      className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative"
+    >
       <Image
         src={item.imgUrl}
         alt={item.name}
@@ -59,7 +63,7 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
       <div className="absolute top-1 right-1 flex-center bg-foreground rounded-full">
         <WatchlistButton userId={user?.accountId} productId={item.$id} />
       </div>
-    </article>
+    </Link>
   );
 };
 

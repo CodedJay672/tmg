@@ -9,7 +9,6 @@ import {
 import { HeartIcon, Loader2Icon } from "lucide-react";
 import { Models } from "node-appwrite";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 const WatchlistButton = ({
   userId,
@@ -23,7 +22,6 @@ const WatchlistButton = ({
   const { data: userInfo } = useGetUserById(userId);
   const { mutateAsync: updateWatchlist, isPending: loading } =
     useUpdateUserInfo();
-  const router = useRouter();
 
   const isAdded = () => {
     return userInfo?.data?.documents?.[0].watchlist.find(
