@@ -48,7 +48,7 @@ const WatchlistButton = ({
   return (
     <div
       onClick={handleClick}
-      className="w-full p-1 flex-center rounded-full overflow-hidden gap-1"
+      className="w-full p-1 flex-center rounded-full overflow-hidden gap-1 cursor-pointer"
     >
       {loading ? (
         <Loader2Icon size={16} className="text-primary animate-spin" />
@@ -56,7 +56,7 @@ const WatchlistButton = ({
         <>
           <HeartIcon
             size={16}
-            className={cn("stroke-dark-300 cursor-pointer", {
+            className={cn("stroke-dark-300", {
               "fill-primary": isAdded(),
             })}
           />

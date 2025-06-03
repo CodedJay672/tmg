@@ -7,7 +7,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, Loader2Icon, MapPinIcon } from "lucide-react";
 import { Models } from "node-appwrite";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import ProfileDropdown from "./ProfileDropdown";
 import { toast } from "sonner";
 import { getUser } from "@/lib/actions/user.actions";

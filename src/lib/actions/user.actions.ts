@@ -176,6 +176,36 @@ export const deleteFile = async (id: string) => {
   }
 };
 
+export const downloadFile = async (id?: string) => {
+  try {
+    if (!id)
+      return {
+        status: false,
+        message: "File does not exist",
+      };
+
+    const { storage } = await createAdminClient();
+
+    const response = await storage.getFileDownload(
+      config.appwrite.storageId,
+      id
+    );
+
+    if (!response)
+      return {
+        status: false,
+        message: "Failed to download file.",
+      };
+
+    return response;
+  } catch (error: any) {
+    return {
+      status: false,
+      message: error.message,
+    };
+  }
+};
+
 export const getFilePreview = async (file: Models.File | undefined) => {
   if (!file) return;
 

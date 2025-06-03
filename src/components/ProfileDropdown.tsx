@@ -17,7 +17,9 @@ const ProfileDropdown = ({
 
   //perform some options onscroll
   useEffect(() => {
-    if (show) setShow(false);
+    if (!show) return;
+
+    setShow(false);
   }, [y]);
 
   return (

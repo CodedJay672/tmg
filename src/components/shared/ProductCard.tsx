@@ -26,10 +26,7 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
   const total = item.price + interest;
 
   return (
-    <Link
-      href={`/details/${item.$id}`}
-      className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative"
-    >
+    <article className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative">
       <Image
         src={item.imgUrl}
         alt={item.name}
@@ -38,9 +35,12 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
         className="object-cover rounded-md overflow-hidden"
       />
       <div className="p-2 lg:py-2 lg:px-3 space-y-2">
-        <p className="text-lg font-semibold truncate line-clamp-1 capitalize">
+        <Link
+          href={`/details/${item.$id}`}
+          className="text-lg font-semibold truncate line-clamp-1 capitalize"
+        >
           {item.name}
-        </p>
+        </Link>
         <div className="flex-between">
           <span className="text-sm lg:text-base font-medium">
             {loading ? (
@@ -54,16 +54,18 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
               "Location required"
             )}
           </span>
-          {user?.delivery_location && (
-            <CartActionButton item={{ ...item, price: total }} />
-          )}
+          <div className="w-16 lg:w-20">
+            {user?.delivery_location && (
+              <CartActionButton item={{ ...item, price: total }} />
+            )}
+          </div>
         </div>
       </div>
 
       <div className="absolute top-1 right-1 flex-center bg-foreground rounded-full">
         <WatchlistButton userId={user?.accountId} productId={item.$id} />
       </div>
-    </Link>
+    </article>
   );
 };
 

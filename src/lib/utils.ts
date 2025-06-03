@@ -65,3 +65,15 @@ export const calculateInterest = (charge: number, price: number) => {
 
   return percentIncrease;
 };
+
+export const downloadToMachine = (file: ArrayBuffer) => {
+  const blob = new Blob([file]);
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "datasheet.pdf";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+};
