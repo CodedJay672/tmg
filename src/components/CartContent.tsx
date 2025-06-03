@@ -130,6 +130,26 @@ const CartContent = ({
                 })}
               </p>
             </div>
+
+            <div className="w-full p-10 bg-secondary/30 rounded-xl border border-primary mt-10">
+              <h2 className="text-sm font-medium">Bank information</h2>
+              <div className="flex items-center gap-2 mt-3">
+                <p className="text-sm font-medium">Acct No.:</p>
+                <p className="text-sm font-normal text-pretty">01234567890</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium">Bank Name:</p>
+                <p className="text-sm font-normal text-pretty">
+                  ABC Bank of Africa
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium">Acct Name.:</p>
+                <p className="text-sm font-normal text-pretty">
+                  TMG Procurement bank
+                </p>
+              </div>
+            </div>
           </div>
           <div className="w-full grid grid-cols-2 gap-6 p-6 mt-6">
             {user ? (
