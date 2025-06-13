@@ -23,6 +23,7 @@ type TransactionEntryType = {
   userId?: string;
   order: TCart[];
   total: number;
+  subtotal: number;
   location: string;
   status: "CANCELLED" | "PROCESSING" | "COMPLETED";
   delivery_location: string;

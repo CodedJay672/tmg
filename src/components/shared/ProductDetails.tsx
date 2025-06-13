@@ -22,7 +22,11 @@ const ProductDetails = ({ data }: { data: Models.Document }) => {
           Category: <span className="font-normal">{data.category}</span>
         </p>
       </div>
-      <ProductActionButton productId={data.$id} />
+      <ProductActionButton
+        datasheetId={data.datasheetId}
+        fileId={data.imgId}
+        productId={data.$id}
+      />
     </article>
   );
 };

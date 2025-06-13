@@ -1,6 +1,6 @@
 "use client";
 
-import { calculateInterest, formatCurrency, formatDate } from "@/lib/utils";
+import { formatCurrency, formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import React, { useEffect, useState } from "react";

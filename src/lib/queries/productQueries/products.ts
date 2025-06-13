@@ -3,6 +3,8 @@ import {
   deleteProduct,
   getAllProducts,
   getAllProductsMobile,
+  getProductFromWatchlist,
+  updateWatchlist,
   uploadProducts,
 } from "@/lib/actions/products.actions";
 import {
@@ -31,7 +33,15 @@ export const useDeleteProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteProduct(id),
+    mutationFn: ({
+      id,
+      fileId,
+      datasheetId,
+    }: {
+      id: string;
+      fileId: string;
+      datasheetId?: string;
+    }) => deleteProduct(id, fileId, datasheetId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS],
@@ -68,6 +78,31 @@ export const useGetProductsInfinite = (query?: string) => {
 
       const lastPageId = documents[documents.length - 1]?.$id;
       return lastPageId || null;
+    },
+  });
+};
+
+export const useGetLikedProducts = (productId: string, userId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.WATCHLIST, productId, userId],
+    queryFn: () => getProductFromWatchlist(productId, userId),
+  });
+};
+
+export const useUpdateWatchlist = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      productId,
+      userId,
+    }: {
+      productId: string;
+      userId?: string;
+    }) => updateWatchlist(productId, userId),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.WATCHLIST, variables.productId, variables.userId],
+      });
     },
   });
 };

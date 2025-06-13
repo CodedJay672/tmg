@@ -26,6 +26,7 @@ const UserTransactionContent = ({ userId }: { userId: string }) => {
     [category]
   );
 
+  console.log(filteredData);
   if (loading)
     <Loader2Icon
       size={24}

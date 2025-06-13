@@ -47,9 +47,9 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
 
     try {
       // ensure a file is selected
-      if (!file || file.length === 0) {
+      if (!imgUrl || !file || file.length === 0) {
         setError({ file: ["Product image is required."] });
-        return;
+        return false;
       }
 
       if (type === "CREATE") {
@@ -90,6 +90,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
       setCategory("mechanical");
       setFile(null);
       setDatasheet(undefined);
+      setdescription("");
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -172,7 +173,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
         {datasheetUrl ? (
           <>
             <p className="text-base text-center text-dark-200">
-              {datasheet?.values?.name}
+              {datasheet?.values && "File uploaded successfully!"}
             </p>
             <p className="text-sm lg:text-base text-dark-200">
               Click to change the file.
@@ -203,6 +204,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
         <textarea
           rows={10}
           onChange={(e) => setdescription(e.target.value)}
+          value={description}
           placeholder="Enter the product description here..."
           className={cn(
             "w-full border border-secondary rounded-md p-2 lg:py-3 mt-2 outline-none transition-all bg-gray-50 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400",

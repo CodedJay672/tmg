@@ -7,4 +7,5 @@ export const QUERY_KEYS = {
   GET_WATCHLIST: "getUserWatchlist",
   GET_LOCATIONS: "getAllLocations",
   UPDATE_LOCATIONS: "updateLocations",
+  WATCHLIST: "getAllWatchlistProduct",
 };

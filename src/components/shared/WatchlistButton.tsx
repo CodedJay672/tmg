@@ -2,13 +2,12 @@
 
 import { cn } from "@/lib/utils";
 import React from "react";
-import {
-  useGetUserById,
-  useUpdateUserInfo,
-} from "@/lib/queries/userQueried/users";
 import { HeartIcon, Loader2Icon } from "lucide-react";
-import { Models } from "node-appwrite";
 import { toast } from "sonner";
+import {
+  useGetLikedProducts,
+  useUpdateWatchlist,
+} from "@/lib/queries/productQueries/products";
 
 const WatchlistButton = ({
   userId,
@@ -19,29 +18,22 @@ const WatchlistButton = ({
   productId: string;
   label?: string;
 }) => {
-  const { data: userInfo } = useGetUserById(userId);
-  const { mutateAsync: updateWatchlist, isPending: loading } =
-    useUpdateUserInfo();
-
-  const isAdded = () => {
-    return userInfo?.data?.documents?.[0].watchlist.find(
-      (item: Models.Document) => item.$id === productId
-    );
-  };
+  const { data: isLiked } = useGetLikedProducts(productId, userId);
+  const { mutateAsync: updateWatchlist, isPending: updating } =
+    useUpdateWatchlist();
 
   const handleClick = async () => {
     try {
       const response = await updateWatchlist({
-        id: userInfo?.data?.documents?.[0].$id!,
-        data: {},
         productId,
+        userId,
       });
 
-      if (!response.status) return toast.error(response.message);
+      if (!response) return toast.error("Failed");
 
-      toast.success(response.message);
-    } catch (error: any) {
-      toast.error(error.message);
+      toast.success("Success!");
+    } catch (error) {
+      toast.error("Something went wrong");
     }
   };
 
@@ -50,14 +42,14 @@ const WatchlistButton = ({
       onClick={handleClick}
       className="w-full p-1 flex-center rounded-full overflow-hidden gap-1 cursor-pointer"
     >
-      {loading ? (
+      {updating ? (
         <Loader2Icon size={16} className="text-primary animate-spin" />
       ) : (
         <>
           <HeartIcon
             size={16}
             className={cn("stroke-dark-300", {
-              "fill-primary": isAdded(),
+              "fill-primary": isLiked,
             })}
           />
           {label && <span className="text-sm text-dark-300">{label}</span>}

@@ -48,12 +48,8 @@ export const SignIn = async (email: string, password: string) => {
       status: true,
       message: "Signed in successfully.",
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -196,7 +192,6 @@ const saveToDB = async (name: string, email: string, accountId: string) => {
       data: result,
     };
   } catch (error: any) {
-    console.log(error);
     return {
       status: false,
       message: error.message,

@@ -18,6 +18,7 @@ const CartContent = ({
 }) => {
   const { cart, clearCart } = useStore();
   const total = cart.reduce((init, item) => item.price * item.qty + init, 0);
+  const vat = Math.ceil(total * 0.075);
 
   // get delivery details
   const [deliveryLocation, setDeliveryLocation] = useState(
@@ -36,7 +37,8 @@ const CartContent = ({
       const response = await completeTransaction({
         userId: user?.$id,
         order: cart,
-        total,
+        subtotal: total,
+        total: total + vat,
         location: user?.location,
         status: "PROCESSING",
         delivery_location: deliveryLocation,
@@ -54,6 +56,7 @@ const CartContent = ({
       toast.error(error.message);
     }
   };
+
   return (
     <section className="w-full overflow-y-scroll no-scrollbar">
       <ul className="w-full mt-4 space-y-6">
@@ -121,10 +124,19 @@ const CartContent = ({
                 })}
               </p>
             </div>
-            <div className="flex-between mt-8">
+            <div className="flex-between mt-2">
+              <p className="text-sm text-dark-300">VAT (7.5%)</p>
+              <p className="text-sm font-bold">
+                {vat.toLocaleString("en-NG", {
+                  style: "currency",
+                  currency: "NGN",
+                })}
+              </p>
+            </div>
+            <div className="flex-between mt-8 border-t border-gray-300 pt-2">
               <p className="text-sm text-dark-300">Total</p>
               <p className="text-sm font-bold">
-                {total.toLocaleString("en-NG", {
+                {(total + vat).toLocaleString("en-NG", {
                   style: "currency",
                   currency: "NGN",
                 })}

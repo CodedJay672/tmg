@@ -4,7 +4,7 @@ import { productSchema, TProductDetails } from "@/constants/validations/schema";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { ID, Models, Query } from "node-appwrite";
-import { createFile, getFilePreview } from "./user.actions";
+import { createFile, deleteFile, getFilePreview } from "./user.actions";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
@@ -43,8 +43,10 @@ export const uploadProducts = async (values: TProductDetails) => {
         price: values.price,
         category: values.category,
         imgUrl,
+        imgId: imgUpload?.data?.$id,
         datasheetUrl,
-        desciption: values.description,
+        datasheetId: datasheetUpload?.data?.$id,
+        description: values.description,
       }
     );
 
@@ -136,19 +138,37 @@ export const updateProducts = async (
   }
 };
 
-export const deleteProduct = async (productId: string) => {
+export const deleteProduct = async (
+  productId: string,
+  fileId: string,
+  datasheetId?: string
+) => {
   try {
     const { database } = await createAdminClient();
 
+    //delete the datasheetId if it is present
+    if (datasheetId) await deleteFile(datasheetId);
+
+    //delete the product image from storage
+    await deleteFile(fileId);
+
+    //delete the product from all watchlist
+    const watchlist = await getProductFromWatchlist(productId);
+
+    if (typeof watchlist !== "boolean") {
+      for (const item of watchlist.documents) {
+        await deleteProductFromWatchlist(item.$id);
+      }
+    }
+
+    //delete the product
     await database.deleteDocument(
       config.appwrite.databaseId,
       config.appwrite.productCollection,
       productId
     );
 
-    //revalidate paths
-    revalidatePath("/");
-    revalidatePath("/dashboard/products");
+    revalidatePath("/(admin)/dashboard/products");
 
     //return
     return {
@@ -285,3 +305,145 @@ export const getProductById = cache(async (id?: string) => {
     };
   }
 });
+
+export const updateWatchlist = async (productId: string, userId?: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    if (!userId) return false;
+
+    const res = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.watchlistCollection,
+      [
+        Query.and([
+          Query.equal("productId", productId),
+          Query.equal("userId", userId),
+        ]),
+      ]
+    );
+
+    if (res.total) {
+      const removeProduct = await removeProductFromWatchlist(
+        res.documents?.[0].$id
+      );
+
+      if (!removeProduct) return false;
+
+      revalidatePath("(root)/", "page");
+      return true;
+    }
+
+    const productAdded = await addProductToWatchlist({ userId, productId });
+    if (!productAdded) return false;
+
+    revalidatePath("(root)/", "page");
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removeProductFromWatchlist = async (id: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.deleteDocument(
+      config.appwrite.databaseId,
+      config.appwrite.watchlistCollection,
+      id
+    );
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const addProductToWatchlist = async (data: {
+  userId: string;
+  productId: string;
+}) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const response = await database.createDocument(
+      config.appwrite.databaseId,
+      config.appwrite.watchlistCollection,
+      ID.unique(),
+      {
+        userId: data.userId,
+        productId: data.productId,
+      }
+    );
+
+    if (!response) return false;
+
+    return true;
+  } catch (error: any) {
+    throw error;
+  }
+};
+
+export const getProductFromWatchlist = cache(
+  async (productId: string, userId?: string) => {
+    try {
+      const { database } = await createAdminClient();
+
+      if (!userId) return false;
+
+      const likedProduct = await database.listDocuments(
+        config.appwrite.databaseId,
+        config.appwrite.watchlistCollection,
+        [
+          userId
+            ? Query.and([
+                Query.equal("userId", userId),
+                Query.equal("productId", productId),
+              ])
+            : Query.equal("productId", productId),
+        ]
+      );
+
+      if (!likedProduct.total) return false;
+
+      return likedProduct;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+);
+
+export const getUserWatchlist = cache(async (userId: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    const res = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.watchlistCollection,
+      [Query.equal("userId", userId)]
+    );
+
+    if (!res.total) return false;
+
+    return res;
+  } catch (error) {
+    throw error;
+  }
+});
+
+export const deleteProductFromWatchlist = async (productId: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.deleteDocument(
+      config.appwrite.databaseId,
+      config.appwrite.watchlistCollection,
+      productId
+    );
+
+    return true;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -161,6 +161,7 @@ export const completeTransaction = async (
       {
         creator: transaction.userId,
         order: response.data?.$id,
+        subTotal: transaction.subtotal,
         total: transaction.total,
         location: transaction.location,
         delivery_location: delivery.data?.documents?.[0].$id,
@@ -199,7 +200,7 @@ export const saveCart = async (order: TCart[]) => {
       config.appwrite.cartCollection,
       ID.unique(),
       {
-        products: order.map((item) => item.id),
+        products: [...order.map((item) => item.id)],
         qty: order.map((item) => item.qty),
       }
     );

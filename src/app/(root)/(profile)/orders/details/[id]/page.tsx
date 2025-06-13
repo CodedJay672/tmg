@@ -25,6 +25,7 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   // generate the order table data
   const tableData = getTableData(orderInfo.data?.documents?.[0]);
+  const vat = Math.ceil(orderInfo.data?.documents?.[0].subTotal * 0.075);
 
   return (
     <section className="w-full space-y-6 lg:pt-10">
@@ -74,12 +75,12 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
             <div className="flex-between mt-4">
               <p className="text-dark-200">Subtotal</p>
               <p className="text-dark-200">
-                {formatCurrency(orderInfo.data?.documents?.[0].total)}
+                {formatCurrency(orderInfo.data?.documents?.[0].subTotal)}
               </p>
             </div>
             <div className="flex-between">
-              <p className="text-dark-200">Discount</p>
-              <p className="text-dark-200">0.00</p>
+              <p className="text-dark-200">VAT (7.5%)</p>
+              <p className="text-dark-200">{formatCurrency(vat)}</p>
             </div>
             <div className="flex-between mt-5">
               <p className="text-dark-300 font-bold">Total</p>

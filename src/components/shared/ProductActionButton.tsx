@@ -7,7 +7,15 @@ import { Loader2Icon, MoreVerticalIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const ProductActionButton = ({ productId }: { productId: string }) => {
+const ProductActionButton = ({
+  fileId,
+  productId,
+  datasheetId,
+}: {
+  fileId: string;
+  productId: string;
+  datasheetId?: string;
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const { mutateAsync: handleDeleteProduct, isPending: loading } =
     useDeleteProduct();
@@ -46,7 +54,9 @@ const ProductActionButton = ({ productId }: { productId: string }) => {
       </Button>
       <Button
         type="button"
-        onClick={() => handleDeleteProduct(productId)}
+        onClick={() =>
+          handleDeleteProduct({ id: productId, fileId, datasheetId })
+        }
         className="hidden lg:block text-foreground bg-red-300 hover:bg-red-500 cursor-pointer"
       >
         {loading ? (
@@ -83,7 +93,7 @@ const ProductActionButton = ({ productId }: { productId: string }) => {
         <Button
           type="button"
           variant="ghost"
-          onClick={() => handleDeleteProduct(productId)}
+          onClick={() => handleDeleteProduct({ id: productId, fileId })}
           className="w-full text-dark-300 bg-red-200 cursor-pointer"
         >
           {loading ? (
