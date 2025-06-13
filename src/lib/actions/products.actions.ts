@@ -155,7 +155,7 @@ export const deleteProduct = async (
     //delete the product from all watchlist
     const watchlist = await getProductFromWatchlist(productId);
 
-    if (typeof watchlist !== "boolean") {
+    if (watchlist) {
       for (const item of watchlist.documents) {
         await deleteProductFromWatchlist(item.$id);
       }
@@ -389,8 +389,6 @@ export const getProductFromWatchlist = cache(
   async (productId: string, userId?: string) => {
     try {
       const { database } = await createAdminClient();
-
-      if (!userId) return false;
 
       const likedProduct = await database.listDocuments(
         config.appwrite.databaseId,
