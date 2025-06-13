@@ -13,7 +13,7 @@ export const getAllLocations = cache(async (query?: string) => {
     const locations = await database.listDocuments(
       config.appwrite.databaseId,
       config.appwrite.locationCollection,
-      query ? [Query.equal("location", query)] : []
+      query ? [Query.equal("location", query)] : [Query.limit(37)]
     );
 
     if (!locations.total)
