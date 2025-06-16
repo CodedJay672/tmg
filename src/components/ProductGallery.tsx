@@ -49,7 +49,7 @@ const ProductGallery = ({
       {!isLoading && allProducts?.data?.total && (
         <>
           <h2 className="text-lg lg:text-xl font-medium text-left w-full mt-4 lg:mt-10 capitalize">
-            {query ? `${query}` : "All products"}{" "}
+            {query ? `${query}` : "Recent seach results"}{" "}
             <span className="text-primary text-xl font-bold">
               ({allProducts.data?.total})
             </span>
