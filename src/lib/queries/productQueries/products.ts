@@ -4,6 +4,7 @@ import {
   getAllProducts,
   getAllProductsMobile,
   getProductFromWatchlist,
+  getUserWatchlist,
   updateWatchlist,
   uploadProducts,
 } from "@/lib/actions/products.actions";
@@ -104,5 +105,12 @@ export const useUpdateWatchlist = () => {
         queryKey: [QUERY_KEYS.WATCHLIST, variables.productId, variables.userId],
       });
     },
+  });
+};
+
+export const useGetUserWatchlist = (userId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_WATCHLIST, { userId }],
+    queryFn: () => getUserWatchlist(userId),
   });
 };

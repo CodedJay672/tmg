@@ -36,7 +36,7 @@ const Topbar = async () => {
       <div className="hidden w-full max-w-3xl lg:flex justify-between items-center gap-2">
         <GlobalSearch />
         <MyOrders userId={user?.$id} />
-        <MyWatchlist />
+        <MyWatchlist userId={user?.$id} />
 
         {user ? (
           <UserInfo user={user} />

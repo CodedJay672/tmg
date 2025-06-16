@@ -412,17 +412,15 @@ export const getProductFromWatchlist = cache(
   }
 );
 
-export const getUserWatchlist = cache(async (userId: string) => {
+export const getUserWatchlist = cache(async (userId?: string) => {
   try {
     const { database } = await createAdminClient();
 
     const res = await database.listDocuments(
       config.appwrite.databaseId,
       config.appwrite.watchlistCollection,
-      [Query.equal("userId", userId)]
+      userId ? [Query.equal("userId", userId)] : []
     );
-
-    if (!res.total) return false;
 
     return res;
   } catch (error) {

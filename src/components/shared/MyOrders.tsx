@@ -36,8 +36,8 @@ const MyOrders = ({ userId }: { userId: string }) => {
       </Button>
       <CustomSheet open={open} onOpenChange={setOpen}>
         <div className="w-full p-1">
-          <h2 className="text-base font-medium">Cart</h2>
-          <p className="text-sm text-dark-300">Cart preview.</p>
+          <h2 className="text-2xl font-semibold">Cart</h2>
+          <p className="text-base text-dark-300">Cart preview.</p>
         </div>
 
         <CartContent action={setOpen} user={userInfo?.data?.documents?.[0]} />

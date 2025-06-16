@@ -29,7 +29,7 @@ const DownloadDatasheetButton = ({ id }: { id: string }) => {
       variant="outline"
       disabled={loading}
       onClick={handleClick}
-      className="w-full h-8  text-primary font-medium border border-primary bg-foreground"
+      className="w-full text-primary font-medium border border-primary bg-foreground"
     >
       {loading ? "Downloading..." : "Download Datasheet"}
     </Button>

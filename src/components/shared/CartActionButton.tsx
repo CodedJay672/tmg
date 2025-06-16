@@ -28,7 +28,7 @@ const CartActionButton = ({ item }: { item: Models.Document }) => {
               imgUrl: item.imgUrl,
             })
           }
-          className="w-full h-7 lg:h-8 text-foreground text-xs lg:text-sm"
+          className="w-full text-foreground text-xs lg:text-sm"
         >
           Add
         </Button>

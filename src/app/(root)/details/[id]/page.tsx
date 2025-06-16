@@ -136,7 +136,7 @@ const ProductDetails = async ({
         <div className="w-full space-y-3">
           <div className="w-full lg:w-max px-16 py-4 bg-dark-100  rounded-4xl flex items-center gap-6">
             <WatchlistButton
-              userId={user.$id}
+              userId={currentUser.data?.documents?.[0].$id}
               productId={productInfo.data?.documents?.[0].$id!}
               label="Add to watchlist"
             />
