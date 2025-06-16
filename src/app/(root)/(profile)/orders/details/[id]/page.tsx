@@ -73,14 +73,14 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
           <div className="w-full p-3 border border-gray-200 rounded-xl">
             <h2 className="text-lg lg:text-xl font-medium">Payment</h2>
             <div className="flex-between mt-4">
-              <p className="text-dark-200">Subtotal</p>
-              <p className="text-dark-200">
+              <p className="text-dark-300">Subtotal</p>
+              <p className="text-dark-300">
                 {formatCurrency(orderInfo.data?.documents?.[0].subTotal)}
               </p>
             </div>
             <div className="flex-between">
-              <p className="text-dark-200">VAT (7.5%)</p>
-              <p className="text-dark-200">{formatCurrency(vat)}</p>
+              <p className="text-dark-300">VAT (7.5%)</p>
+              <p className="text-dark-300">{formatCurrency(vat)}</p>
             </div>
             <div className="flex-between mt-5">
               <p className="text-dark-300 font-bold">Total</p>

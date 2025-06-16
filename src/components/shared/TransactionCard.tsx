@@ -3,7 +3,7 @@
 import { formatCurrency, formatDate } from "@/lib/utils";
 import Image from "next/image";
 import { Models } from "node-appwrite";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { useStore } from "@/store/appStore";
