@@ -17,7 +17,7 @@ const CartContent = ({
   user?: Models.Document;
 }) => {
   const { cart, clearCart } = useStore();
-  const total = cart.reduce((init, item) => item.price * item.qty + init, 0);
+  const total = cart?.reduce((init, item) => item.price * item.qty + init, 0);
   const vat = Math.ceil(total * 0.075);
 
   // get delivery details
