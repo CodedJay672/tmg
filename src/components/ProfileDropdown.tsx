@@ -25,7 +25,7 @@ const ProfileDropdown = ({
   return (
     <article
       className={cn(
-        "w-full h-0 absolute overflow-hidden top-15 right-0 bg-foreground py-6 px-3 rounded-lg shadow-lg z-90 transition-all transform-gpu duration-300  -translate-y-100 opacity-0",
+        "w-max h-0 absolute overflow-hidden top-15 right-0 bg-foreground py-6 px-3 rounded-lg shadow-lg z-90 transition-all transform-gpu duration-300  -translate-y-100 opacity-0",
         {
           "h-max translate-y-0 opacity-100": show,
         }
