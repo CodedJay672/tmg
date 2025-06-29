@@ -6,6 +6,7 @@ import SubmitButton from "./SubmitButton";
 import { toast } from "sonner";
 import { resetPassword } from "@/lib/actions/auth.actions";
 import { AppwriteException } from "node-appwrite";
+import { useRouter } from "next/navigation";
 
 const ResetPasswordForm = ({
   userId,
@@ -19,6 +20,7 @@ const ResetPasswordForm = ({
   const [errors, setErrors] = useState<Record<string, string[]> | undefined>(
     {}
   );
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -45,6 +47,7 @@ const ResetPasswordForm = ({
         return toast.error(response.message);
       }
 
+      router.push("/sign-in");
       return toast.success(response.message);
     } catch (error) {
       if (error instanceof AppwriteException) toast.error(error.message);
