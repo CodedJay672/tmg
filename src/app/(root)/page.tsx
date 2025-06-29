@@ -31,15 +31,21 @@ export default async function Home({
           </div>
         }
       >
-        <div className="w-full flex-1 grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-4 mt-6">
-          {allProducts?.data?.map((product) => (
-            <ProductCard
-              key={product.$id}
-              item={product}
-              user={currentUser.data?.documents?.[0]}
-            />
-          ))}
-        </div>
+        {allProducts?.status ? (
+          <div className="w-full flex-1 grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-4 mt-6">
+            {allProducts?.data?.map((product) => (
+              <ProductCard
+                key={product.$id}
+                item={product}
+                user={currentUser.data?.documents?.[0]}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-base lg:text-lg text-gray-300 text-center w-full mt-10">
+            No products to view
+          </p>
+        )}
       </Suspense>
     </section>
   );
