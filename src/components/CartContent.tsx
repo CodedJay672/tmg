@@ -9,13 +9,7 @@ import { AppwriteException, Models } from "node-appwrite";
 import { toast } from "sonner";
 import { completeTransaction } from "@/lib/actions/cart.actions";
 
-const CartContent = ({
-  action,
-  user,
-}: {
-  action: (t: boolean) => void;
-  user?: Models.Document;
-}) => {
+const CartContent = ({ user }: { user?: Models.Document }) => {
   const { cart, clearCart } = useStore();
   const total = cart?.reduce((init, item) => item.price * item.qty + init, 0);
   const vat = Math.ceil(total * 0.075);
@@ -50,7 +44,6 @@ const CartContent = ({
       if (!response?.status) return toast.error(response?.message);
 
       clearCart();
-      action(false);
       toast.success(response?.message);
     } catch (error) {
       if (error instanceof AppwriteException) toast.error(error.message);
