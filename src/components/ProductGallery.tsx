@@ -49,7 +49,7 @@ const ProductGallery = async ({
           </div>
         </>
       ) : (
-        <p className="text-2xl text-center font-medium text-gray-300 w-max flex-center gap-2 mx-auto mt-10">
+        <p className="text-xl lg:text-2xl text-center font-medium text-gray-300 w-max flex-center gap-2 mx-auto mt-10">
           Search from over 500+ products
         </p>
       )}
