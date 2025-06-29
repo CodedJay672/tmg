@@ -9,7 +9,13 @@ import { AppwriteException, Models } from "node-appwrite";
 import { toast } from "sonner";
 import { completeTransaction } from "@/lib/actions/cart.actions";
 
-const CartContent = ({ user }: { user?: Models.Document }) => {
+const CartContent = ({
+  action,
+  user,
+}: {
+  action?: (t: boolean) => void;
+  user?: Models.Document;
+}) => {
   const { cart, clearCart } = useStore();
   const total = cart?.reduce((init, item) => item.price * item.qty + init, 0);
   const vat = Math.ceil(total * 0.075);
