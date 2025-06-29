@@ -9,7 +9,12 @@ import { cn, formatTitle } from "@/lib/utils";
 const CategoryLink = ({ img, title }: { img: string; title: string }) => {
   const pathname = usePathname();
 
-  const path = title === "All" ? "/" : `/category/${title}`;
+  const path =
+    title === "All"
+      ? "/"
+      : title === "Trending"
+      ? "/trending"
+      : `/category/${title}`;
 
   const isActive = (path: string) => {
     return pathname.endsWith(path);
