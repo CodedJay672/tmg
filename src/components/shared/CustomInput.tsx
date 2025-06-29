@@ -39,7 +39,7 @@ const CustomInput = ({
         required
         onChange={(e) => onChange(e.target.value)}
         className={cn(
-          "w-full border border-secondary rounded-md p-2 lg:py-3 mt-2 outline-none transition-all bg-gray-50 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400",
+          "text-base w-full border border-secondary rounded-md p-2 lg:py-3 mt-2 outline-none transition-all bg-gray-50 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400",
           { "border-2 border-red-500": error }
         )}
       />
