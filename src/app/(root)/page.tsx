@@ -23,15 +23,15 @@ export default async function Home({
       <Carousel slides={slides} />
       <CategoryTab />
 
-      <div className="w-full flex-1 grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-4">
-        <Suspense
-          fallback={
-            <div className="flex-center gap-2">
-              <Loader2Icon size={20} className="text-primary animate-spin" />
-              <span className="text-base">Fetching products</span>
-            </div>
-          }
-        >
+      <Suspense
+        fallback={
+          <div className="flex-center gap-2">
+            <Loader2Icon size={20} className="text-primary animate-spin" />
+            <span className="text-base">Fetching products</span>
+          </div>
+        }
+      >
+        <div className="w-full flex-1 grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-4 mt-6">
           {allProducts?.data?.map((product) => (
             <ProductCard
               key={product.$id}
@@ -39,8 +39,8 @@ export default async function Home({
               user={currentUser.data?.documents?.[0]}
             />
           ))}
-        </Suspense>
-      </div>
+        </div>
+      </Suspense>
     </section>
   );
 }
