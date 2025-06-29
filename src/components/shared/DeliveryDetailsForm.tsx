@@ -13,7 +13,7 @@ const DeliveryDetailsForm = ({
 }: {
   user: Models.User<Models.Preferences>;
   errors: Record<string, string[]> | null;
-  action: (t: FormData) => Promise<string | number>;
+  action: (t: FormData) => Promise<string | undefined>;
 }) => {
   const { data: userInfo } = useGetUserById(user.$id);
 
