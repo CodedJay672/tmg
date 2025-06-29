@@ -55,7 +55,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
         }
 
         toast.success(response.message);
-        router.push("/");
+        return router.push("/");
       }
 
       const response = await SignIn(email, password);
