@@ -21,12 +21,7 @@ const Category = async ({
       </div>
 
       <div className="w-full flex-1">
-        <ProductGallery
-          param={page}
-          query={title}
-          userId={user?.$id}
-          enabled={false}
-        />
+        <ProductGallery param={page} query={title} userId={user?.$id} />
       </div>
     </section>
   );
