@@ -103,7 +103,7 @@ const LocationDropdown = ({
         />
       </Button>
       <ProfileDropdown show={showDropdown} setShow={setShowDropdown}>
-        <div className="w-full overflow-hidden">
+        <div className="w-full max-w-sm overflow-hidden">
           <div className="w-full mb-6 mt-4">
             <p className="text-xl font-bold">Provide delivery information.</p>
           </div>

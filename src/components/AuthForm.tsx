@@ -18,7 +18,9 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const router = useRouter();
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[]> | undefined>(
+    {}
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,8 +50,8 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
         });
 
         if (!response.status) {
-          if (response.data) setErrors(response.data);
-          return toast.error(response.message);
+          setErrors(response?.data);
+          return toast.error("Failed to sign in.");
         }
 
         toast.success(response.message);
@@ -59,11 +61,12 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
       const response = await SignIn(email, password);
 
       if (!response.status) {
+        setErrors(response?.data);
         return toast.error(response.message);
       }
 
       toast.success(response.message);
-      router.push("/");
+      router.replace("/");
     } catch (error) {
       if (error instanceof AppwriteException) toast.error(error.message);
       throw error;

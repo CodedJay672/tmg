@@ -21,7 +21,8 @@ export const SignIn = async (email: string, password: string) => {
     if (!parsedData.success) {
       return {
         status: false,
-        message: "Data validation Failed",
+        message: "The forrm contains some errors.",
+        data: parsedData.error.flatten().fieldErrors,
       };
     }
 
@@ -195,7 +196,7 @@ export const passwordRecovery = async (email: string) => {
 
     const response = account.createRecovery(
       email,
-      "http://localhost:3000/reset-password"
+      config.baseUrl ?? "http://localhost:3000/reset-password"
     );
 
     if (!response) {
