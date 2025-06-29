@@ -1,6 +1,6 @@
 "use server";
 
-import { ID, OAuthProvider } from "node-appwrite";
+import { AppwriteException, ID, OAuthProvider } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../server/appwrite";
 import { cookies } from "next/headers";
 import { config } from "../server/config";
@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 
 export const SignIn = async (email: string, password: string) => {
   try {
-    const { account } = await createAdminClient();
+    const { account, database } = await createAdminClient();
     const schema = AuthSchema("SIGN_IN");
 
     // data validation with zod
@@ -26,6 +26,7 @@ export const SignIn = async (email: string, password: string) => {
       };
     }
 
+    // allow user to login
     const session = await account.createEmailPasswordSession(email, password);
 
     if (!session) {
@@ -50,6 +51,11 @@ export const SignIn = async (email: string, password: string) => {
       message: "Signed in successfully.",
     };
   } catch (error) {
+    if (error instanceof AppwriteException)
+      return {
+        status: false,
+        message: error.message,
+      };
     throw error;
   }
 };

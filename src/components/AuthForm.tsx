@@ -60,9 +60,9 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
 
       const response = await SignIn(email, password);
 
-      if (!response.status) {
+      if (!response?.status) {
         setErrors(response?.data);
-        return toast.error(response.message);
+        return toast.error(response?.message);
       }
 
       toast.success(response.message);
