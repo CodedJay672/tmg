@@ -26,12 +26,12 @@ const ProductGallery = async ({
 
   return (
     <>
-      {allProducts?.data?.length ? (
+      {query && allProducts?.data?.length ? (
         <>
           <h2 className="text-lg lg:text-xl font-medium text-left w-full mt-4 lg:mt-10 capitalize">
             {query ? `${query}` : "All Products"}{" "}
             <span className="text-primary text-xl font-bold">
-              ({allProducts.data?.length})
+              ({allProducts?.data?.length})
             </span>
           </h2>
           <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mt-6">
@@ -45,7 +45,7 @@ const ProductGallery = async ({
               ))}
           </div>
           <div className="w-full flex justify-center lg:justify-end mt-16">
-            <PaginationButtons data={allProducts} isPlaceholderData={false} />
+            <PaginationButtons data={allProducts!} isPlaceholderData={false} />
           </div>
         </>
       ) : (
