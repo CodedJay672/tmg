@@ -5,6 +5,7 @@ import CustomInput from "./CustomInput";
 import SubmitButton from "./SubmitButton";
 import { toast } from "sonner";
 import { resetPassword } from "@/lib/actions/auth.actions";
+import { AppwriteException } from "node-appwrite";
 
 const ResetPasswordForm = ({
   userId,
@@ -15,7 +16,9 @@ const ResetPasswordForm = ({
 }) => {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
-  const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
+  const [errors, setErrors] = useState<Record<string, string[]> | undefined>(
+    {}
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,9 +46,9 @@ const ResetPasswordForm = ({
       }
 
       return toast.success(response.message);
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) toast.error(error.message);
+      throw error;
     }
   };
 
@@ -57,6 +60,7 @@ const ResetPasswordForm = ({
         name="password"
         value={password}
         onChange={setPassword}
+        error={errors?.["password"]}
       />
 
       <CustomInput
@@ -65,6 +69,7 @@ const ResetPasswordForm = ({
         name="confirm"
         value={confirm}
         onChange={setConfirm}
+        error={errors?.["confirm"]}
       />
 
       <SubmitButton label="Reset password" />

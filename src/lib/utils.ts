@@ -45,7 +45,7 @@ export const formatCurrency = (amount: number) => {
 export const getTableData = (data?: Models.Document) => {
   if (!data) return;
 
-  let result: TableTypeProps[] = [];
+  const result: TableTypeProps[] = [];
 
   data.order.products.forEach((product: Models.Document, idx: number) => {
     const res = {

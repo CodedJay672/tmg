@@ -1,6 +1,6 @@
 "use client";
 
-import { Models } from "node-appwrite";
+import { AppwriteException, Models } from "node-appwrite";
 import React from "react";
 import Status from "./shared/Status";
 import { formatCurrency, formatDate, getTableData } from "@/lib/utils";
@@ -32,10 +32,11 @@ const AdminTransactionView = ({ info }: { info: Models.Document }) => {
       if (!res.status) return toast.error(res.message);
 
       return toast.success(res.message);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) toast.error(error.message);
     }
   };
+
   return (
     <article className="w-full overflow-y-scroll no-scrollbar">
       <div className="py-3 px-1 mt-6 flex-between">

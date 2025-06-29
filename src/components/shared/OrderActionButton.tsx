@@ -23,7 +23,7 @@ const OrderActionButton = ({
       if (!res.status) return false;
 
       return true;
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
     }
   };

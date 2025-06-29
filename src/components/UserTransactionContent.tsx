@@ -23,7 +23,7 @@ const UserTransactionContent = ({ userId }: { userId: string }) => {
           (a: Models.Document, b: Models.Document) =>
             new Date(b.$createdAt).getTime() - new Date(a.$createdAt).getTime()
         ),
-    [category]
+    [category, query]
   );
 
   if (loading)

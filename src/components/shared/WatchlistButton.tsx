@@ -4,21 +4,20 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { HeartIcon, Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
-import {
-  useGetLikedProducts,
-  useUpdateWatchlist,
-} from "@/lib/queries/productQueries/products";
+import { useUpdateWatchlist } from "@/lib/queries/productQueries/products";
+import { AppwriteException } from "node-appwrite";
 
 const WatchlistButton = ({
   userId,
   productId,
+  isLiked,
   label,
 }: {
   userId: string | undefined;
   productId: string;
+  isLiked?: boolean;
   label?: string;
 }) => {
-  const { data: isLiked } = useGetLikedProducts(productId, userId);
   const { mutateAsync: updateWatchlist, isPending: updating } =
     useUpdateWatchlist();
 
@@ -33,7 +32,8 @@ const WatchlistButton = ({
 
       toast.success("Success!");
     } catch (error) {
-      toast.error("Something went wrong");
+      if (error instanceof AppwriteException) toast.error(error.message);
+      throw error;
     }
   };
 

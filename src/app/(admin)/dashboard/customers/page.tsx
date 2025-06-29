@@ -1,5 +1,4 @@
 import CustomersTable from "@/components/shared/table/customers/CustomersTable";
-import { getUser } from "@/lib/actions/user.actions";
 import { PlusIcon, UploadIcon } from "lucide-react";
 import React from "react";
 

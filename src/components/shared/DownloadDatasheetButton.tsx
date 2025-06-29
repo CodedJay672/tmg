@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { downloadFile } from "@/lib/actions/user.actions";
 import { downloadToMachine } from "@/lib/utils";
+import { AppwriteException } from "node-appwrite";
 
 const DownloadDatasheetButton = ({ id }: { id: string }) => {
   const [loading, setLoading] = useState(false);
@@ -17,8 +18,9 @@ const DownloadDatasheetButton = ({ id }: { id: string }) => {
 
       toast.success("File download has started.");
       downloadToMachine(res as ArrayBuffer);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) toast.error(error.message);
+      throw error;
     } finally {
       setLoading(false);
     }

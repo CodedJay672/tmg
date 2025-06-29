@@ -1,10 +1,15 @@
 "use server";
 
 import { productSchema, TProductDetails } from "@/constants/validations/schema";
-import { createAdminClient } from "../server/appwrite";
+import { createAdminClient, getLoggedInUser } from "../server/appwrite";
 import { config } from "../server/config";
 import { ID, Models, Query } from "node-appwrite";
-import { createFile, deleteFile, getFilePreview } from "./user.actions";
+import {
+  createFile,
+  deleteFile,
+  getFilePreview,
+  getUser,
+} from "./user.actions";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 
@@ -63,11 +68,8 @@ export const uploadProducts = async (values: TProductDetails) => {
       status: true,
       message: "Product uploaded successfully.",
     };
-  } catch (error: any) {
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -130,11 +132,8 @@ export const updateProducts = async (
       status: true,
       message: "Product uploaded successfully.",
     };
-  } catch (error: any) {
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -175,12 +174,8 @@ export const deleteProduct = async (
       status: true,
       message: "Product removed successfully.",
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -189,6 +184,10 @@ export const getAllProducts = cache(async (page?: number, query?: string) => {
 
   try {
     const { database } = await createAdminClient();
+    const loggedInuser = await getLoggedInUser();
+
+    if (!loggedInuser) return;
+    const currentUser = await getUser(loggedInuser?.$id);
 
     const response = await database.listDocuments(
       config.appwrite.databaseId,
@@ -215,17 +214,27 @@ export const getAllProducts = cache(async (page?: number, query?: string) => {
       };
     }
 
+    const productsWithInfo = await Promise.all(
+      response.documents.map(async (product) => {
+        const liked = await getProductFromWatchlist(
+          product?.$id,
+          currentUser?.data?.documents?.[0].$id
+        );
+
+        return {
+          ...product,
+          isLiked: !!liked,
+        };
+      })
+    );
+
     return {
       status: true,
       message: "Products found.",
-      data: response,
+      data: productsWithInfo,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 });
 
@@ -234,7 +243,12 @@ export const getAllProductsMobile = cache(
   async (pageParams?: string, query?: string) => {
     try {
       const { database } = await createAdminClient();
-      const queryVals: any[] = [];
+      const queryVals: string[] = [];
+
+      const loggedInuser = await getLoggedInUser();
+
+      if (!loggedInuser) return;
+      const currentUser = await getUser(loggedInuser?.$id);
 
       if (pageParams) queryVals.push(Query.cursorAfter(pageParams));
 
@@ -259,17 +273,27 @@ export const getAllProductsMobile = cache(
         };
       }
 
+      const productsWithInfo = await Promise.all(
+        response.documents.map(async (product) => {
+          const liked = await getProductFromWatchlist(
+            product?.$id,
+            currentUser?.data?.documents?.[0].$id
+          );
+
+          return {
+            ...product,
+            isLiked: !!liked,
+          };
+        })
+      );
+
       return {
         status: true,
         message: "Products found.",
-        data: response,
+        data: productsWithInfo,
       };
-    } catch (error: any) {
-      console.log(error);
-      return {
-        status: false,
-        message: error.message,
-      };
+    } catch (error) {
+      throw error;
     }
   }
 );
@@ -292,17 +316,22 @@ export const getProductById = cache(async (id?: string) => {
         message: "Product not found.",
       };
 
+    const isLiked = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.watchlistCollection,
+      [Query.equal("$id", response.documents?.[0].$id)]
+    );
+
     return {
       status: true,
       message: "Product fetched successfully.",
-      data: response,
+      data: {
+        ...response,
+        isLiked: !!isLiked,
+      },
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error?.message,
-    };
+  } catch (error) {
+    throw error;
   }
 });
 
@@ -337,7 +366,9 @@ export const updateWatchlist = async (productId: string, userId?: string) => {
     const productAdded = await addProductToWatchlist({ userId, productId });
     if (!productAdded) return false;
 
-    revalidatePath("(root)/", "page");
+    revalidatePath("(root)/");
+    revalidatePath(`(root)/(profile)/watchlist/${userId}`);
+    revalidatePath(`(root)/details/${productId}`);
     return true;
   } catch (error) {
     throw error;
@@ -380,7 +411,7 @@ export const addProductToWatchlist = async (data: {
     if (!response) return false;
 
     return true;
-  } catch (error: any) {
+  } catch (error) {
     throw error;
   }
 };
@@ -406,7 +437,7 @@ export const getProductFromWatchlist = cache(
       if (!likedProduct.total) return false;
 
       return likedProduct;
-    } catch (error: any) {
+    } catch (error) {
       throw error;
     }
   }

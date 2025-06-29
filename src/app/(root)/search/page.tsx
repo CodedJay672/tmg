@@ -2,7 +2,8 @@ import ProductGallery from "@/components/ProductGallery";
 import SearchBar from "@/components/SearchBar";
 import GoHome from "@/components/shared/GoHome";
 import { getLoggedInUser } from "@/lib/server/appwrite";
-import React from "react";
+import { Loader2Icon } from "lucide-react";
+import React, { Suspense } from "react";
 
 const SearchPage = async ({
   searchParams,
@@ -33,12 +34,16 @@ const SearchPage = async ({
       )}
 
       <div className="w-full flex-1">
-        <ProductGallery
-          userId={user?.$id}
-          query={query}
-          param={page}
-          enabled={true}
-        />
+        <Suspense
+          fallback={
+            <div className="flex-center gap-2">
+              <Loader2Icon size={20} className="text-primary animate-spin" />
+              <span className="text-base">Fetching products</span>
+            </div>
+          }
+        >
+          <ProductGallery userId={user?.$id} query={query} param={page} />
+        </Suspense>
       </div>
     </section>
   );

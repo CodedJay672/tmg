@@ -1,5 +1,4 @@
 import DashboardInfo from "@/components/DashboardInfo";
-import CustomTab from "@/components/shared/CustomTab";
 import InfoDoughnut from "@/components/shared/InfoDoughnut";
 import { smallTable } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
@@ -112,7 +111,7 @@ const Dashboard = async () => {
           <p className="text-base lg:text-lg font-medium">Analytics</p>
           <div className="w-full mt-10 lg:mt-16 flex-1 overflow-hidden flex-between flex-col">
             <div className="w-full max-w-60">
-              <InfoDoughnut title="All transactions" info={doughnutData} />
+              <InfoDoughnut info={doughnutData} />
             </div>
             <div className="flex-between gap-3 mt-5 lg:mt-0">
               <div className="flex items-center gap-1">

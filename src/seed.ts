@@ -33,8 +33,7 @@ async function seedDB() {
     }
 
     console.log("Data seeded succesfully!");
-  } catch (error: any) {
-    console.log(error.message);
+  } catch (error) {
     throw error;
   }
 }

@@ -6,20 +6,13 @@ import {
   ArcElement,
   Tooltip,
   Legend,
-  plugins,
   ChartData,
 } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const InfoDoughnut = ({
-  title,
-  info,
-}: {
-  title: string;
-  info: ChartData<"doughnut">;
-}) => {
+const InfoDoughnut = ({ info }: { info: ChartData<"doughnut"> }) => {
   return (
     <Doughnut
       options={{

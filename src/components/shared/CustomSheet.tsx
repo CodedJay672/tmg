@@ -2,7 +2,6 @@
 
 import React, { Dispatch } from "react";
 import { Sheet, SheetContent } from "../ui/sheet";
-import { useStore } from "@/store/appStore";
 import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface CustomSheetProps {

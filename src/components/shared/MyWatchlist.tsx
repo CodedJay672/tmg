@@ -10,7 +10,7 @@ import WatchlistContent from "../WatchlistContent";
 
 const MyWatchlist = ({ userId }: { userId: string }) => {
   const { data: userInfo } = useGetUserById(userId);
-  const { data: myWatchlist, isPending: loading } = useGetUserWatchlist(
+  const { data: myWatchlist } = useGetUserWatchlist(
     userInfo?.data?.documents?.[0].$id
   );
   const [open, setOpen] = useState(false);

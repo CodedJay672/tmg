@@ -8,7 +8,7 @@ import { UploadCloudIcon } from "lucide-react";
 import Image from "next/image";
 import { useUploadProduct } from "@/lib/queries/productQueries/products";
 import { toast } from "sonner";
-import { Models } from "node-appwrite";
+import { AppwriteException, Models } from "node-appwrite";
 import { cn } from "@/lib/utils";
 import { updateProducts } from "@/lib/actions/products.actions";
 
@@ -29,7 +29,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
   const [description, setdescription] = useState(product?.description ?? "");
   const [file, setFile] = useState<File[] | null>(null);
   const [datasheet, setDatasheet] = useState<File[] | undefined>([]);
-  const { mutateAsync: uploadProduct, isPending: loading } = useUploadProduct();
+  const { mutateAsync: uploadProduct } = useUploadProduct();
 
   const uploadRef = useRef<HTMLInputElement | null>(null);
   const datasheetRef = useRef<HTMLInputElement | null>(null);
@@ -91,8 +91,9 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
       setFile(null);
       setDatasheet(undefined);
       setdescription("");
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) toast.error(error.message);
+      throw error;
     }
   };
 

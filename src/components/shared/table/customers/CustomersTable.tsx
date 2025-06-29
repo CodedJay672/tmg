@@ -2,7 +2,6 @@
 
 import { useGetUserById } from "@/lib/queries/userQueried/users";
 import { Loader2Icon } from "lucide-react";
-import { Models } from "node-appwrite";
 import CustomTable from "../CustomTable";
 import { customerTable } from "../columns";
 import { useEffect, useState } from "react";

@@ -51,12 +51,8 @@ export const addProductsToCart = async (
 
     //update the cartitem if it is added already
     await updateCartItem(isPresent.documents?.[0], price, "add");
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error?.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -90,12 +86,8 @@ export const updateCartItem = async (
       status: true,
       message: "Quantity increased.",
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: "Failed to update item.",
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -121,12 +113,8 @@ export const getUserCart = cache(async (id?: string) => {
       message: "Carts fetched successfully.",
       data: response,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error?.message,
-    };
+  } catch (error) {
+    throw error;
   }
 });
 
@@ -182,12 +170,8 @@ export const completeTransaction = async (
       status: true,
       message: "Transaction completed.",
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -216,12 +200,8 @@ export const saveCart = async (order: TCart[]) => {
       message: "Cart saved successfully.",
       data: response,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -255,12 +235,8 @@ export const getTransaction = cache(async (query?: string) => {
       message: "Transaction fetched successfully.",
       data: response,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 });
 
@@ -293,11 +269,7 @@ export const updateTransactionStatus = async (data: {
       status: true,
       message: "Updated successfully.",
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };

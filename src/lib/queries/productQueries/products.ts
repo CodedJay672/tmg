@@ -15,7 +15,6 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { QUERY_KEYS } from "../queryKey";
 
 export const useUploadProduct = () => {
   const queryClient = useQueryClient();
@@ -24,7 +23,7 @@ export const useUploadProduct = () => {
     mutationFn: (data: TProductDetails) => uploadProducts(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS],
+        queryKey: ["products"],
       });
     },
   });
@@ -45,7 +44,7 @@ export const useDeleteProduct = () => {
     }) => deleteProduct(id, fileId, datasheetId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS],
+        queryKey: ["products"],
       });
     },
   });
@@ -57,7 +56,7 @@ export const useGetProducts = (
   page = "0"
 ) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query, page],
+    queryKey: ["products", query, page],
     queryFn: () => getAllProducts(+page, query),
     enabled: enabled ? !!query : !enabled,
     placeholderData: keepPreviousData,
@@ -66,12 +65,12 @@ export const useGetProducts = (
 
 export const useGetProductsInfinite = (query?: string) => {
   return useInfiniteQuery({
-    queryKey: [QUERY_KEYS.GET_ALL_PRODUCTS, query],
+    queryKey: ["products", query],
     queryFn: ({ pageParam }) => getAllProductsMobile(pageParam, query),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {
-      const documents = lastPage?.data?.documents;
-      const total = lastPage?.data?.total;
+      const documents = lastPage?.data;
+      const total = lastPage?.data?.length;
 
       if (!documents || !Array.isArray(documents) || documents.length === 0)
         return null;
@@ -85,13 +84,14 @@ export const useGetProductsInfinite = (query?: string) => {
 
 export const useGetLikedProducts = (productId: string, userId?: string) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.WATCHLIST, productId, userId],
+    queryKey: ["products", productId, userId],
     queryFn: () => getProductFromWatchlist(productId, userId),
   });
 };
 
 export const useUpdateWatchlist = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: ({
       productId,
@@ -102,7 +102,10 @@ export const useUpdateWatchlist = () => {
     }) => updateWatchlist(productId, userId),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.WATCHLIST, variables.productId, variables.userId],
+        queryKey: ["products"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["watchlist", variables.productId, variables.productId],
       });
     },
   });
@@ -110,7 +113,7 @@ export const useUpdateWatchlist = () => {
 
 export const useGetUserWatchlist = (userId?: string) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.GET_WATCHLIST, { userId }],
+    queryKey: ["watchlist", { userId }],
     queryFn: () => getUserWatchlist(userId),
   });
 };

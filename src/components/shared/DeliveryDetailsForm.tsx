@@ -2,7 +2,7 @@
 
 import { useGetUserById } from "@/lib/queries/userQueried/users";
 import { Models } from "node-appwrite";
-import React, { RefObject, useState } from "react";
+import React, { useState } from "react";
 import CustomInput from "./CustomInput";
 import SubmitButton from "./SubmitButton";
 

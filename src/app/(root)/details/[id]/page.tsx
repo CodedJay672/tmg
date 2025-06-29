@@ -2,7 +2,7 @@ import CartActionButton from "@/components/shared/CartActionButton";
 import DownloadDatasheetButton from "@/components/shared/DownloadDatasheetButton";
 import WatchlistButton from "@/components/shared/WatchlistButton";
 import { getAllLocations } from "@/lib/actions/location.actions";
-import { getAllProducts, getProductById } from "@/lib/actions/products.actions";
+import { getProductById } from "@/lib/actions/products.actions";
 import { getUser } from "@/lib/actions/user.actions";
 import { getLoggedInUser } from "@/lib/server/appwrite";
 import { calculateInterest } from "@/lib/utils";
@@ -18,13 +18,15 @@ const ProductDetails = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-
   const user = await getLoggedInUser();
 
   if (!user) redirect("/sign-in");
 
-  const currentUser = await getUser(user.$id);
+  //get products by id
   const productInfo = await getProductById(id);
+
+  // fetch user data first to get delivery_location
+  const currentUser = await getUser(user.$id);
   const location = await getAllLocations(
     currentUser?.data?.documents?.[0].delivery_location
   );
@@ -139,6 +141,7 @@ const ProductDetails = async ({
               userId={currentUser.data?.documents?.[0].$id}
               productId={productInfo.data?.documents?.[0].$id!}
               label="Add to watchlist"
+              isLiked={productInfo.data?.isLiked}
             />
           </div>
 

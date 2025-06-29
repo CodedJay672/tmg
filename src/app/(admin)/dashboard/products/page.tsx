@@ -47,7 +47,7 @@ const ProductsPage = async ({
           <p className="text-base lg:text-lg text-dark-200 text-left w-full truncate line-clamp-1">
             Search results for:{" "}
             <span className="text-primary font-medium text-lg lg:text-xl">
-              "{query}"
+              &ldquo;{query}&rdquo;
             </span>
           </p>
         )}

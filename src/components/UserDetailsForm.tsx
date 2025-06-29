@@ -1,7 +1,7 @@
 "use client";
 
-import { Models } from "node-appwrite";
-import React, { useContext, useRef, useState } from "react";
+import { AppwriteException, Models } from "node-appwrite";
+import React, { useRef, useState } from "react";
 import CustomInput from "./shared/CustomInput";
 import Image from "next/image";
 import SubmitButton from "./shared/SubmitButton";
@@ -73,9 +73,9 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
       }
 
       return toast.success(res.message);
-    } catch (error: any) {
-      if (error.data) setErrors(error.data);
-      return toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) return toast.error(error.message);
+      throw error;
     } finally {
       setEditDetails(false);
     }
@@ -140,6 +140,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           value={firstname}
           disabled={!editDetails}
           onChange={setFirstname}
+          error={errors?.["firstname"]}
         />
         <CustomInput
           label="lastname"
@@ -148,6 +149,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           value={lastname}
           disabled={!editDetails}
           onChange={setLastname}
+          error={errors?.["lastname"]}
         />
       </fieldset>
 
@@ -158,6 +160,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         value={email}
         disabled={!editDetails}
         onChange={setEmail}
+        error={errors?.["email"]}
       />
 
       <fieldset className="flex-between gap-2 lg:gap-3 mt-6 mb-2">
@@ -170,6 +173,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           value={location}
           disabled={!editDetails}
           onChange={setLocation}
+          error={errors?.["location"]}
         />
         <CustomInput
           label="Phone"
@@ -178,6 +182,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
           value={phone}
           disabled={!editDetails}
           onChange={setPhone}
+          error={errors?.["phone"]}
         />
       </fieldset>
 
@@ -188,6 +193,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
         value={address}
         disabled={!editDetails}
         onChange={setAddress}
+        error={errors?.["address"]}
       />
 
       <fieldset className="mt-5">
@@ -201,6 +207,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
             value={deliveryLocation}
             disabled={!editDetails}
             onChange={setDeliveryLocation}
+            error={errors?.["delivery_location"]}
           />
 
           <CustomInput
@@ -210,6 +217,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
             value={deliveryAddress}
             disabled={!editDetails}
             onChange={setDeliveryAddress}
+            error={errors?.["delivery_address"]}
           />
         </div>
 
@@ -221,6 +229,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
             value={receiverName}
             disabled={!editDetails}
             onChange={setReceiverName}
+            error={errors?.["receiver_name"]}
           />
           <CustomInput
             label="receiver's phone"
@@ -229,6 +238,7 @@ const UserDetailsForm = ({ user }: { user?: Models.Document }) => {
             value={receiverPhone}
             disabled={!editDetails}
             onChange={setReceiverPhone}
+            error={errors?.["receiver_phone"]}
           />
         </div>
       </fieldset>

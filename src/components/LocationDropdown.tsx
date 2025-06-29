@@ -45,7 +45,7 @@ const LocationDropdown = ({
     const receiver_phone = formData.get("receiver_phone") as string;
 
     const res = await updateLocation({
-      id: currentUser.data?.documents?.[0].$id!,
+      id: currentUser.data?.documents?.[0].$id as string,
       data: {
         delivery_address,
         delivery_location,

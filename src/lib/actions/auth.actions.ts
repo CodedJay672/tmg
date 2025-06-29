@@ -106,12 +106,8 @@ export const signUp = async (values: {
       message: "Signed up successfully.",
       data: savedUser.data,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -144,12 +140,8 @@ export const googleAuth = async () => {
       status: true,
       message: "Signed up success.",
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -191,11 +183,8 @@ const saveToDB = async (name: string, email: string, accountId: string) => {
       message: "Record added successfully.",
       data: result,
     };
-  } catch (error: any) {
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -221,12 +210,8 @@ export const passwordRecovery = async (email: string) => {
       message: "Reset link has been sent to the email address.",
       data: response,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -267,11 +252,7 @@ export const resetPassword = async (
       message: "Your password has been reset.",
       data: response,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };

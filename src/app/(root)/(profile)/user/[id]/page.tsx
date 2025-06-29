@@ -1,6 +1,5 @@
 import ProfileMenuSwitch from "@/components/shared/ProfileMenuSwitch";
 import Segments from "@/components/shared/Segments";
-import SidebarLinks from "@/components/SidebarLinks";
 import UserDetailsForm from "@/components/UserDetailsForm";
 import { getUser } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";

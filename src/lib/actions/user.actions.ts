@@ -34,9 +34,8 @@ export const getUser = cache(
         message: "User details fetched successfully.",
         data: response,
       };
-    } catch (error: any) {
-      console.log(error);
-      return { status: false, message: error.message };
+    } catch (error) {
+      throw error;
     }
   }
 );
@@ -103,7 +102,7 @@ export const updateUserInfo = async (
 
     if (!response) {
       // delete file if it was uploaded
-      file ?? (await deleteFile(res?.data?.$id!));
+      if (file) await deleteFile(res?.data?.$id!);
 
       return {
         status: false,
@@ -120,12 +119,8 @@ export const updateUserInfo = async (
       status: true,
       message: "Profile updated.",
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -153,12 +148,8 @@ export const createFile = async (file: File | undefined) => {
       message: "File upoaded successfully.",
       data: response,
     };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -167,12 +158,8 @@ export const deleteFile = async (id: string) => {
     const { storage } = await createAdminClient();
 
     await storage.deleteFile(config.appwrite.storageId, id);
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -198,11 +185,8 @@ export const downloadFile = async (id?: string) => {
       };
 
     return response;
-  } catch (error: any) {
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -251,11 +235,7 @@ const updateWatchlist = async (productId: string) => {
     }
 
     return [{ ...productInfo.documents?.[0] }, ...watchlist];
-  } catch (error: any) {
-    console.log(error);
-    return {
-      status: false,
-      message: error?.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };

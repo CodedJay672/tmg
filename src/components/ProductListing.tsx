@@ -25,8 +25,8 @@ const ProductListing = ({
     <section className="w-full p-1 lg:p-2 space-y-4">
       {loading ? (
         <Loader2Icon size={24} className="text-primary animate-spin mx-auto" />
-      ) : products?.data?.total ? (
-        products?.data?.documents?.map((data) => (
+      ) : products?.data?.length ? (
+        products?.data?.map((data) => (
           <ProductDetails key={data.$id} data={data} />
         ))
       ) : (
@@ -35,7 +35,7 @@ const ProductListing = ({
         </p>
       )}
 
-      {products?.data?.total && (
+      {products?.data?.length && (
         <div className="w-full mt-16 flex justify-center lg:justify-end pr-10">
           <PaginationButtons
             data={products}

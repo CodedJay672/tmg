@@ -22,7 +22,7 @@ const FileUploader = ({
     onChange(acceptedFiles);
   }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
       "image/*": [".png", ".jpg", ".jpeg"],
@@ -36,7 +36,7 @@ const FileUploader = ({
       <input {...getInputProps()} ref={ref} />
       <div className="w-full flex-center flex-col gap-2">
         <Upload size={24} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
       </div>
     </div>
   );

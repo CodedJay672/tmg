@@ -60,7 +60,7 @@ const TransactionsChart = ({ data }: { data: ChartData }) => {
     };
 
     setChartData(chartData);
-  }, []);
+  }, [data]);
 
   return (
     <Chart

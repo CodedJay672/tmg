@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import CartCard from "./shared/CartCard";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Models } from "node-appwrite";
+import { AppwriteException, Models } from "node-appwrite";
 import { toast } from "sonner";
 import { completeTransaction } from "@/lib/actions/cart.actions";
 
@@ -52,8 +52,9 @@ const CartContent = ({
       clearCart();
       action(false);
       toast.success(response?.message);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) toast.error(error.message);
+      throw error;
     }
   };
 

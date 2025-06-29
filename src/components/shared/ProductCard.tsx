@@ -1,24 +1,21 @@
-"use client";
-
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
 import WatchlistButton from "./WatchlistButton";
-import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
-import { Loader2Icon } from "lucide-react";
 import { calculateInterest } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { getAllLocations } from "@/lib/actions/location.actions";
 
 interface ProductCardProps {
   item: Models.Document;
   user: Models.Document | undefined;
 }
 
-const ProductCard = ({ item, user }: ProductCardProps) => {
-  const { data: location, isPending: loading } = useGetAllLocations(
-    user?.delivery_location
-  );
+const ProductCard = async ({ item, user }: ProductCardProps) => {
+  const location = await getAllLocations(user?.delivery_location);
+
+  //calculate the interest based on the location
   const interest = calculateInterest(
     location?.data?.documents?.[0].charge,
     item.price
@@ -41,15 +38,13 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
         </p>
 
         <span className="text-base font-medium">
-          {loading ? (
-            <Loader2Icon size={20} className="text-primary animate-spin" />
-          ) : location?.data?.total === 1 ? (
+          {location?.data?.total === 1 ? (
             total.toLocaleString("en-NG", {
               style: "currency",
               currency: "NGN",
             })
           ) : (
-            "Location required"
+            <span className="text-xs font-light">Location is required</span>
           )}
         </span>
         <div className="w-full space-y-1.5 lg:space-y-0 lg:grid grid-cols-2 gap-2 mt-3">
@@ -67,7 +62,11 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
       </div>
 
       <div className="absolute top-1 right-1 flex-center bg-foreground rounded-full">
-        <WatchlistButton userId={user?.$id} productId={item.$id} />
+        <WatchlistButton
+          userId={user?.$id}
+          productId={item.$id}
+          isLiked={item.isLiked}
+        />
       </div>
     </article>
   );

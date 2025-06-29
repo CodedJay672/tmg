@@ -33,7 +33,7 @@ const WatchlistContent = ({
 
     // call the function to populate the product state array
     getWatchlistProducts();
-  }, [item?.total]);
+  }, [item]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { LogOut } from "lucide-react";
 import { signOut } from "@/lib/actions/auth.actions";
 import { toast } from "sonner";

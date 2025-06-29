@@ -27,11 +27,8 @@ export const getAllLocations = cache(async (query?: string) => {
       message: "Locations fetched successfully.",
       data: locations,
     };
-  } catch (error: any) {
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 });
 
@@ -66,10 +63,7 @@ export const updateLocation = async (charge: number, id?: string) => {
       status: true,
       message: "Charge updated for location.",
     };
-  } catch (error: any) {
-    return {
-      status: false,
-      message: error.message,
-    };
+  } catch (error) {
+    throw error;
   }
 };

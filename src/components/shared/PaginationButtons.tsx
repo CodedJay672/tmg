@@ -4,19 +4,15 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import { Models } from "node-appwrite";
-
-const DATA_PER_PAGE = 1;
 
 interface PaginationProps {
   data: {
     status: boolean;
     message: string;
-    data: Models.DocumentList<Models.Document>;
   };
   isPlaceholderData: boolean;
 }
-const PaginationButtons = ({ data, isPlaceholderData }: PaginationProps) => {
+const PaginationButtons = ({ isPlaceholderData }: PaginationProps) => {
   const [page, setPage] = useState(0);
   const param = useSearchParams();
   const pathname = usePathname();

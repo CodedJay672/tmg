@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { AppwriteException } from "node-appwrite";
 
 const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
   const [firstname, setFirstname] = useState("");
@@ -63,8 +64,9 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
 
       toast.success(response.message);
       router.push("/");
-    } catch (error: any) {
-      return toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) toast.error(error.message);
+      throw error;
     }
   };
 
@@ -151,7 +153,7 @@ const AuthForm = ({ type }: { type: "SIGN_IN" | "SIGN_UP" }) => {
 
       {type === "SIGN_IN" ? (
         <p className="text-sm text-center w-full">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/sign-up" className="text-bold text-primary">
             Create account
           </Link>

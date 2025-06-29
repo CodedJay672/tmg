@@ -5,12 +5,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Models } from "node-appwrite";
 import ProductMiniCard from "../ProductMiniCard";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDownIcon, MoreVerticalIcon } from "lucide-react";
-import CustomSheet from "../CustomSheet";
-import AdminTransactionView from "@/components/AdminTransactionView";
+import { ArrowUpDownIcon } from "lucide-react";
 import React from "react";
 import Image from "next/image";
-import CustomerDetails from "../CustomerDetails";
+import OrderTableActionButtons from "../OrderTableActionButtons";
+import CustomerTableActionButton from "../CustomerTableActionButton";
 
 export const orderTable: ColumnDef<Models.Document>[] = [
   {
@@ -124,22 +123,9 @@ export const orderTable: ColumnDef<Models.Document>[] = [
   {
     id: "action",
     cell: ({ row }) => {
-      const [open, setOpen] = React.useState(false);
+      const userInfo = row.original;
 
-      return (
-        <>
-          <Button
-            variant="ghost"
-            onClick={() => setOpen(true)}
-            className="cursor-pointer"
-          >
-            <MoreVerticalIcon size={24} className="text-dark-300" />
-          </Button>
-          <CustomSheet open={open} onOpenChange={setOpen}>
-            <AdminTransactionView info={row.original} />
-          </CustomSheet>
-        </>
-      );
+      return <OrderTableActionButtons info={userInfo} />;
     },
   },
 ];
@@ -312,18 +298,7 @@ export const customerTable: ColumnDef<Models.Document>[] = [
   {
     id: "action",
     cell: ({ row }) => {
-      const [open, setOpen] = React.useState(false);
-
-      return (
-        <>
-          <Button variant="ghost" onClick={() => setOpen(true)}>
-            <MoreVerticalIcon size={24} />
-          </Button>
-          <CustomSheet open={open} onOpenChange={setOpen}>
-            <CustomerDetails info={row.original} />
-          </CustomSheet>
-        </>
-      );
+      return <CustomerTableActionButton info={row.original} />;
     },
   },
 ];

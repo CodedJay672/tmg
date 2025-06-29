@@ -6,6 +6,7 @@ import SubmitButton from "./SubmitButton";
 import { toast } from "sonner";
 import { passwordRecovery } from "@/lib/actions/auth.actions";
 import { useRouter } from "next/navigation";
+import { AppwriteException } from "node-appwrite";
 
 const PasswordRecoveryForm = () => {
   const [email, setEmail] = useState("");
@@ -27,9 +28,9 @@ const PasswordRecoveryForm = () => {
 
       toast.success(response.message);
       router.push("/sign-in");
-    } catch (error: any) {
-      console.log(error);
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof AppwriteException) toast.error(error.message);
+      throw error;
     }
   };
 
