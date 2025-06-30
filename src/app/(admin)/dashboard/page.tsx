@@ -135,7 +135,7 @@ const Dashboard = async () => {
             />
           </div>
         </div>
-        <div className="w-full lg:w-80 space-y-4">
+        <div className="w-full lg:w-64 space-y-4">
           <div className="w-full shadow-md flex flex-col rounded-xl p-5 bg-white mb-10">
             <p className="text-base lg:text-lg font-medium">Analytics</p>
             <div className="w-full mt-4 flex-1 overflow-hidden flex-between flex-col">
