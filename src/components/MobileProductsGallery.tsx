@@ -1,32 +1,43 @@
+"use client";
+
 import React from "react";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
-import { getAllProducts } from "@/lib/actions/products.actions";
-import InfiniteProducts from "./InfiniteProducts";
+
 import { getUser } from "@/lib/actions/user.actions";
+import { useStore } from "@/store/appStore";
+import { useGetProductsInfinite } from "@/lib/queries/productQueries/products";
+import { Models } from "node-appwrite";
 
-const MobileProductsGallery = async ({
+type MobileProductsGalleryProps = {
+  userId?: string;
+};
+
+const MobileProductsGallery: React.FC<MobileProductsGalleryProps> = ({
   userId,
-}: {
-  userId: string | undefined;
 }) => {
-  const currentUser = await getUser(userId);
-  const queryClient = new QueryClient();
+  const { category } = useStore();
+  const { data, isLoading, isError, error } = useGetProductsInfinite(
+    category === "all" ? "" : category
+  );
 
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: ["products"],
-    queryFn: ({ pageParam }) =>
-      getAllProducts(typeof pageParam === "number" ? pageParam : 0),
-    initialPageParam: 0,
-  });
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error?.message}</div>;
+
+  // Flatten the products from all pages
+  const products =
+    data?.pages?.flatMap((page) =>
+      page && "data" in page && Array.isArray(page.data) ? page.data : []
+    ) ?? [];
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <InfiniteProducts user={currentUser.data?.documents?.[0]} />
-    </HydrationBoundary>
+    <div>
+      {products.length === 0 ? (
+        <div className="w-full flex-center mt-10">
+          <span className="text-base text-gray-300">No products found</span>
+        </div>
+      ) : (
+        products.map((product) => <div key={product.$id}>{product.$id}</div>)
+      )}
+    </div>
   );
 };
 

@@ -65,7 +65,7 @@ export const useGetProducts = (
 
 export const useGetProductsInfinite = (query?: string) => {
   return useInfiniteQuery({
-    queryKey: ["products", query],
+    queryKey: ["products"],
     queryFn: ({ pageParam }) => getAllProductsMobile(pageParam, query),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => {

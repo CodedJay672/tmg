@@ -100,7 +100,7 @@ const Dashboard = async () => {
         <DashboardInfo data={users.data?.total ?? 0} heading="All Users" />
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-10 my-6">
+      {/* <div className="flex flex-col lg:flex-row gap-10 my-6">
         <div className="w-full space-y-6 flex-1 overflow-hidden border border-gray-200 shadow-md shadow-gray-300 rounded-xl p-5">
           <div>
             <p className="text-base lg:text-lg font-medium">Reports</p>
@@ -129,7 +129,7 @@ const Dashboard = async () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="flex justify-between flex-col lg:flex-row mt-10 gap-10">
         <div className="space-y-4 w-full p-5 overflow-hidden border border-gray-200 shadow-gray-300 shadow-md">

@@ -245,9 +245,10 @@ export const getAllProductsMobile = cache(
       const { database } = await createAdminClient();
       const queryVals: string[] = [];
 
+      //validate the logged in user
       const loggedInuser = await getLoggedInUser();
-
       if (!loggedInuser) return;
+
       const currentUser = await getUser(loggedInuser?.$id);
 
       if (pageParams) queryVals.push(Query.cursorAfter(pageParams));
