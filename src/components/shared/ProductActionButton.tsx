@@ -48,16 +48,17 @@ const ProductActionButton = ({
         type="button"
         variant="link"
         onClick={() => updateProduct(productId)}
-        className="hidden lg:block bg-secondary hover:bg-primary text-foreground"
+        className="hidden lg:block bg-secondary/50 text-primary"
       >
         Update
       </Button>
       <Button
         type="button"
+        variant="link"
         onClick={() =>
           handleDeleteProduct({ id: productId, fileId, datasheetId })
         }
-        className="hidden lg:block text-foreground bg-red-300 hover:bg-red-500 cursor-pointer"
+        className="hidden lg:block text-red-500 bg-red-200 cursor-pointer"
       >
         {loading ? (
           <Loader2Icon size={16} className="text-foreground animate-spin" />
@@ -76,9 +77,9 @@ const ProductActionButton = ({
       {/** Mobile action dropdown */}
       <div
         className={cn(
-          "lg:hidden w-64 h-0 absolute top-10 right-0 bg-foreground py-6 px-3 space-y-2 rounded-lg shadow-md z-90 transition-all transform-gpu duration-300 overflow-hidden -translate-y-20 opacity-0",
+          "lg:hidden w-40 h-0 absolute top-10 right-0 bg-foreground py-6 px-3 space-y-2 rounded-lg shadow-md z-90 transition-all transform-gpu duration-300 overflow-hidden -translate-y-20 opacity-0",
           {
-            "h-32 translate-y-5 opacity-100": showDropdown,
+            "h-32 translate-y-1 opacity-100": showDropdown,
           }
         )}
       >
@@ -86,7 +87,7 @@ const ProductActionButton = ({
           type="button"
           variant="ghost"
           onClick={() => updateProduct(productId)}
-          className="w-full bg-green-100 hover:bg-primary text-dark-300"
+          className="w-full bg-secondary/50 text-primary"
         >
           Update
         </Button>
@@ -94,7 +95,7 @@ const ProductActionButton = ({
           type="button"
           variant="ghost"
           onClick={() => handleDeleteProduct({ id: productId, fileId })}
-          className="w-full text-dark-300 bg-red-200 cursor-pointer"
+          className="w-full text-red-500 bg-red-200 cursor-pointer"
         >
           {loading ? (
             <Loader2Icon size={16} className="text-foreground animate-spin" />

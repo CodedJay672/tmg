@@ -23,7 +23,7 @@ const ProductsPage = async ({
       </div>
 
       <div className="w-full mt-6 mb-2 flex-between gap-3 lg:gap-6 ">
-        <div className="flex-1 flex items-center space-x-4">
+        <div className="flex-1 flex items-center space-x-1 md:space-x-3">
           <CustomTab name="admin" title="all" />
           <CustomTab name="admin" title="mechanical" />
           <CustomTab name="admin" title="steel" />

@@ -22,7 +22,7 @@ const ProductListing = ({
   } = useGetProducts(false, query ?? category !== "all" ? category : "", param);
 
   return (
-    <section className="w-full p-1 lg:p-2 space-y-4">
+    <section className="w-full lg:p-2 space-y-4 mt-4 lg:mt-0">
       {loading ? (
         <Loader2Icon size={24} className="text-primary animate-spin mx-auto" />
       ) : products?.data?.length ? (
@@ -36,7 +36,7 @@ const ProductListing = ({
       )}
 
       {products?.data?.length && (
-        <div className="w-full mt-16 flex justify-center lg:justify-end pr-10">
+        <div className="w-full mt-16 flex place-content-center lg:place-content-end">
           <PaginationButtons
             data={products}
             isPlaceholderData={isPlaceholderData}
