@@ -201,7 +201,7 @@ const CartContent = ({
                   {loading && (
                     <Loader2Icon
                       size={20}
-                      className="text-primary animate-spin"
+                      className="text-foreground animate-spin"
                     />
                   )}
                   Checkout
