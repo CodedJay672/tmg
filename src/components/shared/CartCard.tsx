@@ -18,7 +18,7 @@ const CartCard = ({ data, user }: TCartProps) => {
   if (!user) {
     return <Loader2Icon size={24} className="text-primary animate-spin" />;
   }
-  console.log(data);
+
   return (
     <article className="w-full space-y-1">
       <div className="flex items-center gap-2">

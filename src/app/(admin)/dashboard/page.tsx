@@ -100,7 +100,7 @@ const Dashboard = async () => {
       </div>
 
       <div className="w-full flex gap-6 flex-col lg:flex-row">
-        <div className="w-full max-w-screen-md">
+        <div className="flex-1 xl:w-2xl 2xl:w-full">
           <div className="flex-1 flex items-center gap-6 overflow-x-scroll no-scrollbar mb-4">
             <DashboardInfo
               data={transactionData?.data?.total ?? 0}
@@ -135,7 +135,7 @@ const Dashboard = async () => {
             />
           </div>
         </div>
-        <div className="w-full space-y-4">
+        <div className="w-full max-w-80 space-y-4">
           <div className="w-full shadow-md flex flex-col rounded-xl p-5 bg-white mb-10">
             <p className="text-base lg:text-lg font-medium">Analytics</p>
             <div className="w-full mt-4 flex-1 overflow-hidden flex-between flex-col">
