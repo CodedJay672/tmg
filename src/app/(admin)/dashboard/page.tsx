@@ -138,7 +138,7 @@ const Dashboard = async () => {
         <div className="w-full space-y-4">
           <div className="w-full shadow-md flex flex-col rounded-xl p-5 bg-white mb-10">
             <p className="text-base lg:text-lg font-medium">Analytics</p>
-            <div className="w-full mt-10 lg:mt-16 flex-1 overflow-hidden flex-between flex-col">
+            <div className="w-full mt-4 flex-1 overflow-hidden flex-between flex-col">
               {doughnutData ? (
                 <div className="w-full max-w-60">
                   <InfoDoughnut info={doughnutData} />
@@ -148,7 +148,7 @@ const Dashboard = async () => {
                   <p className="w-full text-center">No data.</p>
                 </div>
               )}
-              <div className="flex-between gap-3 mt-5 lg:mt-0">
+              <div className="flex-between gap-3 mt-2">
                 <div className="flex items-center gap-1">
                   <div
                     style={{ background: "#4caf50" }}
