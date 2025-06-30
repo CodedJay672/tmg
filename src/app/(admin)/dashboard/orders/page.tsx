@@ -24,14 +24,14 @@ const Orders = async ({
         </div>
       </div>
 
-      <div className="w-full z-0 overflow-hidden">
-        <div className="flex items-center space-x-3">
-          <CustomTab name="status" title="all" />
-          <CustomTab name="status" title="processing" />
-          <CustomTab name="status" title="cancelled" />
-          <CustomTab name="status" title="completed" />
-        </div>
+      <div className="flex items-center gap-1 lg:gap-3">
+        <CustomTab name="status" title="all" />
+        <CustomTab name="status" title="processing" />
+        <CustomTab name="status" title="cancelled" />
+        <CustomTab name="status" title="completed" />
+      </div>
 
+      <div className="w-full z-0 overflow-hidden">
         <OrdersTable query={query} />
       </div>
     </section>
