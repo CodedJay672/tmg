@@ -17,7 +17,7 @@ const InfoDoughnut = ({ info }: { info: ChartData<"doughnut"> }) => {
     <Doughnut
       options={{
         aspectRatio: 1,
-        cutout: 90,
+        cutout: 50,
         rotation: 180,
         plugins: {
           legend: {
