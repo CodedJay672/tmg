@@ -11,7 +11,7 @@ const Orders = async ({
   const { query } = await searchParams;
 
   return (
-    <section className="dashboard-container">
+    <section className="dashboard-container overflow-hidden">
       <div className="w-full flex-between mb-10">
         <h2 className="admin-title">Orders</h2>
         <div className="flex items-center space-x-3">
@@ -31,7 +31,7 @@ const Orders = async ({
         <CustomTab name="status" title="completed" />
       </div>
 
-      <div className="w-full z-0 overflow-hidden">
+      <div className="w-full z-0 overflow-hidden mt-5">
         <OrdersTable query={query} />
       </div>
     </section>
