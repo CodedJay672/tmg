@@ -11,7 +11,7 @@ const Customers = async ({
 
   return (
     <section className="dashboard-container">
-      <div className="flex-between">
+      <div className="flex-between mb-5">
         <h1 className="admin-title">Customers</h1>
         <div className="flex items-center gap-3">
           <div className="py-1 px-2 text-primary border border-primary rounded-md flex-center gap-1">
