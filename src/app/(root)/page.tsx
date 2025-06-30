@@ -59,7 +59,7 @@ export default async function Home({
         </Suspense>
       </div>
 
-      <div className="lg:hidden">
+      <div className="hidden">
         <MobileProductsGallery />
       </div>
     </section>
