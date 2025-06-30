@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
@@ -5,15 +7,15 @@ import WatchlistButton from "./WatchlistButton";
 import { calculateInterest } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { getAllLocations } from "@/lib/actions/location.actions";
+import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
 
 interface ProductCardProps {
   item: Models.Document;
   user: Models.Document | undefined;
 }
 
-const ProductCard = async ({ item, user }: ProductCardProps) => {
-  const location = await getAllLocations(user?.delivery_location);
+const ProductCard = ({ item, user }: ProductCardProps) => {
+  const { data: location } = useGetAllLocations(user?.delivery_location);
 
   //calculate the interest based on the location
   const interest = calculateInterest(
