@@ -15,7 +15,7 @@ const CartContent = ({
   action,
   user,
 }: {
-  action: (t: boolean) => void;
+  action?: (t: boolean) => void;
   user?: Models.Document;
 }) => {
   const { cart, clearCart } = useStore();
@@ -65,7 +65,7 @@ const CartContent = ({
       if (!response?.status) return toast.error(response?.message);
 
       clearCart();
-      action(false);
+      if (action) action(false);
       toast.success(response?.message);
     } catch (error) {
       if (error instanceof AppwriteException) toast.error(error.message);
