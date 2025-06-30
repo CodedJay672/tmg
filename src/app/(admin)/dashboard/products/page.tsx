@@ -16,7 +16,7 @@ const ProductsPage = async ({
   return (
     <section className="dashboard-container">
       <div className="flex-between flex-col lg:flex-row">
-        <h2 className="admin-title">Products management</h2>
+        <h2 className="admin-title text-center">Products management</h2>
         <span className="text-sm text-dark-300 font-medium">
           Date: {today as string}
         </span>

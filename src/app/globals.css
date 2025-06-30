@@ -84,6 +84,6 @@
   }
 
   .admin-title {
-    @apply text-2xl lg:text-4xl font-bold text-center;
+    @apply text-2xl lg:text-4xl font-bold;
   }
 }

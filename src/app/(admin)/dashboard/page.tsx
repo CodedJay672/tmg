@@ -100,8 +100,8 @@ const Dashboard = async () => {
       </div>
 
       <div className="w-full flex gap-6 flex-col lg:flex-row">
-        <div className="flex-1 xl:w-2xl 2xl:w-full">
-          <div className="flex-1 flex items-center gap-6 overflow-x-scroll no-scrollbar mb-4">
+        <div className="flex-1 xl:w-2xl 2xl:w-full overflow-hidden no-scrollbar">
+          <div className="w-full flex items-center gap-6 overflow-x-scroll no-scrollbar mb-4">
             <DashboardInfo
               data={transactionData?.data?.total ?? 0}
               heading="Total Transactions"
@@ -127,7 +127,7 @@ const Dashboard = async () => {
             </div>
             
           </div> */}
-          <div className="p-5 w-full shadow-md bg-white z-0 rouned-lg mt-10 overflow-x-scroll no-scrollbar">
+          <div className="p-5 w-full shadow-md bg-white z-0 rouned-lg mt-10">
             <p className="text-base lg:text-lg font-medium mb-6">Top sellers</p>
             <CustomTable
               columns={orderTable}
