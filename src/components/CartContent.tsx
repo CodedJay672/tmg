@@ -8,15 +8,21 @@ import { Button } from "./ui/button";
 import { AppwriteException, Models } from "node-appwrite";
 import { toast } from "sonner";
 import { completeTransaction } from "@/lib/actions/cart.actions";
+import { useRouter } from "next/navigation";
+import { Loader2Icon } from "lucide-react";
 
 const CartContent = ({
   action,
   user,
 }: {
-  action?: (t: boolean) => void;
+  action: (t: boolean) => void;
   user?: Models.Document;
 }) => {
   const { cart, clearCart } = useStore();
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  //calculate total and VAT
   const total = cart?.reduce((init, item) => item.price * item.qty + init, 0);
   const vat = Math.ceil(total * 0.075);
 
@@ -33,7 +39,16 @@ const CartContent = ({
   );
 
   const handleCheckout = async () => {
+    if (!user?.location) {
+      toast.error("Please complete your profile information to continue.");
+      return router.push(`/user/${user?.$id}`);
+    }
+
     try {
+      //loading state
+      setLoading(true);
+
+      //place order
       const response = await completeTransaction({
         userId: user?.$id,
         order: cart,
@@ -50,10 +65,13 @@ const CartContent = ({
       if (!response?.status) return toast.error(response?.message);
 
       clearCart();
+      action(false);
       toast.success(response?.message);
     } catch (error) {
       if (error instanceof AppwriteException) toast.error(error.message);
       throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -177,8 +195,15 @@ const CartContent = ({
                 <Button
                   type="button"
                   onClick={handleCheckout}
+                  disabled={loading}
                   className="w-full bg-primary text-foreground cursor-pointer"
                 >
+                  {loading && (
+                    <Loader2Icon
+                      size={20}
+                      className="text-primary animate-spin"
+                    />
+                  )}
                   Checkout
                 </Button>
               </>

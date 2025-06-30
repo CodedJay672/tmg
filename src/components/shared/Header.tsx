@@ -5,6 +5,7 @@ import React from "react";
 import SearchBar from "../SearchBar";
 import { getLoggedInUser } from "@/lib/server/appwrite";
 import { getUser } from "@/lib/actions/user.actions";
+import { Button } from "../ui/button";
 
 const Header = async () => {
   const user = await getLoggedInUser();
@@ -12,7 +13,7 @@ const Header = async () => {
   const currentUser = await getUser(user?.$id);
 
   return (
-    <header className="w-full px-3 lg:px-6 sticky top-0 left-0 bg-foreground pb-2 mb-4 z-10">
+    <header className="w-full bg-gray-50 sticky top-0 left-0 mb-4 z-10">
       <div className="flex-between">
         <Link href="/" className="flex items-center lg:hidden">
           <ChevronLeftIcon size={24} className="text-dark-300" />
@@ -24,18 +25,28 @@ const Header = async () => {
             className="shrink-0 object-contain"
           />
         </Link>
-        <div className="w-full flex-between space-x-1 lg:py-3">
-          <div className="hidden lg:flex w-full max-w-screen-sm">
+        <div className="w-full flex-between lg:py-3">
+          <div className="hidden lg:flex w-full max-w-screen-sm bg-foreground">
             <SearchBar placeholder="Search..." />
           </div>
-          <div className="w-full p-2 flex items-center gap-7 rounded-full justify-end">
-            <BellIcon size={24} className="text-primary" />
-            <MailIcon size={24} className="text-primary" />
+          <div className="w-full p-2 flex items-center gap-2 rounded-full justify-end">
+            <Button
+              variant="outline"
+              className="size-11 rounded-md p-2 bg-foreground border-primary/50"
+            >
+              <BellIcon size={24} className="text-primary" />
+            </Button>
+            <Button
+              variant="outline"
+              className="size-11 rounded-md p-2 bg-foreground border-primary/50"
+            >
+              <MailIcon size={24} className="text-primary" />
+            </Button>
 
             {/* user profile */}
             <Link
               href={`/user/${user?.$id}`}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-foreground p-1.5 lg:pr-3 rounded-md border border-primary/50"
             >
               {currentUser.data?.documents?.[0].imgUrl ? (
                 <Image
@@ -51,10 +62,10 @@ const Header = async () => {
                 </div>
               )}
               <div className="hidden lg:block">
-                <h2 className="text-base font-semibold">
+                <h2 className="text-base font-semibold leading-4">
                   {currentUser?.data?.documents?.[0].fullname}
                 </h2>
-                <p className="text-sm font-thin">
+                <p className="text-sm font-thin leading-4">
                   {currentUser?.data?.documents?.[0].email}
                 </p>
               </div>
@@ -62,7 +73,7 @@ const Header = async () => {
           </div>
         </div>
       </div>
-      <div className="lg:hidden w-full bg-dark-200/20">
+      <div className="lg:hidden w-full bg-foreground">
         <SearchBar placeholder="Search..." />
       </div>
     </header>

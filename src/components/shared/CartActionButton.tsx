@@ -14,7 +14,7 @@ const CartActionButton = ({ item }: { item: Models.Document }) => {
   return (
     <React.Fragment>
       {isAdded ? (
-        <div className="flex-center mt-4">
+        <div className="flex-center mt-4 lg:mt-0">
           <ProductQuantity item={isAdded} />
         </div>
       ) : (

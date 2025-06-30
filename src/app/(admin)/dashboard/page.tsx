@@ -1,9 +1,9 @@
 import DashboardInfo from "@/components/DashboardInfo";
 import InfoDoughnut from "@/components/shared/InfoDoughnut";
-import { smallTable } from "@/components/shared/table/columns";
+import { orderTable, smallTable } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
 import TransactionsChart from "@/components/TransactionsChart";
-import { getTransaction } from "@/lib/actions/cart.actions";
+import { getTransaction, getUserCart } from "@/lib/actions/cart.actions";
 import { getUser } from "@/lib/actions/user.actions";
 import { getLoggedInUser } from "@/lib/server/appwrite";
 import { ChartData } from "chart.js";
@@ -18,8 +18,15 @@ const Dashboard = async () => {
   if (!user.labels.includes("admin")) redirect("/");
 
   //get all transactions and users
-  const transactions = await getTransaction();
-  const users = await getUser();
+  const transactions = getTransaction();
+  const users = getUser();
+  const orders = getUserCart();
+
+  const [transactionData, usersData, ordersData] = await Promise.all([
+    transactions,
+    users,
+    orders,
+  ]);
 
   const data: ChartData = {
     labels: [
@@ -45,7 +52,7 @@ const Dashboard = async () => {
         },
         tension: 0.5,
         label: "Transactions",
-        data: transactions?.data?.documents.map(
+        data: transactionData?.data?.documents.map(
           (item) => item.total
         ) as number[],
       },
@@ -53,13 +60,13 @@ const Dashboard = async () => {
   };
 
   // get the number of transactions according to their status
-  const completed = transactions.data?.documents.filter(
+  const completed = transactionData.data?.documents.filter(
     (item) => item.status === "COMPLETED"
   );
-  const cancelled = transactions.data?.documents.filter(
+  const cancelled = transactionData.data?.documents.filter(
     (item) => item.status === "CANCELLED"
   );
-  const processing = transactions.data?.documents.filter(
+  const processing = transactionData.data?.documents.filter(
     (item) => item.status === "PROCESSING"
   );
 
@@ -79,8 +86,8 @@ const Dashboard = async () => {
   };
 
   return (
-    <section className="dashboard-container">
-      <div className="w-full space-y-1">
+    <section className="min-h-screen w-full">
+      <div className="w-full space-y-1 my-10">
         <h2 className="admin-title">
           Welcome{" "}
           <span className="text-primary font-semibold">
@@ -92,59 +99,89 @@ const Dashboard = async () => {
         </p>
       </div>
 
-      <div className="w-full py-2 flex items-center gap-6 overflow-x-scroll no-scrollbar my-4">
-        <DashboardInfo
-          data={transactions?.data?.total ?? 0}
-          heading="Total Transactions"
-        />
-        <DashboardInfo data={users.data?.total ?? 0} heading="All Users" />
-      </div>
-
-      {/* <div className="flex flex-col lg:flex-row gap-10 my-6">
-        <div className="w-full space-y-6 flex-1 overflow-hidden border border-gray-200 shadow-md shadow-gray-300 rounded-xl p-5">
-          <div>
-            <p className="text-base lg:text-lg font-medium">Reports</p>
+      <div className="w-full flex gap-6 flex-col lg:flex-row">
+        <div className="w-full max-w-screen-md">
+          <div className="flex-1 flex items-center gap-6 overflow-x-scroll no-scrollbar mb-4">
+            <DashboardInfo
+              data={transactionData?.data?.total ?? 0}
+              heading="Total Transactions"
+              background="#3B82F6"
+            />
+            <DashboardInfo
+              data={usersData.data?.total ?? 0}
+              heading="All Users"
+              background="#8B5CF6"
+            />
+            <DashboardInfo
+              data={ordersData.data?.total ?? 0}
+              heading="All Orders"
+              background="#22C55E"
+            />
           </div>
-          <TransactionsChart data={data} />
-        </div>
-        <div className="w-full max-w-96 border border-gray-200 shadow-gray-300 shadow-md flex flex-col rounded-xl p-5">
-          <p className="text-base lg:text-lg font-medium">Analytics</p>
-          <div className="w-full mt-10 lg:mt-16 flex-1 overflow-hidden flex-between flex-col">
-            <div className="w-full max-w-60">
-              <InfoDoughnut info={doughnutData} />
+          {/* <div className="flex flex-col lg:flex-row gap-10 my-6">
+            <div className="w-full space-y-6 flex-1 overflow-hidden border border-gray-200 shadow-md shadow-gray-300 rounded-xl p-5">
+              <div>
+                <p className="text-base lg:text-lg font-medium">Reports</p>
+              </div>
+              <TransactionsChart data={data} />
             </div>
-            <div className="flex-between gap-3 mt-5 lg:mt-0">
-              <div className="flex items-center gap-1">
-                <div className="p-1 rounded-full bg-green-400" />
-                <span className="text-sm">Success</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="p-1 rounded-full bg-red-400" />
-                <span className="text-sm">Cancelled</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <div className="p-1 rounded-full bg-amber-400" />
-                <span className="text-sm">Processing</span>
+            
+          </div> */}
+          <div className="p-5 w-full shadow-md bg-white z-0 rouned-lg mt-10 overflow-x-scroll no-scrollbar">
+            <p className="text-base lg:text-lg font-medium mb-6">Top sellers</p>
+            <CustomTable
+              columns={orderTable}
+              data={transactionData?.data?.documents.slice(0, 6) || []}
+            />
+          </div>
+        </div>
+        <div className="w-full space-y-4">
+          <div className="w-full shadow-md flex flex-col rounded-xl p-5 bg-white mb-10">
+            <p className="text-base lg:text-lg font-medium">Analytics</p>
+            <div className="w-full mt-10 lg:mt-16 flex-1 overflow-hidden flex-between flex-col">
+              {doughnutData ? (
+                <div className="w-full max-w-60">
+                  <InfoDoughnut info={doughnutData} />
+                </div>
+              ) : (
+                <div className="flex-center">
+                  <p className="w-full text-center">No data.</p>
+                </div>
+              )}
+              <div className="flex-between gap-3 mt-5 lg:mt-0">
+                <div className="flex items-center gap-1">
+                  <div
+                    style={{ background: "#4caf50" }}
+                    className="p-1 rounded-full"
+                  />
+                  <span className="text-sm">Success</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div
+                    style={{ background: "#FF6384" }}
+                    className="p-1 rounded-full"
+                  />
+                  <span className="text-sm">Cancelled</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div
+                    style={{ background: "#FFCC29" }}
+                    className="p-1 rounded-full"
+                  />
+                  <span className="text-sm">Processing</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div> */}
-
-      <div className="flex justify-between flex-col lg:flex-row mt-10 gap-10">
-        <div className="space-y-4 w-full p-5 overflow-hidden border border-gray-200 shadow-gray-300 shadow-md">
-          <p className="text-base lg:text-lg font-medium">Recent Orders</p>
-          <CustomTable
-            columns={smallTable}
-            data={transactions?.data?.documents.slice(0, 6) || []}
-          />
-        </div>
-        <div className="space-y-4 p-5 w-full max-w-96 border border-gray-200 shadow-md shadow-gray-300 z-0">
-          <p className="text-base lg:text-lg font-medium">Top sellers</p>
-          <CustomTable
-            columns={smallTable}
-            data={transactions?.data?.documents.slice(0, 6) || []}
-          />
+          <div className="space-y-4 w-full p-5 overflow-hidden shadow-md bg-white rounded-lg">
+            <p className="text-base lg:text-lg font-medium mb-6">
+              Recent Orders
+            </p>
+            <CustomTable
+              columns={smallTable}
+              data={transactionData?.data?.documents.slice(0, 6) || []}
+            />
+          </div>
         </div>
       </div>
     </section>

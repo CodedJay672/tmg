@@ -1,6 +1,11 @@
 "use client";
 
-import { calculateInterest, formatCurrency, formatDate } from "@/lib/utils";
+import {
+  calculateInterest,
+  formatCurrency,
+  formatDate,
+  getTableData,
+} from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { Models } from "node-appwrite";
 import ProductMiniCard from "../ProductMiniCard";
@@ -132,23 +137,17 @@ export const orderTable: ColumnDef<Models.Document>[] = [
 
 export const smallTable: ColumnDef<Models.Document>[] = [
   {
-    accessorKey: "$id",
-    header: "Trans. ID",
-  },
-  {
-    accessorKey: "creator",
-    header: "Customer",
+    accessorKey: "name",
+    header: "name",
     cell: ({ row }) => {
-      const data: Models.Document = row.getValue("creator");
+      const order: Models.Document = row.original;
 
-      const { fullname } = data;
+      console.log(order);
 
-      return fullname;
+      const data = getTableData(order);
+
+      return <ProductMiniCard order={data?.[0].product} />;
     },
-  },
-  {
-    accessorKey: "location",
-    header: "Location",
   },
   {
     accessorKey: "total",

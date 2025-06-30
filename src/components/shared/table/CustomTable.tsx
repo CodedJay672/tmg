@@ -42,7 +42,7 @@ const CustomTable = <TData, TValue>({
   });
 
   return (
-    <div className="min-w-sceen-md overflow-x-scroll rounded-md no-scrollbar my-6 z-0">
+    <div className="w-full z-0">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

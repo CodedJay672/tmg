@@ -1,17 +1,20 @@
 const DashboardInfo = ({
   heading,
   data,
+  background,
 }: {
   heading: string;
   data: number;
+  background?: string;
 }) => {
   return (
-    <article className="min-w-84 lg:min-w-72 max-w-screen-sm h-36 lg:h-32 p-4 py-6 lg:p-6 lg:py-3 rounded-lg bg-dark-100 border border-dark-100 space-y-2 lg:space-y-1">
-      <h3 className="text-base text-dark-300">{heading}</h3>
+    <article
+      style={{ backgroundColor: background }}
+      className="flex-1 h-36 lg:h-32 p-4 py-6 lg:p-6 lg:py-3 rounded-lg bg-white shadow-md space-y-2 lg:space-y-1"
+    >
+      <h3 className="text-lg font-semibold">{heading}</h3>
 
-      <p className="text-4xl lg:text-5xl text-dark-300 font-semibold">
-        {data}+
-      </p>
+      <p className="text-4xl lg:text-5xl font-bold">{data}+</p>
     </article>
   );
 };
