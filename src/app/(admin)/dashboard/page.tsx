@@ -28,6 +28,11 @@ const Dashboard = async () => {
     orders,
   ]);
 
+  const transactionTotal = transactionData.data?.documents.reduce(
+    (init, trans) => trans.total + init,
+    0
+  );
+
   const data: ChartData = {
     labels: [
       "Jan",
@@ -103,7 +108,7 @@ const Dashboard = async () => {
         <div className="flex-1 xl:w-2xl 2xl:w-full overflow-hidden no-scrollbar">
           <div className="w-full flex items-center gap-6 overflow-x-scroll no-scrollbar mb-4">
             <DashboardInfo
-              data={transactionData?.data?.total ?? 0}
+              data={transactionTotal ?? 0}
               heading="Total Transactions"
               background="#3B82F6"
             />
@@ -139,13 +144,13 @@ const Dashboard = async () => {
           <div className="w-full shadow-md flex flex-col rounded-xl p-5 bg-white mb-10">
             <p className="text-base lg:text-lg font-medium">Analytics</p>
             <div className="w-full mt-4 flex-1 overflow-hidden flex-between flex-col">
-              {doughnutData ? (
+              {transactionData.data?.total ? (
                 <div className="w-full max-w-40">
                   <InfoDoughnut info={doughnutData} />
                 </div>
               ) : (
-                <div className="flex-center">
-                  <p className="w-full text-center">No data.</p>
+                <div className="flex-center h-32">
+                  <p className="w-full text-center">No data yet.</p>
                 </div>
               )}
               <div className="flex-between gap-3 mt-2">
