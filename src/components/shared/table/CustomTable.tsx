@@ -42,7 +42,7 @@ const CustomTable = <TData, TValue>({
   });
 
   return (
-    <div className="w-full z-0">
+    <div className="w-full z-0 overflow-hidden">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
