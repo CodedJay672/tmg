@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 
 export const SignIn = async (email: string, password: string) => {
   try {
-    const { account, database } = await createAdminClient();
+    const { account } = await createAdminClient();
     const schema = AuthSchema("SIGN_IN");
 
     // data validation with zod
