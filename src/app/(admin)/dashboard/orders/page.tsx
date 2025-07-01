@@ -31,7 +31,9 @@ const Orders = async ({
         <CustomTab name="status" title="completed" />
       </div>
 
-      <OrdersTable query={query} />
+      <div className="w-full overflow-hidden">
+        <OrdersTable query={query} />
+      </div>
     </section>
   );
 };
