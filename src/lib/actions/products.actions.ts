@@ -179,6 +179,8 @@ export const updateWatchlist = async (productId: string, userId?: string) => {
   try {
     const { database } = await createAdminClient();
 
+    console.log(userId);
+
     if (!userId) return false;
 
     const res = await database.listDocuments(

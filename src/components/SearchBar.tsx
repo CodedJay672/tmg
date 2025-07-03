@@ -29,7 +29,7 @@ const SearchBar = ({
 
     //replace the route
     router.replace(`${pathname}?${queryString.toString()}`);
-  }, 500);
+  }, 300);
 
   return (
     <div className="w-full relative">

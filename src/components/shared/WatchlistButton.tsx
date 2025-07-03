@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import React, { useState } from "react";
 import { HeartIcon, Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
-import { useUpdateWatchlist } from "@/lib/queries/productQueries/products";
 import { AppwriteException } from "node-appwrite";
 import { updateWatchlist } from "@/lib/actions/products.actions";
 

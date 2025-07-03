@@ -23,7 +23,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
 
   return (
     <article className="w-full p-1 lg:p-3 border border-dark-200 rounded-xl">
-      <div className="space-y-0.5 mt-3">
+      <div className="space-y-0.5 mt-3 lg:mt-0">
         <p
           className={`w-max text-xs text-foreground rounded-lg uppercase text-center  px-2 py-1 ${
             info.status === "COMPLETED"
