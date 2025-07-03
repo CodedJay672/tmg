@@ -1,45 +1,13 @@
 "use server";
 
-import { cache } from "react";
 import { config } from "../server/config";
-import { createAdminClient, getLoggedInUser } from "../server/appwrite";
+import { createAdminClient } from "../server/appwrite";
 import { ID, Models, Query } from "node-appwrite";
 import { TUserDetails, userDetails } from "@/constants/validations/schema";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
-import { getAllLocations } from "./location.actions";
-
-export const getUser = cache(
-  async (
-    id?: string
-  ): Promise<{
-    status: boolean;
-    message: string;
-    data?: Models.DocumentList<Models.Document>;
-  }> => {
-    try {
-      const { database } = await createAdminClient();
-
-      const response = await database.listDocuments(
-        config.appwrite.databaseId,
-        config.appwrite.usersCollection,
-        id ? [Query.equal("accountId", id)] : []
-      );
-
-      if (!response.total) {
-        return { status: false, message: "User not found." };
-      }
-
-      return {
-        status: true,
-        message: "User details fetched successfully.",
-        data: response,
-      };
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+import { getAllLocations } from "../data/locations/locations.data";
+import { getCurrentUser } from "../data/user/getLoggedInUser";
+import { getFilePreview } from "../data/utils";
 
 export const updateUserInfo = async (
   { data, productId }: { data: Partial<TUserDetails>; productId?: string },
@@ -194,26 +162,14 @@ export const downloadFile = async (id?: string) => {
   }
 };
 
-export const getFilePreview = async (file: Models.File | undefined) => {
-  if (!file) return;
-
-  return `${config.appwrite.endpoint}/storage/buckets/${file.bucketId}/files/${
-    file?.$id
-  }/preview?project=${[config.appwrite.projectId]}`;
-};
-
 //watchlist logic
 const updateWatchlist = async (productId: string) => {
   try {
     const { database } = await createAdminClient();
-    const user = await getLoggedInUser();
-
-    //check if the user is signed in
-    if (!user) redirect("/sign-in");
 
     // get user watchlist
-    const currentUser = await getUser(user?.$id);
-    const watchlist = currentUser?.data?.documents?.[0].watchlist;
+    const currentUser = await getCurrentUser();
+    const watchlist = currentUser?.documents?.[0].watchlist;
 
     // get product details
     const productInfo = await database.listDocuments(

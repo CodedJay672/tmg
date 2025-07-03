@@ -4,8 +4,7 @@ import { ID, Models, Query } from "node-appwrite";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { revalidatePath } from "next/cache";
-import { cache } from "react";
-import { getAllLocations } from "./location.actions";
+import { getAllLocations } from "../data/locations/locations.data";
 
 export const addProductsToCart = async (
   userId: string,
@@ -90,33 +89,6 @@ export const updateCartItem = async (
     throw error;
   }
 };
-
-export const getUserCart = cache(async (id?: string) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const response = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.cartCollection,
-      id ? [Query.equal("$id", id)] : []
-    );
-
-    if (!response) {
-      return {
-        status: false,
-        message: "Failed to retrieve cart.",
-      };
-    }
-
-    return {
-      status: true,
-      message: "Carts fetched successfully.",
-      data: response,
-    };
-  } catch (error) {
-    throw error;
-  }
-});
 
 export const completeTransaction = async (
   transaction: TransactionEntryType
@@ -204,41 +176,6 @@ export const saveCart = async (order: TCart[]) => {
     throw error;
   }
 };
-
-export const getTransaction = cache(async (query?: string) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const response = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.transactionsCollection,
-      query
-        ? [
-            Query.or([
-              Query.equal("creator", query),
-              Query.equal("order", query),
-              Query.equal("status", query.toUpperCase()),
-            ]),
-            Query.orderDesc("$createdAt"),
-          ]
-        : []
-    );
-
-    if (!response.total)
-      return {
-        status: false,
-        message: "Unable to get transactions.",
-      };
-
-    return {
-      status: true,
-      message: "Transaction fetched successfully.",
-      data: response,
-    };
-  } catch (error) {
-    throw error;
-  }
-});
 
 export const updateTransactionStatus = async (data: {
   id: string;

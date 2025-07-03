@@ -2,8 +2,10 @@ import DashboardInfo from "@/components/DashboardInfo";
 import InfoDoughnut from "@/components/shared/InfoDoughnut";
 import { orderTable, smallTable } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
-import TransactionsChart from "@/components/TransactionsChart";
-import { getTransaction, getUserCart } from "@/lib/actions/cart.actions";
+import {
+  getTransaction,
+  getUserCart,
+} from "@/lib/data/transactions/transactions.data";
 import {
   getLoggedInUser,
   getCurrentUser,
@@ -19,7 +21,7 @@ const Dashboard = async () => {
   if (!user) redirect("/sign-in");
   if (!user.labels.includes("admin")) redirect("/");
 
-  //get all transactions and users
+  //get all transactions and users in parallel
   const transactions = getTransaction();
   const users = getCurrentUser();
   const orders = getUserCart();
@@ -34,37 +36,6 @@ const Dashboard = async () => {
     (init, trans) => trans.total + init,
     0
   );
-
-  const data: ChartData = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        fill: {
-          target: "origin",
-          above: "rgb(255, 0, 0)",
-          below: "rgb(0, 0, 255)",
-        },
-        tension: 0.5,
-        label: "Transactions",
-        data: transactionData?.data?.documents.map(
-          (item) => item.total
-        ) as number[],
-      },
-    ],
-  };
 
   // get the number of transactions according to their status
   const completed = transactionData.data?.documents.filter(
@@ -125,16 +96,6 @@ const Dashboard = async () => {
               background="#22C55E"
             />
           </div>
-
-          {/* <div className="flex flex-col lg:flex-row gap-10 my-6">
-            <div className="w-full space-y-6 flex-1 overflow-hidden border border-gray-200 shadow-md shadow-gray-300 rounded-xl p-5">
-              <div>
-                <p className="text-base lg:text-lg font-medium">Reports</p>
-              </div>
-              <TransactionsChart data={data} />
-            </div>
-            
-          </div> */}
 
           <div className="p-5 w-full shadow-md bg-white z-0 rouned-lg mt-10">
             <p className="text-base lg:text-lg font-medium mb-6">Top sellers</p>

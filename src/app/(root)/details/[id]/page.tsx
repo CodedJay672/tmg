@@ -2,7 +2,6 @@ import React from "react";
 import CartActionButton from "@/components/shared/CartActionButton";
 import DownloadDatasheetButton from "@/components/shared/DownloadDatasheetButton";
 import WatchlistButton from "@/components/shared/WatchlistButton";
-import { getAllLocations } from "@/lib/actions/location.actions";
 import { getProductById } from "@/lib/data/products/products.data";
 import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 import { calculateInterest } from "@/lib/utils";
@@ -10,6 +9,7 @@ import { StarHalfIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getAllLocations } from "@/lib/data/locations/locations.data";
 
 const ProductDetails = async ({
   params,
@@ -18,10 +18,10 @@ const ProductDetails = async ({
 }) => {
   const { id } = await params;
 
-  const [user, productInfo] = await Promise.all([
-    getCurrentUser(),
-    getProductById(id),
-  ]);
+  const info = getCurrentUser();
+  const product = getProductById(id);
+
+  const [user, productInfo] = await Promise.all([info, product]);
 
   if (!productInfo?.status) return notFound();
 

@@ -3,32 +3,28 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import Modal from "../Modal";
-import {
-  useGetAllLocations,
-  useUpdateLocation,
-} from "@/lib/queries/locationQueries/location";
+import { useUpdateLocation } from "@/lib/queries/locationQueries/location";
 import { toast } from "sonner";
 import SubmitButton from "./SubmitButton";
-import { AppwriteException } from "node-appwrite";
+import { AppwriteException, Models } from "node-appwrite";
 
-const AdminLocationSetting = () => {
+const AdminLocationSetting = ({
+  locations,
+}: {
+  locations: Models.Document[] | undefined;
+}) => {
   const [showModal, setShowModal] = useState(false);
-  const { data: locationsInfo } = useGetAllLocations();
   const { mutateAsync: updateLocation } = useUpdateLocation();
 
-  const [location, setLocation] = useState(
-    locationsInfo?.data?.documents?.[0].location ?? ""
-  );
-  const [charge, setCharge] = useState(
-    locationsInfo?.data?.documents?.[0].charge ?? ""
-  );
+  const [location, setLocation] = useState(locations?.[0].location ?? "");
+  const [charge, setCharge] = useState(locations?.[0].charge ?? "");
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const response = await updateLocation({
-        id: locationsInfo?.data?.documents?.[0].$id,
+        id: locations?.[0].$id,
         charge: charge,
       });
 
@@ -57,7 +53,7 @@ const AdminLocationSetting = () => {
               onChange={(e) => setLocation(e.target.value)}
               className="text-base font-medium capitalize w-full bg-dark-100 border border-primary rounded-lg p-3 mt-4 outline-none"
             >
-              {locationsInfo?.data?.documents.map((item) => (
+              {locations?.map((item) => (
                 <option
                   value={item.location}
                   key={item.$id}

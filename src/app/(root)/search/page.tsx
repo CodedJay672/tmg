@@ -1,7 +1,7 @@
 import ProductGallery from "@/components/ProductGallery";
 import SearchBar from "@/components/SearchBar";
 import GoHome from "@/components/shared/GoHome";
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 import { Loader2Icon } from "lucide-react";
 import React, { Suspense } from "react";
 
@@ -12,7 +12,7 @@ const SearchPage = async ({
 }) => {
   const { page, query } = await searchParams;
 
-  const user = await getLoggedInUser();
+  const user = await getCurrentUser();
 
   return (
     <section className="content-wrapper flex-center flex-col">
@@ -42,7 +42,11 @@ const SearchPage = async ({
             </div>
           }
         >
-          <ProductGallery userId={user?.$id} query={query} param={page} />
+          <ProductGallery
+            userId={user?.documents?.[0].$id}
+            query={query}
+            param={page}
+          />
         </Suspense>
       </div>
     </section>

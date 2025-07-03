@@ -1,9 +1,10 @@
-import React from "react";
-import { PlusIcon } from "lucide-react";
+import React, { Suspense } from "react";
+import { Loader2Icon, PlusIcon } from "lucide-react";
 import Link from "next/link";
 import ProductListing from "@/components/ProductListing";
 import CustomTab from "@/components/shared/CustomTab";
 import { formatDate } from "@/lib/utils";
+import { getAllProducts } from "@/lib/data/products/products.data";
 
 const ProductsPage = async ({
   searchParams,
@@ -12,6 +13,8 @@ const ProductsPage = async ({
 }) => {
   const { query, page } = await searchParams;
   const today = formatDate(new Date().toISOString());
+
+  const allProducts = await getAllProducts(+page, query);
 
   return (
     <section className="dashboard-container">
@@ -52,7 +55,21 @@ const ProductsPage = async ({
           </p>
         )}
 
-        <ProductListing query={query} param={page} />
+        {allProducts.data ? (
+          <Suspense
+            fallback={
+              <div className="w-full mt-10">
+                <Loader2Icon size={24} className="text-primary animate-spin" />
+              </div>
+            }
+          >
+            <ProductListing query={query} products={allProducts?.data} />
+          </Suspense>
+        ) : (
+          <p className="w-full text-center text-gray-300">
+            No products listed.
+          </p>
+        )}
       </div>
     </section>
   );

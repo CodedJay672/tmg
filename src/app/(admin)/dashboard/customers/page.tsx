@@ -1,4 +1,6 @@
-import CustomersTable from "@/components/shared/table/customers/CustomersTable";
+import { customerTable } from "@/components/shared/table/columns";
+import CustomTable from "@/components/shared/table/CustomTable";
+import { getUser } from "@/lib/data/user/getLoggedInUser";
 import { PlusIcon, UploadIcon } from "lucide-react";
 import React from "react";
 
@@ -8,6 +10,7 @@ const Customers = async ({
   searchParams: Promise<{ query: string }>;
 }) => {
   const { query } = await searchParams;
+  const users = await getUser();
 
   return (
     <section className="dashboard-container">
@@ -29,7 +32,15 @@ const Customers = async ({
         </div>
       </div>
 
-      <CustomersTable query={query} />
+      {query && (
+        <p className="text-base font-medium mt-10">
+          Search result for: <span className="text-primary">{query}</span>
+        </p>
+      )}
+      <CustomTable
+        columns={customerTable}
+        data={users?.data?.documents ?? []}
+      />
     </section>
   );
 };

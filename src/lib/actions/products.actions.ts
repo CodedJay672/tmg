@@ -4,10 +4,11 @@ import { productSchema, TProductDetails } from "@/constants/validations/schema";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { ID, Models, Query } from "node-appwrite";
-import { createFile, deleteFile, getFilePreview } from "./user.actions";
+import { createFile, deleteFile } from "./user.actions";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
 import { getProductFromWatchlist } from "../data/products/products.data";
+import { getFilePreview } from "../data/utils";
 
 export const uploadProducts = async (values: TProductDetails) => {
   try {
@@ -174,43 +175,6 @@ export const deleteProduct = async (
     throw error;
   }
 };
-
-export const getProductById = cache(async (id?: string) => {
-  try {
-    const { database } = await createAdminClient();
-
-    if (!id) return;
-
-    const response = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.productCollection,
-      [Query.equal("$id", id)]
-    );
-
-    if (!response.total)
-      return {
-        status: false,
-        message: "Product not found.",
-      };
-
-    const isLiked = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.watchlistCollection,
-      [Query.equal("$id", response.documents?.[0].$id)]
-    );
-
-    return {
-      status: true,
-      message: "Product fetched successfully.",
-      data: {
-        ...response,
-        isLiked: !!isLiked,
-      },
-    };
-  } catch (error) {
-    throw error;
-  }
-});
 
 export const updateWatchlist = async (productId: string, userId?: string) => {
   try {

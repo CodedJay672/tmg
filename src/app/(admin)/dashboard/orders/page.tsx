@@ -1,7 +1,8 @@
+import React from "react";
 import CustomTab from "@/components/shared/CustomTab";
 import OrdersTable from "@/components/shared/table/orders/OrdersTable";
+import { getTransaction } from "@/lib/data/transactions/transactions.data";
 import { Calendar1Icon } from "lucide-react";
-import React from "react";
 
 const Orders = async ({
   searchParams,
@@ -9,6 +10,7 @@ const Orders = async ({
   searchParams: Promise<{ query: string }>;
 }) => {
   const { query } = await searchParams;
+  const orders = await getTransaction();
 
   return (
     <section className="dashboard-container">
@@ -32,7 +34,12 @@ const Orders = async ({
       </div>
 
       <div className="flex-1 overflow-hidden">
-        <OrdersTable query={query} />
+        {query && (
+          <p className="text-base font-medium mt-10">
+            Search result for: <span className="text-primary">{query}</span>
+          </p>
+        )}
+        <OrdersTable orders={orders.data?.documents} />
       </div>
     </section>
   );

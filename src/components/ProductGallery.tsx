@@ -1,8 +1,8 @@
 import React from "react";
 import ProductCard from "./shared/ProductCard";
 import PaginationButtons from "./shared/PaginationButtons";
-import { getUser } from "@/lib/actions/user.actions";
 import { getAllProducts } from "@/lib/data/products/products.data";
+import { getUser } from "@/lib/data/user/getLoggedInUser";
 
 const ProductGallery = async ({
   userId,
@@ -13,8 +13,11 @@ const ProductGallery = async ({
   query?: string;
   param?: string;
 }) => {
-  const currentUser = await getUser(userId);
-  const allProducts = await getAllProducts(+(param ?? "0"), query);
+  const user = getUser(userId);
+  const products = getAllProducts(+(param ?? "0"), query);
+
+  //get user and all products in parallel
+  const [currentUser, allProducts] = await Promise.all([user, products]);
 
   if (query && !allProducts?.data?.length) {
     return (

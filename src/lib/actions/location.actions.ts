@@ -1,37 +1,9 @@
 "use server";
 
-import { Query } from "node-appwrite";
 import { getCurrentUser } from "../data/user/getLoggedInUser";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { revalidatePath } from "next/cache";
-import { cache } from "react";
-
-export const getAllLocations = cache(async (query?: string) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const locations = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.locationCollection,
-      query ? [Query.equal("location", query)] : [Query.limit(37)]
-    );
-
-    if (!locations.total)
-      return {
-        status: false,
-        message: "Failed to get locations",
-      };
-
-    return {
-      status: true,
-      message: "Locations fetched successfully.",
-      data: locations,
-    };
-  } catch (error) {
-    throw error;
-  }
-});
 
 export const updateLocation = async (charge: number, id?: string) => {
   try {
