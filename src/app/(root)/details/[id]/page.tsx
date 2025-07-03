@@ -1,16 +1,15 @@
+import React from "react";
 import CartActionButton from "@/components/shared/CartActionButton";
 import DownloadDatasheetButton from "@/components/shared/DownloadDatasheetButton";
 import WatchlistButton from "@/components/shared/WatchlistButton";
 import { getAllLocations } from "@/lib/actions/location.actions";
-import { getProductById } from "@/lib/actions/products.actions";
-import { getUser } from "@/lib/actions/user.actions";
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import { getProductById } from "@/lib/data/products/products.data";
+import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 import { calculateInterest } from "@/lib/utils";
 import { StarHalfIcon, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
-import React from "react";
+import { notFound } from "next/navigation";
 
 const ProductDetails = async ({
   params,
@@ -18,27 +17,26 @@ const ProductDetails = async ({
   params: Promise<{ id: string }>;
 }) => {
   const { id } = await params;
-  const user = await getLoggedInUser();
 
-  if (!user) redirect("/sign-in");
+  const [user, productInfo] = await Promise.all([
+    getCurrentUser(),
+    getProductById(id),
+  ]);
 
-  //get products by id
-  const productInfo = await getProductById(id);
+  if (!productInfo?.status) return notFound();
 
-  // fetch user data first to get delivery_location
-  const currentUser = await getUser(user.$id);
+  //calculate the interest rate by location
   const location = await getAllLocations(
-    currentUser?.data?.documents?.[0].delivery_location
+    user?.documents?.[0].delivery_location
   );
 
   const interest = calculateInterest(
     location?.data?.documents?.[0].charge,
-    productInfo?.data?.documents?.[0].price
+    productInfo?.data?.price
   );
 
-  const total = productInfo?.data?.documents?.[0].price + interest;
+  const total = productInfo?.data?.price + interest;
 
-  if (!productInfo?.status) return notFound();
   return (
     <section className="content-wrapper">
       <div className="w-full py-6 px-4 lg:px-0 mb-6 flex items-center gap-3">
@@ -46,27 +44,28 @@ const ProductDetails = async ({
           Home
         </Link>{" "}
         <span className="text-base font-nomal text-dark-200"> &lt; </span>
-        <span className="text-base font-medium text-dark-300 uppercase">
-          {productInfo.data?.documents?.[0].name}
+        <span className="text-base font-medium text-dark-300 truncate">
+          {productInfo.data?.name}
         </span>
       </div>
       <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-24">
         <div className="w-full">
-          <Image
-            src={productInfo?.data?.documents?.[0].imgUrl}
-            alt={productInfo.data?.documents?.[0].name}
-            width={800}
-            height={560}
-            className="object-contain rounded-t-xl mb-4"
-          />
+          <div className="w-full h-100 relative">
+            <Image
+              src={productInfo?.data?.imgUrl}
+              alt={productInfo.data?.name}
+              fill
+              className="object-cover rounded-t-xl mb-4"
+            />
+          </div>
 
           <p className="text-base text-dark-200 font-medium p-2">
-            Product: #{productInfo.data?.documents?.[0].$id}
+            Product: #{productInfo.data?.$id}
           </p>
           <div className="px-2 flex items-center gap-10">
             <p className="text-lg lg:text-xl font-semibold">TMG Procurement</p>
             <p className="text-base font-semibold py-1 px-3 rounded-2xl text-center bg-dark-100">
-              {productInfo?.data?.documents?.[0].category}
+              {productInfo?.data?.category}
             </p>
           </div>
 
@@ -138,16 +137,16 @@ const ProductDetails = async ({
         <div className="w-full space-y-3">
           <div className="w-full lg:w-max px-16 py-4 bg-dark-100  rounded-4xl flex items-center gap-6">
             <WatchlistButton
-              userId={currentUser.data?.documents?.[0].$id}
-              productId={productInfo.data?.documents?.[0].$id!}
+              userId={user?.documents?.[0].$id}
+              productId={productInfo.data?.$id!}
               label="Add to watchlist"
               isLiked={productInfo.data?.isLiked}
             />
           </div>
 
           <div className="w-full p-6">
-            <h1 className="text-3xl lg:text-5xl text-pretty font-semibold">
-              {productInfo.data?.documents?.[0].name}
+            <h1 className="text-2xl lg:text-4xl text-pretty font-semibold">
+              {productInfo.data?.name}
             </h1>
             <p className="text-xl lg:text-2xl font-medium text-dark-300 mt-3">
               {total.toLocaleString("en-NG", {
@@ -160,23 +159,21 @@ const ProductDetails = async ({
           <div className="w-full p-6">
             <h3 className="text-lg font-semibold">Description</h3>
             <p className="mt-2">
-              {productInfo?.data?.documents?.[0].description ??
+              {productInfo?.data?.description ??
                 "This product has not description"}
             </p>
           </div>
 
           <div className="mt-16 w-full grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-6">
-            {currentUser.data?.documents?.[0].delivery_location && (
+            {user?.documents?.[0].delivery_location && (
               <CartActionButton
                 item={{
-                  ...productInfo.data?.documents?.[0]!,
+                  ...productInfo.data,
                   price: total,
                 }}
               />
             )}
-            <DownloadDatasheetButton
-              id={productInfo.data?.documents?.[0].datasheetId}
-            />
+            <DownloadDatasheetButton id={productInfo.data?.datasheetId} />
           </div>
         </div>
       </div>

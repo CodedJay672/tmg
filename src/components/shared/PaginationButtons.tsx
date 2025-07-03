@@ -5,14 +5,11 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
-interface PaginationProps {
-  data: {
-    status: boolean;
-    message: string;
-  };
+const PaginationButtons = ({
+  isPlaceholderData,
+}: {
   isPlaceholderData: boolean;
-}
-const PaginationButtons = ({ isPlaceholderData }: PaginationProps) => {
+}) => {
   const [page, setPage] = useState(0);
   const param = useSearchParams();
   const pathname = usePathname();

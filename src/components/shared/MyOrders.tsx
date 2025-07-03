@@ -7,16 +7,12 @@ import CountBadge from "./CountBadge";
 import { useStore } from "@/store/appStore";
 import CustomSheet from "./CustomSheet";
 import CartContent from "../CartContent";
-import { useGetUserById } from "@/lib/queries/userQueried/users";
+import { Models } from "node-appwrite";
 
-const MyOrders = ({ userId }: { userId: string }) => {
+const MyOrders = ({ user }: { user: Models.Document | undefined }) => {
   const { cart } = useStore();
-  const { data: userInfo, isLoading: loading } = useGetUserById(userId);
   const [open, setOpen] = useState(false);
 
-  if (loading) {
-    return <Loader2Icon size={24} className="text-primary animate-spin" />;
-  }
   return (
     <>
       <Button
@@ -40,7 +36,7 @@ const MyOrders = ({ userId }: { userId: string }) => {
           <p className="text-base text-dark-300">Cart preview.</p>
         </div>
 
-        <CartContent action={setOpen} user={userInfo?.data?.documents?.[0]} />
+        <CartContent action={setOpen} user={user} />
       </CustomSheet>
     </>
   );

@@ -1,11 +1,10 @@
 import Carousel from "@/components/Carousel";
 import CategoryTab from "@/components/CategoryTab";
-import MobileProductsGallery from "@/components/MobileProductsGallery";
+import PaginationButtons from "@/components/shared/PaginationButtons";
 import ProductCard from "@/components/shared/ProductCard";
 import { slides } from "@/constants";
-import { getAllProducts } from "@/lib/actions/products.actions";
-import { getUser } from "@/lib/actions/user.actions";
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import { getAllProducts } from "@/lib/data/products/products.data";
+import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 import { Loader2Icon } from "lucide-react";
 import { Suspense } from "react";
 
@@ -15,9 +14,9 @@ export default async function Home({
   searchParams: Promise<{ page: string }>;
 }) {
   const { page } = await searchParams;
+
+  const currentUser = await getCurrentUser();
   const allProducts = await getAllProducts(+page);
-  const user = await getLoggedInUser();
-  const currentUser = await getUser(user?.$id);
 
   return (
     <section className="content-wrapper">
@@ -41,14 +40,17 @@ export default async function Home({
                   ({allProducts?.data?.length})
                 </span>
               </p>
-              <div className="w-full flex-1 grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-4 mt-6">
+              <div className="w-full flex-1 grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-4 mt-6 mb-10">
                 {allProducts?.data?.map((product) => (
                   <ProductCard
                     key={product.$id}
                     item={product}
-                    user={currentUser.data?.documents?.[0]}
+                    user={currentUser?.documents?.[0]}
                   />
                 ))}
+              </div>
+              <div className="flex place-self-end">
+                <PaginationButtons isPlaceholderData={false} />
               </div>
             </div>
           ) : (
@@ -59,9 +61,9 @@ export default async function Home({
         </Suspense>
       </div>
 
-      <div className="lg:hidden grid grid-cols-2 gap-1 mt-5">
+      {/* <div className="lg:hidden grid grid-cols-2 gap-1 mt-5">
         <MobileProductsGallery />
-      </div>
+      </div> */}
     </section>
   );
 }

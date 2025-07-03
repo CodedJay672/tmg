@@ -1,11 +1,12 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useState } from "react";
 import { HeartIcon, Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { useUpdateWatchlist } from "@/lib/queries/productQueries/products";
 import { AppwriteException } from "node-appwrite";
+import { updateWatchlist } from "@/lib/actions/products.actions";
 
 const WatchlistButton = ({
   userId,
@@ -18,15 +19,15 @@ const WatchlistButton = ({
   isLiked?: boolean;
   label?: string;
 }) => {
-  const { mutateAsync: updateWatchlist, isPending: updating } =
-    useUpdateWatchlist();
+  const [updating, setUpdating] = useState(false);
 
   const handleClick = async () => {
     try {
-      const response = await updateWatchlist({
-        productId,
-        userId,
-      });
+      // set loading state
+      setUpdating(true);
+
+      //update the watchlist table
+      const response = await updateWatchlist(productId, userId);
 
       if (!response) return toast.error("Failed");
 
@@ -34,6 +35,8 @@ const WatchlistButton = ({
     } catch (error) {
       if (error instanceof AppwriteException) toast.error(error.message);
       throw error;
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -45,16 +48,14 @@ const WatchlistButton = ({
       {updating ? (
         <Loader2Icon size={16} className="text-primary animate-spin" />
       ) : (
-        <>
-          <HeartIcon
-            size={16}
-            className={cn("stroke-dark-300", {
-              "fill-primary": isLiked,
-            })}
-          />
-          {label && <span className="text-sm text-dark-300">{label}</span>}
-        </>
+        <HeartIcon
+          size={16}
+          className={cn("stroke-dark-300", {
+            "fill-primary": isLiked === true,
+          })}
+        />
       )}
+      {label && <span className="text-sm text-dark-300">{label}</span>}
     </div>
   );
 };

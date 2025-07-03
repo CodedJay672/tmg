@@ -1,18 +1,8 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../queryKey";
-import {
-  getAllLocations,
-  updateLocation,
-} from "@/lib/actions/location.actions";
-
-export const useGetAllLocations = (query?: string) => {
-  return useQuery({
-    queryKey: [QUERY_KEYS.GET_LOCATIONS],
-    queryFn: () => getAllLocations(query),
-  });
-};
+import { updateLocation } from "@/lib/actions/location.actions";
 
 export const useUpdateLocation = () => {
   const queryClient = useQueryClient();

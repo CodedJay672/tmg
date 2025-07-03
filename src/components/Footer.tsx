@@ -1,6 +1,6 @@
-import { getLoggedInUser } from "@/lib/server/appwrite";
-import Link from "next/link";
 import React from "react";
+import { getLoggedInUser } from "@/lib/data/user/getLoggedInUser";
+import Link from "next/link";
 
 const Footer = async () => {
   const user = await getLoggedInUser();
@@ -8,7 +8,6 @@ const Footer = async () => {
   return (
     <footer className="hidden lg:block bg-black px-10 py-16 space-y-24">
       <div className="w-full max-w-screen-lg mx-auto">
-        
         <h3 className="text-4xl font-medium text-foreground w-96">
           Stay in the loop with current market pricings
         </h3>

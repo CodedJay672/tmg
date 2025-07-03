@@ -10,7 +10,7 @@ const UserDropdownInfo = ({
   user,
   action,
 }: {
-  user: Models.User<Models.Preferences>;
+  user: Models.Document;
   action: (t: boolean) => void;
 }) => {
   return (
@@ -22,7 +22,7 @@ const UserDropdownInfo = ({
 
       <div className="space-y-2">
         <Link
-          href={`/user/${user?.$id}`}
+          href={`/user/${user?.accountId}`}
           onClick={() => action(false)}
           className="text-base font-light flex items-center gap-3"
         >
@@ -30,7 +30,7 @@ const UserDropdownInfo = ({
           Profile
         </Link>
         <Link
-          href={`/orders/${user?.$id}`}
+          href={`/orders/${user?.accountId}`}
           onClick={() => action(false)}
           className="text-base font-light flex items-center gap-3"
         >

@@ -1,15 +1,26 @@
+import React from "react";
+import ProductCard from "@/components/shared/ProductCard";
 import ProfileMenuSwitch from "@/components/shared/ProfileMenuSwitch";
 import Segments from "@/components/shared/Segments";
-import WatchlistContent from "@/components/WatchlistContent";
-import { getUserWatchlist } from "@/lib/actions/products.actions";
-import { getUser } from "@/lib/actions/user.actions";
-import React from "react";
+import { getUser } from "@/lib/data/user/getLoggedInUser";
+import { getUserWatchlist } from "@/lib/data/watchlist/watchlist.data";
+import { getProductById } from "@/lib/data/products/products.data";
+import { Models } from "node-appwrite";
 
 const Watchlist = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-  const user = await getUser(id);
+  let productInfo: Models.Document[] | undefined = [];
 
+  const user = await getUser(id);
   const watchlistItems = await getUserWatchlist(user?.data?.documents?.[0].$id);
+
+  for (const item of watchlistItems.documents) {
+    const product = await getProductById(item.productId);
+
+    if (!product?.status) throw new Error(product?.message);
+
+    productInfo.push(product?.data as Models.Document);
+  }
 
   return (
     <section className="w-full">
@@ -26,12 +37,21 @@ const Watchlist = async ({ params }: { params: Promise<{ id: string }> }) => {
         <ProfileMenuSwitch />
       </div>
 
-      <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 no-scrollbar">
-        <WatchlistContent
-          user={user?.data?.documents?.[0]}
-          item={watchlistItems}
-        />
-      </div>
+      {productInfo.length > 0 ? (
+        <div className="w-full grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 no-scrollbar">
+          {productInfo?.map((product) => (
+            <ProductCard
+              key={product.$id}
+              user={user?.data?.documents?.[0]}
+              item={product}
+            />
+          ))}
+        </div>
+      ) : (
+        <p className="text-base lg:text-lg font-semibold text-gray-300 text-center w-full">
+          Add products to watch.
+        </p>
+      )}
     </section>
   );
 };

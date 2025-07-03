@@ -7,6 +7,7 @@ import { ID, Models, Query } from "node-appwrite";
 import { TUserDetails, userDetails } from "@/constants/validations/schema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getAllLocations } from "./location.actions";
 
 export const getUser = cache(
   async (
@@ -86,6 +87,9 @@ export const updateUserInfo = async (
 
     // check for produts to add to watchlist
     if (productId) watchlist = await updateWatchlist(productId);
+
+    //verify validity of location
+    if (data.delivery_location) await getAllLocations(data.delivery_location);
 
     // update the users imgUrl
     const response = await database.updateDocument(

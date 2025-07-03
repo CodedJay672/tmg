@@ -1,6 +1,7 @@
 "use server";
 
 import { Query } from "node-appwrite";
+import { getCurrentUser } from "../data/user/getLoggedInUser";
 import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { revalidatePath } from "next/cache";
@@ -35,12 +36,20 @@ export const getAllLocations = cache(async (query?: string) => {
 export const updateLocation = async (charge: number, id?: string) => {
   try {
     const { database } = await createAdminClient();
+    const user = await getCurrentUser();
 
-    //confirm that the location exists
-    if (!id)
+    //confirm that the user exists
+    if (!id || user?.documents?.[0].$id !== id)
       return {
         status: false,
         message: "Location not found.",
+      };
+
+    // charge should not be greater than 100 or less than 1
+    if (charge < 1 || charge > 100)
+      return {
+        status: false,
+        message: "Invalid charge percentage.",
       };
 
     const response = await database.updateDocument(
@@ -49,6 +58,7 @@ export const updateLocation = async (charge: number, id?: string) => {
       id,
       {
         charge,
+        $updatedAt: new Date(),
       }
     );
 

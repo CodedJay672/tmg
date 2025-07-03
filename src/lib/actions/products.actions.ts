@@ -1,17 +1,13 @@
 "use server";
 
 import { productSchema, TProductDetails } from "@/constants/validations/schema";
-import { createAdminClient, getLoggedInUser } from "../server/appwrite";
+import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { ID, Models, Query } from "node-appwrite";
-import {
-  createFile,
-  deleteFile,
-  getFilePreview,
-  getUser,
-} from "./user.actions";
+import { createFile, deleteFile, getFilePreview } from "./user.actions";
 import { revalidatePath } from "next/cache";
 import { cache } from "react";
+import { getProductFromWatchlist } from "../data/products/products.data";
 
 export const uploadProducts = async (values: TProductDetails) => {
   try {
@@ -179,126 +175,6 @@ export const deleteProduct = async (
   }
 };
 
-export const getAllProducts = cache(async (page?: number, query?: string) => {
-  const DOCUMENT_PER_PAGE = 2;
-
-  try {
-    const { database } = await createAdminClient();
-    const loggedInuser = await getLoggedInUser();
-
-    if (!loggedInuser) return;
-    const currentUser = await getUser(loggedInuser?.$id);
-
-    const response = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.productCollection,
-      query
-        ? [
-            Query.or([
-              Query.search("name", query.toLowerCase()),
-              Query.search("category", query.toLowerCase()),
-            ]),
-            Query.limit(DOCUMENT_PER_PAGE),
-            page ? Query.offset(page * DOCUMENT_PER_PAGE) : Query.offset(0),
-          ]
-        : [
-            Query.limit(DOCUMENT_PER_PAGE),
-            page ? Query.offset(page * DOCUMENT_PER_PAGE) : Query.offset(0),
-          ]
-    );
-
-    if (!response.total) {
-      return {
-        status: false,
-        message: "No products found.",
-      };
-    }
-
-    const productsWithInfo = await Promise.all(
-      response.documents.map(async (product) => {
-        const liked = await getProductFromWatchlist(
-          product?.$id,
-          currentUser?.data?.documents?.[0].$id
-        );
-
-        return {
-          ...product,
-          isLiked: !!liked,
-        };
-      })
-    );
-
-    return {
-      status: true,
-      message: "Products found.",
-      data: productsWithInfo,
-    };
-  } catch (error) {
-    throw error;
-  }
-});
-
-//for mobile fetching
-export const getAllProductsMobile = cache(
-  async (pageParams?: string, query?: string) => {
-    try {
-      const { database } = await createAdminClient();
-      const queryVals: string[] = [];
-
-      //validate the logged in user
-      const loggedInuser = await getLoggedInUser();
-      if (!loggedInuser) return;
-
-      const currentUser = await getUser(loggedInuser?.$id);
-
-      if (pageParams) queryVals.push(Query.cursorAfter(pageParams));
-
-      const response = await database.listDocuments(
-        config.appwrite.databaseId,
-        config.appwrite.productCollection,
-        query
-          ? [
-              Query.or([
-                Query.search("name", query.toLowerCase()),
-                Query.search("category", query.toLowerCase()),
-              ]),
-              ...queryVals,
-            ]
-          : queryVals
-      );
-
-      if (!response.total) {
-        return {
-          status: false,
-          message: "No products found.",
-        };
-      }
-
-      const productsWithInfo = await Promise.all(
-        response.documents.map(async (product) => {
-          const liked = await getProductFromWatchlist(
-            product?.$id,
-            currentUser?.data?.documents?.[0].$id
-          );
-
-          return {
-            ...product,
-            isLiked: !!liked,
-          };
-        })
-      );
-
-      return {
-        status: true,
-        message: "Products found.",
-        data: productsWithInfo,
-      };
-    } catch (error) {
-      throw error;
-    }
-  }
-);
-
 export const getProductById = cache(async (id?: string) => {
   try {
     const { database } = await createAdminClient();
@@ -360,7 +236,9 @@ export const updateWatchlist = async (productId: string, userId?: string) => {
 
       if (!removeProduct) return false;
 
-      revalidatePath("(root)/", "page");
+      revalidatePath("/", "page");
+      revalidatePath(`/details/${productId}`);
+
       return true;
     }
 
@@ -416,49 +294,6 @@ export const addProductToWatchlist = async (data: {
     throw error;
   }
 };
-
-export const getProductFromWatchlist = cache(
-  async (productId: string, userId?: string) => {
-    try {
-      const { database } = await createAdminClient();
-
-      const likedProduct = await database.listDocuments(
-        config.appwrite.databaseId,
-        config.appwrite.watchlistCollection,
-        [
-          userId
-            ? Query.and([
-                Query.equal("userId", userId),
-                Query.equal("productId", productId),
-              ])
-            : Query.equal("productId", productId),
-        ]
-      );
-
-      if (!likedProduct.total) return false;
-
-      return likedProduct;
-    } catch (error) {
-      throw error;
-    }
-  }
-);
-
-export const getUserWatchlist = cache(async (userId?: string) => {
-  try {
-    const { database } = await createAdminClient();
-
-    const res = await database.listDocuments(
-      config.appwrite.databaseId,
-      config.appwrite.watchlistCollection,
-      userId ? [Query.equal("userId", userId)] : []
-    );
-
-    return res;
-  } catch (error) {
-    throw error;
-  }
-});
 
 export const deleteProductFromWatchlist = async (productId: string) => {
   try {

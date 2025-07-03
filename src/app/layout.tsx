@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TGM Procurement",
+  title: "TMG Procurement",
   description:
-    "TGM Procurement specializes in selling heavy duty machines at affordable prices",
+    "TMG Procurement specializes in selling heavy duty machines at affordable prices",
 };
 
 export default function RootLayout({

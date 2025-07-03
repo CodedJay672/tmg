@@ -4,8 +4,10 @@ import { orderTable, smallTable } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
 import TransactionsChart from "@/components/TransactionsChart";
 import { getTransaction, getUserCart } from "@/lib/actions/cart.actions";
-import { getUser } from "@/lib/actions/user.actions";
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import {
+  getLoggedInUser,
+  getCurrentUser,
+} from "@/lib/data/user/getLoggedInUser";
 import { ChartData } from "chart.js";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -13,13 +15,13 @@ import React from "react";
 const Dashboard = async () => {
   const user = await getLoggedInUser();
 
+  //verify admin status
   if (!user) redirect("/sign-in");
-
   if (!user.labels.includes("admin")) redirect("/");
 
   //get all transactions and users
   const transactions = getTransaction();
-  const users = getUser();
+  const users = getCurrentUser();
   const orders = getUserCart();
 
   const [transactionData, usersData, ordersData] = await Promise.all([
@@ -113,7 +115,7 @@ const Dashboard = async () => {
               background="#3B82F6"
             />
             <DashboardInfo
-              data={usersData.data?.total ?? 0}
+              data={usersData?.total ?? 0}
               heading="All Users"
               background="#8B5CF6"
             />
@@ -123,6 +125,7 @@ const Dashboard = async () => {
               background="#22C55E"
             />
           </div>
+
           {/* <div className="flex flex-col lg:flex-row gap-10 my-6">
             <div className="w-full space-y-6 flex-1 overflow-hidden border border-gray-200 shadow-md shadow-gray-300 rounded-xl p-5">
               <div>
@@ -132,6 +135,7 @@ const Dashboard = async () => {
             </div>
             
           </div> */}
+
           <div className="p-5 w-full shadow-md bg-white z-0 rouned-lg mt-10">
             <p className="text-base lg:text-lg font-medium mb-6">Top sellers</p>
             <CustomTable

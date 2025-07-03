@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import React from "react";
 import MobileLink from "./shared/MobileLink";
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import { getLoggedInUser } from "@/lib/data/user/getLoggedInUser";
 
 const BottomBarLinks: BottomBarProps[] = [
   {

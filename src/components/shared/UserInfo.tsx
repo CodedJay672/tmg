@@ -8,15 +8,15 @@ import { Button } from "../ui/button";
 import { ChevronDownIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const UserInfo = ({ user }: { user: Models.User<Models.Preferences> }) => {
+const UserInfo = ({ user }: { user: Models.Document }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
     <div className="w-max bg-secondary flex items-center p-1 rounded-full pr-3 relative">
       <div className="size-7 bg-primary rounded-full flex-center shrink-0">
-        <h2 className="text-sm uppercase font-medium">{user?.name[0]}</h2>
+        <h2 className="text-sm uppercase font-medium">{user?.fullname[0]}</h2>
       </div>
-      <span className="w-full text-sm ml-1 text-nowrap">{user?.name}</span>
+      <span className="w-full text-sm ml-1 text-nowrap">{user?.fullname}</span>
       <Button
         variant="ghost"
         size="icon"

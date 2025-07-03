@@ -1,6 +1,5 @@
 "use client";
 
-import { useGetUserById } from "@/lib/queries/userQueried/users";
 import { Models } from "node-appwrite";
 import React, { useState } from "react";
 import CustomInput from "./CustomInput";
@@ -11,24 +10,20 @@ const DeliveryDetailsForm = ({
   action,
   errors,
 }: {
-  user: Models.User<Models.Preferences>;
+  user: Models.Document | undefined;
   errors: Record<string, string[]> | null;
   action: (t: FormData) => Promise<string | undefined>;
 }) => {
-  const { data: userInfo } = useGetUserById(user.$id);
-
   // get all delivery details from the database
   const [deliveryLocation, setDeliveryLocation] = useState(
-    userInfo?.data?.documents?.[0].delivery_location ?? ""
+    user?.delivery_location ?? ""
   );
   const [deliveryAddress, setDeliveryAddress] = useState(
-    userInfo?.data?.documents?.[0].delivery_address ?? ""
+    user?.delivery_address ?? ""
   );
-  const [receiverName, setReceiverName] = useState(
-    userInfo?.data?.documents?.[0].receiver_name ?? ""
-  );
+  const [receiverName, setReceiverName] = useState(user?.receiver_name ?? "");
   const [receiverPhone, setReceiverPhone] = useState(
-    userInfo?.data?.documents?.[0].receiver_phone ?? ""
+    user?.receiver_phone ?? ""
   );
 
   // Handler to adapt FormEvent to FormData for the action prop

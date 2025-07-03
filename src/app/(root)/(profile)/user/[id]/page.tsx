@@ -1,7 +1,7 @@
 import ProfileMenuSwitch from "@/components/shared/ProfileMenuSwitch";
 import Segments from "@/components/shared/Segments";
 import UserDetailsForm from "@/components/UserDetailsForm";
-import { getUser } from "@/lib/actions/user.actions";
+import { getUser } from "@/lib/data/user/getLoggedInUser";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -15,7 +15,7 @@ const ProfileDetails = async ({
   const userDetails = await getUser(id);
 
   // redirect to signup if user is not signed in
-  if (!userDetails.status) redirect("/sign-up");
+  if (!userDetails.status) redirect("/sign-in");
 
   return (
     <section className="w-full">

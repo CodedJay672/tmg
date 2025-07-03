@@ -2,15 +2,12 @@ import { BellIcon, ChevronLeftIcon, MailIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import SearchBar from "../SearchBar";
-import { getLoggedInUser } from "@/lib/server/appwrite";
-import { getUser } from "@/lib/actions/user.actions";
 import { Button } from "../ui/button";
+import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
+import SearchBar from "../SearchBar";
 
 const Header = async () => {
-  const user = await getLoggedInUser();
-
-  const currentUser = await getUser(user?.$id);
+  const currentUser = await getCurrentUser();
 
   return (
     <header className="w-full bg-gray-50 sticky top-0 left-0 mb-4 z-10">
@@ -45,28 +42,28 @@ const Header = async () => {
 
             {/* user profile */}
             <Link
-              href={`/user/${user?.$id}`}
+              href={`/user/${currentUser?.documents?.[0].accountId}`}
               className="flex items-center gap-2 bg-foreground p-1.5 lg:pr-3 rounded-md border border-primary/50"
             >
-              {currentUser.data?.documents?.[0].imgUrl ? (
+              {currentUser?.documents?.[0].imgUrl ? (
                 <Image
-                  src={currentUser?.data?.documents?.[0].imgUrl}
-                  alt={currentUser?.data?.documents?.[0].fullname}
+                  src={currentUser?.documents?.[0].imgUrl}
+                  alt={currentUser?.documents?.[0].fullname}
                   width={40}
                   height={40}
                   className="rounded-full"
                 />
               ) : (
                 <div className="size-8 p-2 flex-center bg-primary rounded-full">
-                  <span>{currentUser?.data?.documents?.[0].fullname[0]}</span>
+                  <span>{currentUser?.documents?.[0].fullname[0]}</span>
                 </div>
               )}
               <div className="hidden lg:block">
                 <h2 className="text-base font-semibold leading-4">
-                  {currentUser?.data?.documents?.[0].fullname}
+                  {currentUser?.documents?.[0].fullname}
                 </h2>
                 <p className="text-sm font-thin leading-4">
-                  {currentUser?.data?.documents?.[0].email}
+                  {currentUser?.documents?.[0].email}
                 </p>
               </div>
             </Link>

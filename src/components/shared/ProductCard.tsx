@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { Models } from "node-appwrite";
 import CartActionButton from "./CartActionButton";
@@ -7,15 +5,15 @@ import WatchlistButton from "./WatchlistButton";
 import { calculateInterest } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { useGetAllLocations } from "@/lib/queries/locationQueries/location";
+import { getAllLocations } from "@/lib/data/locations/locations.data";
 
 interface ProductCardProps {
   item: Models.Document;
   user: Models.Document | undefined;
 }
 
-const ProductCard = ({ item, user }: ProductCardProps) => {
-  const { data: location } = useGetAllLocations(user?.delivery_location);
+const ProductCard = async ({ item, user }: ProductCardProps) => {
+  const location = await getAllLocations(user?.delivery_location);
 
   //calculate the interest based on the location
   const interest = calculateInterest(
@@ -27,13 +25,14 @@ const ProductCard = ({ item, user }: ProductCardProps) => {
 
   return (
     <article className="w-full space-y-4 border border-gray-200 rounded-md shadow-md relative">
-      <Image
-        src={item.imgUrl}
-        alt={item.name}
-        width={400}
-        height={64}
-        className="object-cover rounded-md overflow-hidden"
-      />
+      <div className="w-full h-40 relative">
+        <Image
+          src={item.imgUrl}
+          alt={item.name}
+          fill
+          className="object-cover rounded-md overflow-hidden"
+        />
+      </div>
       <div className="p-2 lg:py-2 lg:px-3 space-y-2">
         <p className="text-lg lg:text-xl font-semibold truncate line-clamp-1 capitalize">
           {item.name}

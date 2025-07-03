@@ -1,20 +1,14 @@
 import React from "react";
 import MyOrders from "./shared/MyOrders";
-import MyWatchlist from "./shared/MyWatchlist";
 import Link from "next/link";
-import { getLoggedInUser } from "@/lib/server/appwrite";
-import { redirect } from "next/navigation";
 import Image from "next/image";
 import GlobalSearch from "./shared/GlobalSearch";
 import LocationDropdown from "./LocationDropdown";
 import UserInfo from "./shared/UserInfo";
+import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 
 const Topbar = async () => {
-  const user = await getLoggedInUser();
-
-  if (!user) {
-    redirect("/sign-up");
-  }
+  const user = await getCurrentUser();
 
   return (
     <header className="w-full px-4 lg:px-16 bg-dark-100 flex justify-between items-center  sticky top-0 left-0 z-50">
@@ -29,17 +23,17 @@ const Topbar = async () => {
           />
         </Link>
         <div className="w-80 hidden rounded-full p-1 lg:p-2 lg:flex items-center gap-2 relative">
-          <LocationDropdown user={user} />
+          <LocationDropdown user={user?.documents?.[0]} />
         </div>
       </div>
 
       <div className="hidden w-full max-w-3xl lg:flex justify-between items-center gap-2">
         <GlobalSearch />
-        <MyOrders userId={user?.$id} />
+        <MyOrders user={user?.documents?.[0]} />
         {/* <MyWatchlist userId={user?.$id} /> */}
 
         {user ? (
-          <UserInfo user={user} />
+          <UserInfo user={user?.documents?.[0]} />
         ) : (
           <Link
             href="/sign-up"
@@ -51,7 +45,7 @@ const Topbar = async () => {
       </div>
 
       <div className="w-48 lg:hidden bg-secondary rounded-full px-3 flex items-center gap-2 relative">
-        <LocationDropdown user={user} />
+        <LocationDropdown user={user?.documents?.[0]} />
       </div>
     </header>
   );

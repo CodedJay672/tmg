@@ -2,7 +2,7 @@ import React from "react";
 import ProductCard from "./shared/ProductCard";
 import PaginationButtons from "./shared/PaginationButtons";
 import { getUser } from "@/lib/actions/user.actions";
-import { getAllProducts } from "@/lib/actions/products.actions";
+import { getAllProducts } from "@/lib/data/products/products.data";
 
 const ProductGallery = async ({
   userId,
@@ -45,7 +45,7 @@ const ProductGallery = async ({
               ))}
           </div>
           <div className="w-full flex justify-center lg:justify-end mt-16">
-            <PaginationButtons data={allProducts!} isPlaceholderData={false} />
+            <PaginationButtons isPlaceholderData={false} />
           </div>
         </>
       ) : (
