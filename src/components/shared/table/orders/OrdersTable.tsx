@@ -20,7 +20,7 @@ const OrdersTable = ({ orders }: { orders: Models.Document[] | undefined }) => {
   }, [category]);
 
   return (
-    <>
+    <div className="w-full overflow-hidden">
       <CustomTable
         columns={orderTable}
         data={
@@ -31,7 +31,7 @@ const OrdersTable = ({ orders }: { orders: Models.Document[] | undefined }) => {
           ) ?? []
         }
       />
-    </>
+    </div>
   );
 };
 
