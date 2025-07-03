@@ -38,6 +38,7 @@ const Orders = async ({
           Search result for: <span className="text-primary">{query}</span>
         </p>
       )}
+
       <OrdersTable orders={orders.data?.documents} />
     </section>
   );

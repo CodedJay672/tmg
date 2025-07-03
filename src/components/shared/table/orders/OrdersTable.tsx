@@ -20,7 +20,7 @@ const OrdersTable = ({ orders }: { orders: Models.Document[] | undefined }) => {
   }, [category]);
 
   return (
-    <div className="w-full overflow-x-scroll">
+    <div className="w-full overflow-hidden">
       <CustomTable
         columns={orderTable}
         data={

@@ -55,7 +55,7 @@ const CartCard = ({ data, user }: TCartProps) => {
             <WatchlistButton
               userId={user?.accountId || ""}
               productId={data?.id}
-              label="Add to watchlist"
+              label="Add"
             />
           </div>
         </div>

@@ -141,9 +141,10 @@ export const smallTable: ColumnDef<Models.Document>[] = [
     header: "name",
     cell: ({ row }) => {
       const order: Models.Document = row.original;
+      console.log(order);
       const data = getTableData(order);
 
-      return <ProductMiniCard order={data?.[0].product} />;
+      return <ProductMiniCard order={data?.[0]?.product} />;
     },
   },
   {
