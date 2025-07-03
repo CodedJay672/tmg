@@ -18,6 +18,7 @@ export const updateUserInfo = async (
     const { database } = await createAdminClient();
     let filePrev, res, watchlist;
 
+    console.log(id);
     // check for a valid id
     if (!id) {
       return {
