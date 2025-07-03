@@ -2,7 +2,7 @@ import React from "react";
 
 import OrderActionButton from "@/components/shared/OrderActionButton";
 import Status from "@/components/shared/Status";
-import { orderDetails, orderTable } from "@/components/shared/table/columns";
+import { orderDetails } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
 import { Button } from "@/components/ui/button";
 import { getTransaction } from "@/lib/data/transactions/transactions.data";

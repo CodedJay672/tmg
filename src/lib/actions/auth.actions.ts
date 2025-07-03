@@ -9,6 +9,8 @@ import {
   resetPasswordSchema,
 } from "@/constants/validations/schema";
 import { revalidatePath } from "next/cache";
+import { updateUserInfo } from "./user.actions";
+import { getCurrentUser } from "../data/user/getLoggedInUser";
 
 export const SignIn = async (email: string, password: string) => {
   try {
@@ -154,6 +156,21 @@ export const googleAuth = async () => {
 
 export async function signOut(): Promise<void> {
   const response = await createSessionClient();
+  const user = await getCurrentUser();
+
+  const locationReset = await updateUserInfo(
+    {
+      data: {
+        delivery_location: "",
+        delivery_address: "",
+        receiver_name: "",
+        receiver_phone: "",
+      },
+    },
+    user?.documents?.[0].$id
+  );
+
+  if (!locationReset.status) throw new Error(locationReset.message);
 
   if (response) {
     const { account } = response;
