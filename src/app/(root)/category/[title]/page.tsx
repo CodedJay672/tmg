@@ -1,10 +1,9 @@
 import React, { Suspense } from "react";
 import Segments from "@/components/shared/Segments";
-import { getLoggedInUser } from "@/lib/server/appwrite";
 import { Loader2Icon } from "lucide-react";
-import { getAllProducts } from "@/lib/actions/products.actions";
-import { getUser } from "@/lib/actions/user.actions";
 import ProductCard from "@/components/shared/ProductCard";
+import { getAllProducts } from "@/lib/data/products/products.data";
+import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 
 const Category = async ({
   params,
@@ -18,8 +17,7 @@ const Category = async ({
 
   //get products and users
   const allProducts = await getAllProducts(+page, title);
-  const user = await getLoggedInUser();
-  const currentUser = await getUser(user?.$id);
+  const currentUser = await getCurrentUser();
 
   return (
     <section className="content-wrapper">
@@ -41,7 +39,7 @@ const Category = async ({
               <ProductCard
                 key={product.$id}
                 item={product}
-                user={currentUser.data?.documents?.[0]}
+                user={currentUser?.documents?.[0]}
               />
             ))}
           </div>

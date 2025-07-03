@@ -1,14 +1,10 @@
 import CartContent from "@/components/CartContent";
 import Back from "@/components/shared/Back";
-import { getUser } from "@/lib/actions/user.actions";
-
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 import React from "react";
 
 const CartPage = async () => {
-  const user = await getLoggedInUser();
-
-  const currentUser = await getUser(user?.$id);
+  const currentUser = await getCurrentUser();
 
   return (
     <section className="content-wrapper max-w-screen-lg mx-auto">
@@ -20,7 +16,7 @@ const CartPage = async () => {
         </div>
       </div>
 
-      <CartContent user={currentUser?.data?.documents?.[0]} />
+      <CartContent user={currentUser?.documents?.[0]} />
     </section>
   );
 };
