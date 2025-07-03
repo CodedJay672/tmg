@@ -6,8 +6,10 @@ import GlobalSearch from "./shared/GlobalSearch";
 import LocationDropdown from "./LocationDropdown";
 import UserInfo from "./shared/UserInfo";
 import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
+import MyWatchlist from "./shared/MyWatchlist";
 
 const Topbar = async () => {
+  //fetch user and watchlist in parallel
   const user = await getCurrentUser();
 
   return (
@@ -30,7 +32,6 @@ const Topbar = async () => {
       <div className="hidden w-full max-w-3xl lg:flex justify-between items-center gap-2">
         <GlobalSearch />
         <MyOrders user={user?.documents?.[0]} />
-        {/* <MyWatchlist userId={user?.$id} /> */}
 
         {user ? (
           <UserInfo user={user?.documents?.[0]} />

@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/server/appwrite";
 import { config } from "@/lib/server/config";
 import { Query } from "node-appwrite";
 import { cache } from "react";
-import { getCurrentUser, getUser } from "../user/getLoggedInUser";
+import { getCurrentUser } from "../user/getLoggedInUser";
 
 export const getUserWatchlist = cache(async (userId?: string) => {
   try {

@@ -3,16 +3,14 @@
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { HeartIcon } from "lucide-react";
-import { useGetUserWatchlist } from "@/lib/queries/productQueries/products";
-import { useGetUserById } from "@/lib/queries/userQueried/users";
 import CustomSheet from "./CustomSheet";
-import WatchlistContent from "../WatchlistContent";
+import { Models } from "node-appwrite";
 
-const MyWatchlist = ({ userId }: { userId: string }) => {
-  const { data: userInfo } = useGetUserById(userId);
-  const { data: myWatchlist } = useGetUserWatchlist(
-    userInfo?.data?.documents?.[0].$id
-  );
+const MyWatchlist = async ({
+  watchlistProducts,
+}: {
+  watchlistProducts: Models.Document[];
+}) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -32,12 +30,6 @@ const MyWatchlist = ({ userId }: { userId: string }) => {
           <p className="text-dark-300">
             Never lose track of your favorite products
           </p>
-        </div>
-        <div className="w-full grid grid-cols-2 gap-2 no-scrollbar">
-          <WatchlistContent
-            user={userInfo?.data?.documents?.[0]}
-            item={myWatchlist}
-          />
         </div>
       </CustomSheet>
     </>
