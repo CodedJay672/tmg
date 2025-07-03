@@ -1,5 +1,5 @@
 import ProductForm from "@/components/ProductForm";
-import { getProductById } from "@/lib/actions/products.actions";
+import { getProductById } from "@/lib/data/products/products.data";
 import Image from "next/image";
 import React from "react";
 
@@ -9,7 +9,6 @@ const CreateProducts = async ({
   searchParams: Promise<{ productId: string }>;
 }) => {
   const { productId } = await searchParams;
-
   const product = await getProductById(productId);
 
   return (

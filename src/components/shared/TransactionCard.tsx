@@ -25,7 +25,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
     <article className="w-full p-4 border border-dark-200 rounded-xl">
       <div className="space-y-0.5">
         <p
-          className={`w-max text-xs text-foreground rounded-lg uppercase text-center py-1 px-3 ${
+          className={`w-max text-xs text-foreground rounded-lg uppercase text-center p-1 lg:px-3 ${
             info.status === "COMPLETED"
               ? "bg-primary"
               : info.status === "PROCESSING"
@@ -48,12 +48,11 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
       </div>
       <div className="w-full flex-between flex-col md:flex-row gap-10 p-3">
         <div className="w-full flex items-center gap-3">
-          <div className="flex-center relative">
+          <div className="w-full lg:w-32 h-28 relative">
             <Image
               src={info.order.products?.[0].imgUrl ?? null}
               alt={info.order.products?.[0].name}
-              width={120}
-              height={100}
+              fill
             />
           </div>
           <div>

@@ -4,7 +4,7 @@ import Status from "@/components/shared/Status";
 import { orderDetails } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
 import { Button } from "@/components/ui/button";
-import { getTransaction } from "@/lib/actions/cart.actions";
+import { getTransaction } from "@/lib/data/transactions/transactions.data";
 import { formatCurrency, formatDate, getTableData } from "@/lib/utils";
 import { Loader2Icon } from "lucide-react";
 import Link from "next/link";
@@ -12,16 +12,7 @@ import React from "react";
 
 const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
-
   const orderInfo = await getTransaction(id);
-
-  if (!orderInfo.status) {
-    return (
-      <Loader2Icon size={24} className="text-primary animate-spin mx-auto" />
-    );
-  }
-
-  const date = formatDate(orderInfo.data?.documents?.[0].$createdAt as string);
 
   // generate the order table data
   const tableData = getTableData(orderInfo.data?.documents?.[0]);
@@ -46,9 +37,9 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
             <Status status={orderInfo.data?.documents?.[0].status} />
           </div>
           <div className="w-full flex items-center">
-            <span className="text-dark-200 text-xs lg:text-sm font-medium">
+            {/* <span className="text-dark-200 text-xs lg:text-sm font-medium">
               Order / Order details / #{id} - {date as string}
-            </span>
+            </span> */}
           </div>
         </div>
         {orderInfo.data?.documents?.[0].status === "PROCESSING" && (

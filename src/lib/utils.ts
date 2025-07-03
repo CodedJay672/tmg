@@ -16,7 +16,7 @@ export const formatTitle = (title?: string) => {
 export const formatDate = (iso: string) => {
   const date = new Date(iso);
 
-  if (!date) return console.log("invalid date format");
+  if (!date) throw new Error("Invalide date.");
 
   const option: Intl.DateTimeFormatOptions = {
     year: "numeric",
