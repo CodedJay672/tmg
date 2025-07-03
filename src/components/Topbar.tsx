@@ -6,10 +6,8 @@ import GlobalSearch from "./shared/GlobalSearch";
 import LocationDropdown from "./LocationDropdown";
 import UserInfo from "./shared/UserInfo";
 import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
-import MyWatchlist from "./shared/MyWatchlist";
 
 const Topbar = async () => {
-  //fetch user and watchlist in parallel
   const user = await getCurrentUser();
 
   return (
