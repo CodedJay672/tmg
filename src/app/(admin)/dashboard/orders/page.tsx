@@ -33,7 +33,7 @@ const Orders = async ({
         <CustomTab name="status" title="completed" />
       </div>
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 max-w-screen-xl overflow-hidden">
         {query && (
           <p className="text-base font-medium mt-10">
             Search result for: <span className="text-primary">{query}</span>
