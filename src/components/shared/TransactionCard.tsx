@@ -75,7 +75,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
           asChild
           className="text-primary font-bold bg-foreground border-primary border"
         >
-          <Link href={`/orders/details/${info.order.$id}`}>View Details</Link>
+          <Link href={`/orders/details/${info.$id}`}>View Details</Link>
         </Button>
       </div>
     </article>

@@ -8,7 +8,6 @@ import { getLoggedInUser } from "../user/getLoggedInUser";
 export const getTransaction = async (id?: string) => {
   try {
     const { database } = await createAdminClient();
-
     await getLoggedInUser();
 
     const response = await database.listDocuments(

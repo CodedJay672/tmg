@@ -1,14 +1,14 @@
-import Back from "@/components/shared/Back";
+import React from "react";
+
 import OrderActionButton from "@/components/shared/OrderActionButton";
 import Status from "@/components/shared/Status";
-import { orderDetails } from "@/components/shared/table/columns";
+import { orderDetails, orderTable } from "@/components/shared/table/columns";
 import CustomTable from "@/components/shared/table/CustomTable";
 import { Button } from "@/components/ui/button";
 import { getTransaction } from "@/lib/data/transactions/transactions.data";
 import { formatCurrency, formatDate, getTableData } from "@/lib/utils";
-import { Loader2Icon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import Back from "@/components/shared/Back";
 
 const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -18,6 +18,7 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
   const tableData = getTableData(orderInfo.data?.documents?.[0]);
   const vat = Math.ceil(orderInfo.data?.documents?.[0].subTotal * 0.075);
 
+  const date = formatDate(orderInfo.data?.documents?.[0].$createdAt || "");
   return (
     <section className="w-full space-y-6 lg:pt-10">
       <div className="flex items-center gap-2 lg:hidden border-b border-dark-200 pb-4">
@@ -37,9 +38,9 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
             <Status status={orderInfo.data?.documents?.[0].status} />
           </div>
           <div className="w-full flex items-center">
-            {/* <span className="text-dark-200 text-xs lg:text-sm font-medium">
+            <span className="text-dark-200 text-xs lg:text-sm font-medium">
               Order / Order details / #{id} - {date as string}
-            </span> */}
+            </span>
           </div>
         </div>
         {orderInfo.data?.documents?.[0].status === "PROCESSING" && (

@@ -47,7 +47,7 @@ export const getTableData = (data?: Models.Document) => {
 
   const result: TableTypeProps[] = [];
 
-  data.order.products.forEach((product: Models.Document, idx: number) => {
+  data.order?.products.forEach((product: Models.Document, idx: number) => {
     const res = {
       product,
       qty: data.order?.qty?.[idx],
