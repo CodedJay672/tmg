@@ -22,10 +22,10 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
   }, []);
 
   return (
-    <article className="w-full p-4 border border-dark-200 rounded-xl">
+    <article className="w-full p-1 lg:px-3 border border-dark-200 rounded-xl">
       <div className="space-y-0.5">
         <p
-          className={`w-max text-xs text-foreground rounded-lg uppercase text-center p-1 lg:px-3 ${
+          className={`w-max text-xs text-foreground rounded-lg uppercase text-center ${
             info.status === "COMPLETED"
               ? "bg-primary"
               : info.status === "PROCESSING"
@@ -36,7 +36,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
           {info.status}
         </p>
 
-        <div className="flex-between p-3 border-b border-dark-100 gap-7">
+        <div className="flex-between lg:p-3 border-b border-dark-100 gap-7">
           <p className="text-sm text-dark-300">
             {orderDate as string} | Order ID: {info.$id}
           </p>
@@ -46,7 +46,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
           </p>
         </div>
       </div>
-      <div className="w-full flex-between flex-col md:flex-row gap-10 p-3">
+      <div className="w-full flex-between flex-col md:flex-row gap-10 p-2 lg:p-3">
         <div className="w-full flex items-center gap-3">
           <div className="w-full lg:w-32 h-28 relative">
             <Image

@@ -30,15 +30,15 @@ const OderDetails = async ({ params }: { params: Promise<{ id: string }> }) => {
           <Back />
         </div>
         <div className="flex-1 space-y-4">
-          <div className="flex items-center gap-4">
-            <h1 className="text-lg font-stretch-200% lg:text-xl font-medium">
+          <div className="flex lg:items-center flex-col lg:flex-row gap-1 lg:gap-4">
+            <h1 className="text-base font-stretch-200% lg:text-xl font-medium">
               #{id}
             </h1>
 
             <Status status={orderInfo.data?.documents?.[0].status} />
           </div>
           <div className="w-full flex items-center">
-            <span className="text-dark-200 text-xs lg:text-sm font-medium">
+            <span className="text-dark-400 text-sm font-medium">
               Order / Order details / #{id} - {date as string}
             </span>
           </div>
