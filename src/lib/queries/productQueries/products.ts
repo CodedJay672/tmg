@@ -19,27 +19,6 @@ export const useUploadProduct = () => {
   });
 };
 
-export const useDeleteProduct = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({
-      id,
-      fileId,
-      datasheetId,
-    }: {
-      id: string;
-      fileId: string;
-      datasheetId?: string;
-    }) => deleteProduct(id, fileId, datasheetId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products"],
-      });
-    },
-  });
-};
-
 export const useUpdateWatchlist = () => {
   const queryClient = useQueryClient();
 

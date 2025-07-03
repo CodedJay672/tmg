@@ -2,10 +2,11 @@
 
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { useDeleteProduct } from "@/lib/queries/productQueries/products";
 import { Loader2Icon, MoreVerticalIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
+import { deleteProduct } from "@/lib/actions/products.actions";
+import { toast } from "sonner";
 
 const ProductActionButton = ({
   fileId,
@@ -16,10 +17,9 @@ const ProductActionButton = ({
   productId: string;
   datasheetId?: string;
 }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const { mutateAsync: handleDeleteProduct, isPending: loading } =
-    useDeleteProduct();
   const param = useSearchParams();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -42,30 +42,48 @@ const ProductActionButton = ({
     router.push(`${pathname}?${productId.toString()}`);
   };
 
+  const handleDeleteProduct = async (
+    prdId: string,
+    fileId: string,
+    dataId: string
+  ) => {
+    setLoading(true);
+    const deleted = await deleteProduct(prdId, fileId, dataId);
+
+    if (!deleted.status) {
+      setLoading(false);
+      return toast.error(deleted.message);
+    }
+
+    toast.success(deleted.message);
+    setLoading(false);
+  };
+
   return (
     <div className="flex-center lg:p-6 gap-2 relative">
-      <Button
-        type="button"
-        variant="link"
-        onClick={() => updateProduct(productId)}
-        className="hidden lg:block bg-secondary/50 text-primary"
-      >
-        Update
-      </Button>
-      <Button
-        type="button"
-        variant="link"
-        onClick={() =>
-          handleDeleteProduct({ id: productId, fileId, datasheetId })
-        }
-        className="hidden lg:block text-red-500 bg-red-200 cursor-pointer"
-      >
-        {loading ? (
-          <Loader2Icon size={16} className="text-foreground animate-spin" />
-        ) : (
-          <>Delete</>
-        )}
-      </Button>
+      <div className="hidden lg:flex item-center gap-2">
+        <Button
+          type="button"
+          variant="link"
+          onClick={() => updateProduct(productId)}
+          className="hidden lg:block bg-secondary/50 text-primary"
+        >
+          Update
+        </Button>
+        <Button
+          type="button"
+          variant="link"
+          onClick={() =>
+            handleDeleteProduct(productId, fileId, datasheetId ?? "")
+          }
+          className="text-red-500 bg-red-200 cursor-pointer"
+        >
+          {loading && (
+            <Loader2Icon size={16} className="text-foreground animate-spin" />
+          )}
+          Delete
+        </Button>
+      </div>
 
       <div
         onClick={toggleMenu}
@@ -94,7 +112,9 @@ const ProductActionButton = ({
         <Button
           type="button"
           variant="ghost"
-          onClick={() => handleDeleteProduct({ id: productId, fileId })}
+          onClick={() =>
+            handleDeleteProduct(productId, fileId, datasheetId ?? "")
+          }
           className="w-full text-red-500 bg-red-200 cursor-pointer"
         >
           {loading ? (

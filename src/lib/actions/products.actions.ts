@@ -6,7 +6,6 @@ import { config } from "../server/config";
 import { ID, Models, Query } from "node-appwrite";
 import { createFile, deleteFile } from "./user.actions";
 import { revalidatePath } from "next/cache";
-import { cache } from "react";
 import { getProductFromWatchlist } from "../data/products/products.data";
 import { getFilePreview } from "../data/utils";
 
