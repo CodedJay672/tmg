@@ -3,7 +3,7 @@ import React from "react";
 const Status = ({ status }: { status: string }) => {
   return (
     <span
-      className={`text-xs py-1 px-3 border inline-block rounded-lg font-semibold ${
+      className={`text-xs py-1 px-3 border w-max inline-block rounded-lg font-semibold ${
         status === "PROCESSING"
           ? "border-amber-500 text-amber-500"
           : status === "COMPLETED"

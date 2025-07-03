@@ -23,7 +23,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
 
   return (
     <article className="w-full p-1 lg:p-3 border border-dark-200 rounded-xl">
-      <div className="space-y-0.5">
+      <div className="space-y-0.5 mt-3">
         <p
           className={`w-max text-xs text-foreground rounded-lg uppercase text-center  px-2 py-1 ${
             info.status === "COMPLETED"
@@ -36,13 +36,13 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
           {info.status}
         </p>
 
-        <div className="flex-between lg:p-3 border-b border-dark-100 gap-7">
+        <div className="flex-between lg:p-3 border-b border-dark-100 gap-2 lg:gap-7">
           <p className="text-sm text-dark-300">
             {orderDate as string} | Order ID: {info.$id}
           </p>
           <p className="text-sm font-medium text-dark-300">
             Total:{" "}
-            <span className="text-lg lg:text-xl font-semibold">{totalAmt}</span>
+            <span className="text-base lg:text-lg font-medium">{totalAmt}</span>
           </p>
         </div>
       </div>
@@ -56,11 +56,11 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
             />
           </div>
           <div>
-            <p className="text-base font-bold">
+            <p className="text-base font-bold line-clamp-3">
               {info.order.products?.[0].name}
             </p>
             <p className="text-sm font-medium text-dark-300">
-              {formatCurrency(totalCost)} X {info.order.qty[0]}
+              {formatCurrency(totalCost)} x {info.order.qty[0]}
             </p>
             {info.order.products.length > 1 && (
               <p className="text-xs font-medium text-dark-200 mt-3">
