@@ -22,10 +22,10 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
   }, []);
 
   return (
-    <article className="w-full p-1 lg:px-3 border border-dark-200 rounded-xl">
+    <article className="w-full p-1 lg:p-3 border border-dark-200 rounded-xl">
       <div className="space-y-0.5">
         <p
-          className={`w-max text-xs text-foreground rounded-lg uppercase text-center ${
+          className={`w-max text-xs text-foreground rounded-lg uppercase text-center  px-2 py-1 ${
             info.status === "COMPLETED"
               ? "bg-primary"
               : info.status === "PROCESSING"
