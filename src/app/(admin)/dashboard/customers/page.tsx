@@ -37,6 +37,7 @@ const Customers = async ({
           Search result for: <span className="text-primary">{query}</span>
         </p>
       )}
+
       <CustomTable
         columns={customerTable}
         data={users?.data?.documents ?? []}
