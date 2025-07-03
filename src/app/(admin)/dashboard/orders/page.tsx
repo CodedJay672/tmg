@@ -13,7 +13,7 @@ const Orders = async ({
   const orders = await getTransaction();
 
   return (
-    <section className="dashboard-container">
+    <section className="dashboard-container overflow-hidden">
       <div className="w-full flex-between mb-10">
         <h2 className="admin-title">Orders</h2>
         <div className="flex items-center space-x-3">
