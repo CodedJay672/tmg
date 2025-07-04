@@ -5,6 +5,13 @@ import { createAdminClient } from "../server/appwrite";
 import { config } from "../server/config";
 import { revalidatePath } from "next/cache";
 import { getAllLocations } from "../data/locations/locations.data";
+import { Resend } from "resend";
+import { TransactionEmail } from "@/email/boqTemplateEmail";
+import { formatDate, getTableData } from "../utils";
+import { ReactNode } from "react";
+
+//create client for resend
+const resend = new Resend(config.resend);
 
 export const addProductsToCart = async (
   userId: string,
@@ -98,6 +105,7 @@ export const completeTransaction = async (
 
     if (!transaction) return;
 
+    // save the users order
     const response = await saveCart(transaction.order);
 
     if (!response.status)
@@ -106,6 +114,7 @@ export const completeTransaction = async (
         message: response.message,
       };
 
+    //get the location and its related charge
     const delivery = await getAllLocations(transaction.delivery_location);
 
     if (!delivery.status)
@@ -114,6 +123,7 @@ export const completeTransaction = async (
         message: delivery.message,
       };
 
+    // upload the transaction information
     const res = await database.createDocument(
       config.appwrite.databaseId,
       config.appwrite.transactionsCollection,
@@ -136,6 +146,49 @@ export const completeTransaction = async (
         status: false,
         message: "Transaction Failed.",
       };
+
+    //construct the email variables object
+    const emailVariables = {
+      transactionDetails: getTableData(res),
+      vat: Math.ceil(res.subTotal * 0.075),
+      date: formatDate(res.$createdAt),
+      transactionId: res.$id,
+      orderId: res.order?.$id,
+      subTotal: res.subTotal,
+      total: res.total,
+      customer: {
+        fullname: res.creator?.fullname,
+        email: res.creator?.email,
+        phone: res.creator.phone,
+      },
+      billing: {
+        name: res.receiver_name,
+        location: res.delivery_location?.location,
+        charge: res.delivery_location?.charge,
+        address: res.delivery_address,
+        phone: res.receiver_phone,
+      },
+    };
+
+    const { error } = await resend.emails.send({
+      from: "TMG Procurement <info@info.tmgprocurement.com>",
+      to: [res.creator.email],
+      subject: "New transaction alert!",
+      react: TransactionEmail(emailVariables) as ReactNode,
+    });
+
+    if (error) {
+      //delete order and transaction
+      await deleteCart(res.order.$id);
+      await deleteTransaction(res.$id);
+
+      console.log(error);
+
+      return {
+        status: false,
+        message: "Failed to send transaction email.",
+      };
+    }
 
     revalidatePath("/dashboard/orders");
     return {
@@ -177,6 +230,22 @@ export const saveCart = async (order: TCart[]) => {
   }
 };
 
+export const deleteCart = async (id: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.deleteDocument(
+      config.appwrite.databaseId,
+      config.appwrite.cartCollection,
+      id
+    );
+
+    return;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const updateTransactionStatus = async (data: {
   id: string;
   status: "CANCELLED" | "PROCESSING" | "COMPLETED";
@@ -206,6 +275,22 @@ export const updateTransactionStatus = async (data: {
       status: true,
       message: "Updated successfully.",
     };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const deleteTransaction = async (id: string) => {
+  try {
+    const { database } = await createAdminClient();
+
+    await database.deleteDocument(
+      config.appwrite.databaseId,
+      config.appwrite.transactionsCollection,
+      id
+    );
+
+    return true;
   } catch (error) {
     throw error;
   }

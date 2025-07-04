@@ -1,5 +1,6 @@
 export const config = {
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL!,
+  resend: process.env.RESEND_API_SECRET!,
   appwrite: {
     endpoint: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!,
     projectId: process.env.APPWRITE_PROJECT_ID!,

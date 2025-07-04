@@ -66,6 +66,11 @@ export const calculateInterest = (charge: number, price: number) => {
   return percentIncrease;
 };
 
+export const calculatePriceByLocation = (price: number, charge: number) => {
+  const interest = calculateInterest(charge, price);
+  return price + interest;
+};
+
 export const downloadToMachine = (file: ArrayBuffer) => {
   const blob = new Blob([file]);
   const url = window.URL.createObjectURL(blob);

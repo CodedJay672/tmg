@@ -1,25 +1,26 @@
 "use client";
 
-import { formatCurrency, formatDate } from "@/lib/utils";
+import {
+  calculatePriceByLocation,
+  formatCurrency,
+  formatDate,
+} from "@/lib/utils";
 import Image from "next/image";
 import { Models } from "node-appwrite";
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useStore } from "@/store/appStore";
 
 const TransactionCard = ({ info }: { info: Models.Document }) => {
-  const { priceByLocation: totalCost, setPriceByLocation } = useStore();
   const orderDate = formatDate(info.$createdAt);
   const totalAmt = formatCurrency(info.total);
 
-  // ensure component is rendered
-  useEffect(() => {
-    setPriceByLocation(
-      info.delivery_location.charge,
-      info.order.products?.[0].price
-    );
-  }, []);
+  // calculate interest by location
+
+  const total = calculatePriceByLocation(
+    info.order.products?.[0].price,
+    info.delivery_location.charge
+  );
 
   return (
     <article className="w-full p-1 lg:p-3 border border-dark-200 rounded-xl">
@@ -48,7 +49,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
       </div>
       <div className="w-full flex-between flex-col md:flex-row gap-10 p-2 lg:p-3">
         <div className="w-full flex items-center gap-3">
-          <div className="w-full lg:w-32 h-28 relative">
+          <div className="w-full max-w-32 h-28 relative">
             <Image
               src={info.order.products?.[0].imgUrl ?? null}
               alt={info.order.products?.[0].name}
@@ -60,7 +61,7 @@ const TransactionCard = ({ info }: { info: Models.Document }) => {
               {info.order.products?.[0].name}
             </p>
             <p className="text-sm font-medium text-dark-300">
-              {formatCurrency(totalCost)} x {info.order.qty[0]}
+              {formatCurrency(total)} x {info.order.qty[0]}
             </p>
             {info.order.products.length > 1 && (
               <p className="text-xs font-medium text-dark-200 mt-3">

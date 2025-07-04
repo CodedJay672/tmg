@@ -19,7 +19,6 @@ const LocationDropdown = ({ user }: { user: Models.Document | undefined }) => {
     setErrors(null);
 
     const data = Object.fromEntries(formData);
-    console.log(user?.$id);
     const res = await updateUserInfo(
       {
         data,
