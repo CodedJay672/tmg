@@ -203,6 +203,43 @@ export const TransactionEmail: React.FC<TransactionEmailProps> = ({
         </Section>
 
         <Section>
+          <Text style={productsTitle}>Account Details</Text>
+          <Row>
+            <Column style={tableCell}>
+              <Text style={productsTitle}>Account Name</Text>
+            </Column>
+            <Column>
+              <Text>Much Grace Integrated Serv</Text>
+            </Column>
+          </Row>
+          <Row>
+            <Column style={tableCell}>
+              <Text style={productsTitle}>Account No.</Text>
+            </Column>
+            <Column>
+              <Text>0951630229</Text>
+            </Column>
+          </Row>
+          <Row>
+            <Column style={tableCell}>
+              <Text style={productsTitle}>Bank Name</Text>
+            </Column>
+            <Column>GTBank PLC</Column>
+          </Row>
+        </Section>
+
+        <Section>
+          <Text style={informationTableLabel}>CONTACT US</Text>
+          <Text style={informationTableValue}>Phone: 08135637156</Text>
+          <Text style={informationTableValue}>
+            Email: info@tmgprocurement.com
+          </Text>
+          <Text style={informationTableValue}>
+            Website: www.tmgprocurement.com
+          </Text>
+        </Section>
+
+        <Section>
           <Row>
             <Column align="center" style={footerIcon}>
               <Img

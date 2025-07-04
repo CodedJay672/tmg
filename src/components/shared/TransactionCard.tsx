@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   calculatePriceByLocation,
   formatCurrency,
@@ -7,7 +8,6 @@ import {
 } from "@/lib/utils";
 import Image from "next/image";
 import { Models } from "node-appwrite";
-import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 
