@@ -202,6 +202,7 @@ export const TransactionEmail: React.FC<TransactionEmailProps> = ({
           </Row>
         </Section>
 
+        <Hr style={productPriceLine} />
         <Section>
           <Text style={productsTitle}>Account Details</Text>
           <Row>
@@ -228,8 +229,9 @@ export const TransactionEmail: React.FC<TransactionEmailProps> = ({
           </Row>
         </Section>
 
+        <Hr style={productPriceLine} />
         <Section>
-          <Text style={informationTableLabel}>CONTACT US</Text>
+          <Text style={productsTitle}>CONTACT US</Text>
           <Text style={informationTableValue}>Phone: 08135637156</Text>
           <Text style={informationTableValue}>
             Email: info@tmgprocurement.com
