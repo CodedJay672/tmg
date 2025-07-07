@@ -32,6 +32,38 @@ export const getTransaction = async (id?: string) => {
   }
 };
 
+export const filterTransaction = async (query?: string) => {
+  try {
+    const { database } = await createAdminClient();
+    await getLoggedInUser();
+
+    const response = await database.listDocuments(
+      config.appwrite.databaseId,
+      config.appwrite.transactionsCollection,
+      query
+        ? [
+            Query.equal("status", query.toUpperCase()),
+            Query.orderDesc("$createdAt"),
+          ]
+        : []
+    );
+
+    if (!response.total)
+      return {
+        status: false,
+        message: "Unable to get transactions.",
+      };
+
+    return {
+      status: true,
+      message: "Transaction fetched successfully.",
+      data: response,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getUserCart = async (id?: string) => {
   try {
     const { database } = await createAdminClient();

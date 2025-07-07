@@ -116,8 +116,8 @@ export const orderTable: ColumnDef<Models.Document>[] = [
             status === "PROCESSING"
               ? "bg-amber-300"
               : status === "CANCELLED"
-              ? "bg-red-400"
-              : "bg-primary "
+                ? "bg-red-400"
+                : "bg-primary "
           }`}
         >
           {status}
@@ -141,7 +141,7 @@ export const smallTable: ColumnDef<Models.Document>[] = [
     header: "name",
     cell: ({ row }) => {
       const order: Models.Document = row.original;
-      console.log(order);
+
       const data = getTableData(order);
 
       return <ProductMiniCard order={data?.[0]?.product} />;
@@ -267,8 +267,8 @@ export const customerTable: ColumnDef<Models.Document>[] = [
           {transactions.length > 1
             ? "Orders"
             : transactions.length < 1
-            ? "N/A"
-            : "Order"}
+              ? "N/A"
+              : "Order"}
         </p>
       );
     },

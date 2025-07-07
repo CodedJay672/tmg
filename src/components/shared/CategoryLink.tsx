@@ -1,31 +1,11 @@
-"use client";
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn, formatTitle } from "@/lib/utils";
+import { formatTitle } from "@/lib/utils";
 
 const CategoryLink = ({ img, title }: { img: string; title: string }) => {
-  const pathname = usePathname();
-
-  const path =
-    title === "All"
-      ? "/"
-      : title === "Trending"
-      ? "/trending"
-      : `/category/${title}`;
-
-  const isActive = (path: string) => {
-    return pathname.endsWith(path);
-  };
-
   return (
-    <figure
-      className={`p-1 lg:p-0 overflow-hidden cursor-pointer lg:pb-4 ${
-        path === "/" || path === "/trending" ? "lg:hidden" : ""
-      }`}
-    >
+    <div className="w-32 flex-center flex-col gap-2">
       <Image
         src={img}
         alt="all category"
@@ -33,28 +13,13 @@ const CategoryLink = ({ img, title }: { img: string; title: string }) => {
         height={80}
         className="hidden lg:block object-cover"
       />
-
-      <figcaption
-        className={cn(
-          "place-self-center lg:mt-3 rounded-full transition-all p-0",
-          {
-            "lg:bg-secondary lg:px-2 lg:py-1": isActive(path),
-          }
-        )}
+      <Link
+        href={`category/${title}`}
+        className="hidden lg:block w-full text-lg leading-4.5 text-center text-dark-300 font-medium hover:underline"
       >
-        <Link
-          href={path.toLowerCase()}
-          className={cn(
-            "hidden lg:block w-full text-base text-dark-300 font-medium hover:underline",
-            {
-              "text-dark-300": isActive(path),
-            }
-          )}
-        >
-          {formatTitle(title)}
-        </Link>
-      </figcaption>
-    </figure>
+        {formatTitle(title)}
+      </Link>
+    </div>
   );
 };
 

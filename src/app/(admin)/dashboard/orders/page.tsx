@@ -1,8 +1,8 @@
-import React from "react";
+import React, { Suspense } from "react";
 import CustomTab from "@/components/shared/CustomTab";
 import OrdersTable from "@/components/shared/table/orders/OrdersTable";
-import { getTransaction } from "@/lib/data/transactions/transactions.data";
-import { Calendar1Icon } from "lucide-react";
+import { filterTransaction } from "@/lib/data/transactions/transactions.data";
+import { Calendar1Icon, LucideLoader2 } from "lucide-react";
 
 const Orders = async ({
   searchParams,
@@ -10,7 +10,12 @@ const Orders = async ({
   searchParams: Promise<{ query: string }>;
 }) => {
   const { query } = await searchParams;
-  const orders = await getTransaction();
+
+  // format the query string
+  const queryString = query ? (query === "all" ? "" : query) : "";
+
+  //filter orders by the query String
+  const orders = await filterTransaction(queryString);
 
   return (
     <section className="dashboard-container overflow-hidden">
@@ -27,19 +32,24 @@ const Orders = async ({
       </div>
 
       <div className="flex items-center gap-1 lg:gap-3 mb-5">
-        <CustomTab name="status" title="all" />
-        <CustomTab name="status" title="processing" />
-        <CustomTab name="status" title="cancelled" />
-        <CustomTab name="status" title="completed" />
+        <CustomTab name="all" />
+        <CustomTab name="processing" />
+        <CustomTab name="completed" />
+        <CustomTab name="cancelled" />
       </div>
 
-      {query && (
-        <p className="text-base font-medium mt-10">
-          Search result for: <span className="text-primary">{query}</span>
-        </p>
-      )}
-
-      <OrdersTable orders={orders.data?.documents} />
+      <Suspense
+        fallback={
+          <div className="w-full flex-center mt-10">
+            <p className="flex-center gap-1">
+              <LucideLoader2 size={24} className="text-primary animate-spin" />{" "}
+              Loading...
+            </p>
+          </div>
+        }
+      >
+        <OrdersTable orders={orders.data?.documents} />
+      </Suspense>
     </section>
   );
 };

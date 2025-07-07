@@ -24,7 +24,7 @@ const AdminLink = ({
     <Link
       href={path}
       className={cn(
-        "w-full px-4 lg:px-8 py-2 flex justify-center lg:justify-start items-center gap-2 hover:bg-secondary/50 transition-all",
+        "px-4 lg:px-8 py-2 flex justify-center lg:justify-start items-center gap-2 hover:bg-secondary/50 transition-all",
         {
           "lg:bg-primary font-medium text-primary lg:text-foreground hover:bg-primary":
             isActive(path),

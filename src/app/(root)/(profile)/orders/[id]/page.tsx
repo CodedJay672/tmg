@@ -8,8 +8,19 @@ import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 import { LucideLoader2 } from "lucide-react";
 import { notFound } from "next/navigation";
 
-const Orders = async ({ params }: { params: Promise<{ id: string }> }) => {
+const Orders = async ({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ query: string }>;
+}) => {
   const { id } = await params;
+  const { query } = await searchParams;
+
+  //const the status
+  const status = query ? (query === "all" ? "" : query) : "";
+
   const user = await getCurrentUser();
 
   if (user?.documents?.[0].accountId !== id) return notFound();
@@ -26,10 +37,10 @@ const Orders = async ({ params }: { params: Promise<{ id: string }> }) => {
       </div>
 
       <div className="w-full flex items-center space-x-3">
-        <CustomTab title="all" name="userTransactions" />
-        <CustomTab title="cancelled" name="userTransactions" />
-        <CustomTab title="processing" name="userTransactions" />
-        <CustomTab title="completed" name="userTransactions" />
+        <CustomTab name="all" />
+        <CustomTab name="processing" />
+        <CustomTab name="completed" />
+        <CustomTab name="cancelled" />
       </div>
 
       <Suspense

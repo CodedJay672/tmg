@@ -14,7 +14,10 @@ const ProductsPage = async ({
   const { query, page } = await searchParams;
   const today = formatDate(new Date().toISOString());
 
-  const allProducts = await getAllProducts(+page, query);
+  //format the search Query
+  const searchQuery = query ? (query === "all" ? "" : query) : "";
+  // fetch the products based on the search query
+  const allProducts = await getAllProducts(+page, searchQuery);
 
   return (
     <section className="dashboard-container">
@@ -27,10 +30,10 @@ const ProductsPage = async ({
 
       <div className="w-full mt-6 mb-2 flex-between gap-3 lg:gap-6 ">
         <div className="flex-1 flex items-center space-x-1 md:space-x-3">
-          <CustomTab name="admin" title="all" />
-          <CustomTab name="admin" title="mechanical" />
-          <CustomTab name="admin" title="steel" />
-          <CustomTab name="admin" title="electrical" />
+          <CustomTab name="all" />
+          <CustomTab name="mechanical" />
+          <CustomTab name="steel" />
+          <CustomTab name="electrical" />
         </div>
         <div className="w-max">
           <Link
@@ -46,30 +49,16 @@ const ProductsPage = async ({
       </div>
 
       <div className="w-full flex-center flex-col">
-        {query && (
-          <p className="text-base lg:text-lg text-dark-200 text-left w-full truncate line-clamp-1">
-            Search results for:{" "}
-            <span className="text-primary font-medium text-lg lg:text-xl">
-              &ldquo;{query}&rdquo;
-            </span>
-          </p>
-        )}
-
-        {allProducts.data ? (
-          <Suspense
-            fallback={
-              <div className="w-full mt-10">
-                <Loader2Icon size={24} className="text-primary animate-spin" />
-              </div>
-            }
-          >
-            <ProductListing query={query} products={allProducts?.data} />
-          </Suspense>
-        ) : (
-          <p className="w-full text-center text-gray-300">
-            No products listed.
-          </p>
-        )}
+        <Suspense
+          fallback={
+            <div className="w-full mt-10">
+              <Loader2Icon size={24} className="text-primary animate-spin" />{" "}
+              Loading...
+            </div>
+          }
+        >
+          <ProductListing products={allProducts?.data} />
+        </Suspense>
       </div>
     </section>
   );

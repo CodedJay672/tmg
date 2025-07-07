@@ -25,7 +25,7 @@ const MobileLink = ({ path, icon }: BottomBarProps) => {
   return (
     <Link
       href={path}
-      className={cn("text-dark-300 relative py-1 px-6", {
+      className={cn("text-dark-300 relative py-1 px-2", {
         "text-primary": isActive(),
       })}
     >

@@ -1,3 +1,7 @@
+"use client";
+
+import { useMemo } from "react";
+
 const DashboardInfo = ({
   heading,
   data,
@@ -7,6 +11,17 @@ const DashboardInfo = ({
   data: number;
   background?: string;
 }) => {
+  const formattedData = useMemo(() => {
+    if (data < 1000) return data;
+    else if (data > 1000 && data < 1000000) {
+      const result = Math.round(data / 1000);
+      return `${result}K`;
+    } else {
+      const result = Math.round(data / 1000000);
+      return `${result}M`;
+    }
+  }, [data]);
+
   return (
     <article
       style={{ backgroundColor: background }}
@@ -14,7 +29,9 @@ const DashboardInfo = ({
     >
       <h3 className="text-base font-medium">{heading}</h3>
 
-      <p className="text-2xl lg:text-4xl font-medium">{data}+</p>
+      <p className="text-2xl lg:text-4xl leading-16 font-medium">
+        {formattedData}
+      </p>
     </article>
   );
 };
