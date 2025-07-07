@@ -64,7 +64,7 @@ const Dashboard = async () => {
   };
 
   return (
-    <section className="min-h-screen w-full">
+    <section className="dashboard-container">
       <div className="w-full space-y-1 my-10">
         <h2 className="admin-title">
           Welcome{" "}
