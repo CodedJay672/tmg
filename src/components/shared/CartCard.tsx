@@ -33,9 +33,18 @@ const CartCard = ({ data, user }: TCartProps) => {
           <p className="text-sm lg:text-base font-normal text-light-200">
             {data?.name}
           </p>
-          <p className="text-base lg:text-lg font-medium">
+          <p className="text-base lg:text-lg">
+            Rate:{" "}
             {data?.price &&
               data?.price?.toLocaleString("en-Ng", {
+                style: "currency",
+                currency: "NGN",
+              })}
+          </p>
+          <p className="text-base lg:text-lg font-medium">
+            Total:{" "}
+            {data?.price &&
+              (data?.price * data.qty)?.toLocaleString("en-Ng", {
                 style: "currency",
                 currency: "NGN",
               })}
