@@ -9,6 +9,7 @@ import { Resend } from "resend";
 import { TransactionEmail } from "@/email/boqTemplateEmail";
 import { formatDate, getTableData } from "../utils";
 import { ReactNode } from "react";
+import { updateUserInfo } from "./user.actions";
 
 //create client for resend
 const resend = new Resend(config.resend);
@@ -182,8 +183,6 @@ export const completeTransaction = async (
       await deleteCart(res.order.$id);
       await deleteTransaction(res.$id);
 
-      console.log(error);
-
       return {
         status: false,
         message: "Failed to send transaction email.",
@@ -191,6 +190,19 @@ export const completeTransaction = async (
     }
 
     revalidatePath("/dashboard/orders");
+
+    //clear the delivery location when transaction completes
+    updateUserInfo(
+      {
+        data: {
+          delivery_location: "",
+          delivery_address: "",
+          receiver_name: "",
+          receiver_phone: "",
+        },
+      },
+      transaction.userId
+    );
     return {
       status: true,
       message: "Transaction completed.",
