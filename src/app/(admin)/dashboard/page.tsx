@@ -65,8 +65,8 @@ const Dashboard = async () => {
 
   return (
     <section className="dashboard-container">
-      <div className="w-full space-y-1 my-10">
-        <h2 className="admin-title">
+      <div className="w-full space-y-1 pb-4">
+        <h2 className="admin-title leading-6">
           Welcome{" "}
           <span className="text-primary font-semibold">
             {user.name.split(" ")[0]}👋🏼
