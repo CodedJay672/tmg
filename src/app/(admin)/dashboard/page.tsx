@@ -6,10 +6,7 @@ import {
   getTransaction,
   getUserCart,
 } from "@/lib/data/transactions/transactions.data";
-import {
-  getLoggedInUser,
-  getCurrentUser,
-} from "@/lib/data/user/getLoggedInUser";
+import { getLoggedInUser, getUser } from "@/lib/data/user/getLoggedInUser";
 import { ChartData } from "chart.js";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -23,7 +20,7 @@ const Dashboard = async () => {
 
   //get all transactions and users in parallel
   const transactions = getTransaction();
-  const users = getCurrentUser();
+  const users = getUser();
   const orders = getUserCart();
 
   const [transactionData, usersData, ordersData] = await Promise.all([
@@ -86,7 +83,7 @@ const Dashboard = async () => {
               background="#3B82F6"
             />
             <DashboardInfo
-              data={usersData?.total ?? 0}
+              data={usersData?.data?.total ?? 0}
               heading="All Users"
               background="#8B5CF6"
             />
