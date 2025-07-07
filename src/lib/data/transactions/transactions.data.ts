@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/server/appwrite";
 import { config } from "@/lib/server/config";
 import { Query } from "node-appwrite";
 import { getLoggedInUser } from "../user/getLoggedInUser";
+import { cache } from "react";
 
 export const getTransaction = async (id?: string) => {
   try {
@@ -32,7 +33,7 @@ export const getTransaction = async (id?: string) => {
   }
 };
 
-export const filterTransaction = async (query?: string) => {
+export const filterTransaction = cache(async (query?: string) => {
   try {
     const { database } = await createAdminClient();
     await getLoggedInUser();
@@ -62,7 +63,7 @@ export const filterTransaction = async (query?: string) => {
   } catch (error) {
     throw error;
   }
-};
+});
 
 export const getUserCart = async (id?: string) => {
   try {
