@@ -13,7 +13,7 @@ const CreateProducts = async ({
 
   return (
     <section className="dashboard-container flex flex-col">
-      <div className="w-full max-w-lg py-10">
+      <div className="w-full max-w-lg">
         <Image
           src="/assets/logo.png"
           alt="tmg procurement"

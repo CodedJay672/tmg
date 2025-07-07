@@ -10,8 +10,8 @@ const Header = async () => {
   const currentUser = await getCurrentUser();
 
   return (
-    <header className="w-full bg-gray-50 sticky top-0 left-0 mb-4 z-10 pb-6 lg:pb-0">
-      <div className="flex-between">
+    <header className="w-full bg-gray-50 sticky top-0 left-0 z-10 pb-6">
+      <div className="flex-between px-1 lg:px-4">
         <Link href="/" className="flex items-center lg:hidden">
           <ChevronLeftIcon size={24} className="text-dark-300" />
           <Image

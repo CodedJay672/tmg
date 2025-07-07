@@ -100,7 +100,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full my-10 lg:my-6 flex-center flex-col gap-4"
+      className="w-full my-10 flex-center flex-col gap-4"
     >
       <CustomInput
         label="Product name"
@@ -128,7 +128,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
           onChange={(e) =>
             setCategory(e.target.value as "mechanical" | "steel" | "electrical")
           }
-          className="w-full border border-secondary p-3 rounded-md mt-3"
+          className="w-full border border-secondary p-3 rounded-md mt-3 bg-white"
         >
           <option value="mechanical">Mechanical</option>
           <option value="steel">Steel</option>
@@ -138,7 +138,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
 
       <div
         onClick={() => filePicker(uploadRef)}
-        className="w-full flex-center flex-col p-4 border border-secondary hover:bg-dark-100 transition-all my-6 rounded-lg"
+        className="w-full flex-center flex-col p-4 border border-secondary bg-white hover:bg-dark-100 transition-all my-6 rounded-lg"
       >
         {imgUrl ? (
           <>
@@ -169,7 +169,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
 
       <div
         onClick={() => filePicker(datasheetRef)}
-        className="w-full flex-center flex-col p-4 border border-secondary hover:bg-dark-100 transition-all my-6 rounded-lg"
+        className="w-full flex-center flex-col p-4 border border-secondary bg-white hover:bg-dark-100 transition-all my-6 rounded-lg"
       >
         {datasheetUrl ? (
           <>
@@ -208,7 +208,7 @@ const ProductForm = ({ type, product }: ProductFormProps) => {
           value={description}
           placeholder="Enter the product description here..."
           className={cn(
-            "w-full border border-secondary rounded-md p-2 lg:py-3 mt-2 outline-none transition-all bg-gray-50 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400",
+            "w-full border border-secondary rounded-md p-2 lg:py-3 mt-2 outline-none transition-all bg-white disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-400",
             { "border-2 border-red-500": error?.["datasheet"] }
           )}
         />
