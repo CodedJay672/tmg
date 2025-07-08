@@ -34,39 +34,45 @@ const DeliveryDetailsForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3 mb-4">
-      <CustomInput
-        label="Location"
-        type="text"
-        name="delivery_location"
-        value={deliveryLocation}
-        onChange={setDeliveryLocation}
-        error={errors?.["delivery_location"]}
-      />
-      <CustomInput
-        label="Address"
-        type="text"
-        name="delivery_address"
-        value={deliveryAddress}
-        onChange={setDeliveryAddress}
-        error={errors?.["delivery_address"]}
-      />
-      <CustomInput
-        label="Name (Receiver)"
-        type="text"
-        name="receiver_name"
-        value={receiverName}
-        error={errors?.["receiver_name"]}
-        onChange={setReceiverName}
-      />
-      <CustomInput
-        label="Phone (Receiver)"
-        type="text"
-        name="receiver_phone"
-        value={receiverPhone}
-        onChange={setReceiverPhone}
-        error={errors?.["receiver_phone"]}
-      />
+    <form onSubmit={handleSubmit} className="w-full flex flex-col gap-3 mt-4">
+      <fieldset className="flex-between gap-1">
+        <CustomInput
+          label="Location"
+          type="text"
+          name="delivery_location"
+          value={deliveryLocation}
+          onChange={setDeliveryLocation}
+          error={errors?.["delivery_location"]}
+        />
+
+        <CustomInput
+          label="Address"
+          type="text"
+          name="delivery_address"
+          value={deliveryAddress}
+          onChange={setDeliveryAddress}
+          error={errors?.["delivery_address"]}
+        />
+      </fieldset>
+
+      <fieldset className="flex-between gap-1">
+        <CustomInput
+          label="Name (Receiver)"
+          type="text"
+          name="receiver_name"
+          value={receiverName}
+          error={errors?.["receiver_name"]}
+          onChange={setReceiverName}
+        />
+        <CustomInput
+          label="Phone (Receiver)"
+          type="text"
+          name="receiver_phone"
+          value={receiverPhone}
+          onChange={setReceiverPhone}
+          error={errors?.["receiver_phone"]}
+        />
+      </fieldset>
 
       <SubmitButton label="Update" />
       <small className="w-full text-center text-dark-200 mt-4">

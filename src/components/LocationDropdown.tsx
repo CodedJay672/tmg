@@ -9,14 +9,18 @@ import { toast } from "sonner";
 import { Button } from "./ui/button";
 import DeliveryDetailsForm from "./shared/DeliveryDetailsForm";
 import { updateUserInfo } from "@/lib/actions/user.actions";
+import { useStore } from "@/store/appStore";
 
 const LocationDropdown = ({ user }: { user: Models.Document | undefined }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const { clearCart } = useStore();
   const [errors, setErrors] = useState<Record<string, string[]> | null>(null);
 
   // handle the update action here
   const handleSubmit = async (formData: FormData) => {
+    // set error to null and clear the cart
     setErrors(null);
+    clearCart();
 
     const data = Object.fromEntries(formData);
     const res = await updateUserInfo(
@@ -62,19 +66,15 @@ const LocationDropdown = ({ user }: { user: Models.Document | undefined }) => {
         />
       </Button>
       <ProfileDropdown show={showDropdown} setShow={setShowDropdown}>
-        <div className="w-full overflow-hidden relative  ">
-          <div className="w-full mb-6 mt-4">
-            <p className=" text-lg lg:text-xl font-bold">
-              Provide delivery information.
-            </p>
-          </div>
+        <p className=" text-base leading-5 lg:leading-7 font-semibold">
+          Provide delivery information.
+        </p>
 
-          <DeliveryDetailsForm
-            user={user}
-            errors={errors}
-            action={handleSubmit}
-          />
-        </div>
+        <DeliveryDetailsForm
+          user={user}
+          errors={errors}
+          action={handleSubmit}
+        />
       </ProfileDropdown>
     </>
   );
