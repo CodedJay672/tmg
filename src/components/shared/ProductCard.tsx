@@ -29,6 +29,7 @@ const ProductCard = async ({ item, user }: ProductCardProps) => {
         <Image
           src={item.imgUrl}
           alt={item.name}
+          sizes="(min-width: 100vw)"
           fill
           className="object-cover rounded-md overflow-hidden"
         />

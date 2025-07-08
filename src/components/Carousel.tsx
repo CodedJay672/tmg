@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import { useRef } from "react";
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -29,11 +29,17 @@ const Carousel = ({ slides }: { slides: string[] }) => {
           pauseOnMouseEnter: true,
         }}
         loop
-        className="w-full h-40 lg:h-60 rounded-xl"
+        className="w-full h-28 lg:h-40 rounded-xl"
       >
         {slides.map((slide, idx) => (
           <SwiperSlide key={idx}>
-            <Image src={slide} alt="tmg" fill />
+            <Image
+              src={slide}
+              alt="tmg"
+              sizes="(min-width: 100vw)"
+              fill
+              priority
+            />
           </SwiperSlide>
         ))}
       </Swiper>

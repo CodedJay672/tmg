@@ -7,6 +7,7 @@ import { slides } from "@/constants";
 import { getAllProducts } from "@/lib/data/products/products.data";
 import { getCurrentUser } from "@/lib/data/user/getLoggedInUser";
 import { Loader2Icon } from "lucide-react";
+import { userInfo } from "os";
 import { Suspense } from "react";
 
 export default async function Home({
@@ -20,8 +21,17 @@ export default async function Home({
   const category = query ? (query === "all" ? "" : query) : "";
 
   //fetch user and products in parallel
-  const currentUser = await getCurrentUser();
-  const allProducts = await getAllProducts(+page, category);
+  const user = getCurrentUser();
+  const products = getAllProducts(+page, category);
+
+  // use Promise.all to get all information
+  const [currentUser, allProducts] = await Promise.allSettled([user, products]);
+
+  //extract info from promise
+  const userData =
+    currentUser?.status === "fulfilled" ? currentUser?.value : null;
+  const productsInfo =
+    allProducts?.status === "fulfilled" ? allProducts?.value : null;
 
   return (
     <section className="content-wrapper">
@@ -56,20 +66,20 @@ export default async function Home({
           </div>
         }
       >
-        {allProducts?.status ? (
+        {productsInfo?.data && productsInfo.data.length > 0 ? (
           <div className="mt-10">
             <p className="text-lg lg:text-2xl font-semibold capitalize">
               {category ? category : "all products"}{" "}
               <span className="text-primary">
-                ({allProducts?.data?.length})
+                ({productsInfo?.data?.length})
               </span>
             </p>
             <div className="w-full flex-1 grid grid-cols-2 lg:grid-cols-5 gap-1 lg:gap-4 mt-6 mb-10">
-              {allProducts?.data?.map((product) => (
+              {productsInfo?.data?.map((product) => (
                 <ProductCard
                   key={product.$id}
                   item={product}
-                  user={currentUser?.documents?.[0]}
+                  user={userData?.documents?.[0]}
                 />
               ))}
             </div>
