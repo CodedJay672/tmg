@@ -163,20 +163,21 @@ const CartContent = ({
 
             <div className="w-full p-10 bg-secondary/30 rounded-xl border border-primary mt-10">
               <h2 className="text-sm font-medium">Bank information</h2>
-              <div className="flex items-center gap-2 mt-3">
+
+              <div className="grid grid-cols-3 gap-1 mt-3">
                 <p className="text-sm font-medium">Acct No.:</p>
-                <p className="text-sm font-normal text-pretty">01234567890</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-medium">Bank Name:</p>
-                <p className="text-sm font-normal text-pretty">
-                  ABC Bank of Africa
+                <p className="text-sm font-normal text-pretty col-span-2">
+                  0951630229
                 </p>
-              </div>
-              <div className="flex items-center gap-2">
+
+                <p className="text-sm font-medium">Bank Name:</p>
+                <p className="text-sm font-normal text-pretty col-span-2">
+                  GTBank PLC
+                </p>
+
                 <p className="text-sm font-medium">Acct Name.:</p>
-                <p className="text-sm font-normal text-pretty">
-                  TMG Procurement bank
+                <p className="text-xs font-normal text-pretty col-span-2">
+                  Too Much Grace Integrated Serv
                 </p>
               </div>
             </div>

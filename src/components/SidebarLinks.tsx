@@ -3,7 +3,9 @@
 import Link from "next/link";
 import React from "react";
 import {
+  HeadphonesIcon,
   HeartIcon,
+  MailIcon,
   ShieldCloseIcon,
   ShoppingBasketIcon,
   User2Icon,
@@ -104,6 +106,21 @@ const SidebarLinks = ({ user }: { user?: Models.Document }) => {
             className="py-2 px-4 rounded-lg flex items-center gap-3 hover:bg-secondary/30 transition-all"
           >
             <ShieldCloseIcon size={16} /> Password reset
+          </Link>
+
+          <Link
+            href="tel:+2348135637156"
+            className="text-base font-light flex items-center gap-3 py-2 px-4"
+          >
+            <HeadphonesIcon size={16} />
+            Contact us
+          </Link>
+
+          <Link
+            href="mailto:info@tmgprocurement.com"
+            className="text-base font-light flex items-center gap-3 py-2 px-4"
+          >
+            <MailIcon size={16} /> Email us
           </Link>
 
           <SignOut />
