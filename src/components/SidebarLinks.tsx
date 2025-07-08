@@ -29,7 +29,7 @@ const SidebarLinks = ({ user }: { user?: Models.Document }) => {
   return (
     <aside
       className={cn(
-        "w-full h-screen shrink-0 lg:h-120 lg:w-xs  p-1 translate-x-200 lg:translate-0 lg:flex flex-col transition-transform transform-gpu duration-300 fixed lg:static top-0 left-0 bg-foreground lg:bg-dark-100/50 rounded-lg z-90 lg:z-0",
+        "w-full h-screen shrink-0 lg:h-120 lg:w-xs space-y-2 p-2 lg:p-6 translate-x-200 lg:translate-0 lg:flex flex-col transition-transform transform-gpu duration-300 fixed lg:static top-0 left-0 bg-foreground lg:bg-dark-100/50 rounded-lg z-90 lg:z-0",
         {
           "translate-x-0": showProfileMenu,
         }
@@ -44,7 +44,7 @@ const SidebarLinks = ({ user }: { user?: Models.Document }) => {
         <>
           <h3 className="text-primary text-xl lg:hidden font-bold">Menu</h3>
 
-          <div className="flex items-center justify-center lg:justify-start  flex-col lg:flex-row gap-3">
+          <div className="flex items-center justify-center lg:justify-start  flex-col lg:flex-row gap-4">
             <div className="size-28 lg:size-10 flex-center overflow-hidden rounded-full bg-secondary relative">
               {user.imgUrl ? (
                 <Image
