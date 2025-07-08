@@ -110,6 +110,7 @@ const SidebarLinks = ({ user }: { user?: Models.Document }) => {
 
           <Link
             href="tel:+2348135637156"
+            onClick={toggleProfileMenu}
             className="text-base font-light flex items-center gap-3 py-2 px-4"
           >
             <HeadphonesIcon size={16} />
@@ -118,6 +119,7 @@ const SidebarLinks = ({ user }: { user?: Models.Document }) => {
 
           <Link
             href="mailto:info@tmgprocurement.com"
+            onClick={toggleProfileMenu}
             className="text-base font-light flex items-center gap-3 py-2 px-4"
           >
             <MailIcon size={16} /> Email us
