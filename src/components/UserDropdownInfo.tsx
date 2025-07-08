@@ -20,7 +20,7 @@ const UserDropdownInfo = ({
 }) => {
   return (
     <div className="w-64">
-      <h3 className="text-base font-bold">{user?.name}</h3>
+      <h3 className="text-base font-bold">{user?.fullname}</h3>
       <p className="text-sm text-gray-400">{user?.email}</p>
 
       <hr className="w-full my-4 text-gray-300" />
