@@ -5,11 +5,11 @@ import React from "react";
 import {
   HeadphonesIcon,
   HeartIcon,
+  LucideX,
   MailIcon,
   ShieldCloseIcon,
   ShoppingBasketIcon,
   User2Icon,
-  XCircleIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import SignOut from "./shared/SignOut";
@@ -29,13 +29,13 @@ const SidebarLinks = ({ user }: { user?: Models.Document }) => {
   return (
     <aside
       className={cn(
-        "w-full h-screen shrink-0 lg:h-120 lg:w-xs  p-6 space-y-3 translate-x-200 lg:translate-0 lg:flex flex-col transition-transform transform-gpu duration-300 fixed lg:static top-0 left-0 bg-foreground lg:bg-dark-100/50 rounded-lg z-90 lg:z-0",
+        "w-full h-screen shrink-0 lg:h-120 lg:w-xs  p-1 translate-x-200 lg:translate-0 lg:flex flex-col transition-transform transform-gpu duration-300 fixed lg:static top-0 left-0 bg-foreground lg:bg-dark-100/50 rounded-lg z-90 lg:z-0",
         {
           "translate-x-0": showProfileMenu,
         }
       )}
     >
-      <XCircleIcon
+      <LucideX
         size={32}
         onClick={toggleProfileMenu}
         className="place-self-end text-primary lg:hidden"
